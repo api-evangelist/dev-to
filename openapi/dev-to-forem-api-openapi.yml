@@ -1,0 +1,2016 @@
+openapi: 3.1.0
+info:
+  title: Dev.to Forem API
+  description: >-
+    The Dev.to Forem API (v1) is a RESTful API that provides programmatic
+    access to the Dev.to developer community platform, which is built on the
+    open-source Forem framework. The API enables developers to create, read,
+    update, and manage articles, comments, users, organizations, tags,
+    followers, listings, podcast episodes, pages, display ads, reactions,
+    reading lists, and webhooks. It uses API key authentication, requires an
+    accept header of application/vnd.forem.api-v1+json, and returns JSON
+    responses. Unauthenticated endpoints are CORS-enabled, making it possible
+    to fetch public content directly from browser-based applications.
+  version: '1.0.0'
+  contact:
+    name: Forem Support
+    url: https://forem.com
+  termsOfService: https://dev.to/terms
+externalDocs:
+  description: Forem API V1 Documentation
+  url: https://developers.forem.com/api/v1
+servers:
+  - url: https://dev.to/api
+    description: Dev.to Production Server
+tags:
+  - name: Articles
+    description: >-
+      Endpoints for creating, reading, updating, and managing articles
+      (blog posts, discussions, help threads) on the platform.
+  - name: Comments
+    description: >-
+      Endpoints for retrieving comments on articles and podcast episodes,
+      including threaded conversation views.
+  - name: DisplayAds
+    description: >-
+      Endpoints for managing display advertisements on the platform.
+      Requires admin-level API key.
+  - name: FollowedTags
+    description: >-
+      Endpoints for retrieving the tags followed by the authenticated user.
+  - name: Followers
+    description: >-
+      Endpoints for retrieving followers of the authenticated user.
+  - name: Organizations
+    description: >-
+      Endpoints for retrieving organization details, members, and articles.
+  - name: Pages
+    description: >-
+      Endpoints for managing static pages on the platform. Requires
+      admin-level API key.
+  - name: PodcastEpisodes
+    description: >-
+      Endpoints for retrieving published podcast episodes.
+  - name: ProfileImages
+    description: >-
+      Endpoints for retrieving profile images of users and organizations.
+  - name: Reactions
+    description: >-
+      Endpoints for creating and toggling reactions on articles, comments,
+      and users.
+  - name: ReadingList
+    description: >-
+      Endpoints for retrieving the authenticated user's reading list.
+  - name: Tags
+    description: >-
+      Endpoints for retrieving available tags on the platform.
+  - name: Users
+    description: >-
+      Endpoints for retrieving user profiles and managing user accounts.
+  - name: Webhooks
+    description: >-
+      Endpoints for creating, listing, retrieving, and deleting webhook
+      subscriptions for real-time event notifications.
+security:
+  - apiKey: []
+paths:
+  /articles:
+    post:
+      operationId: createArticle
+      summary: Publish article
+      description: >-
+        Creates a new article. The authenticated user will be the author of
+        the article. The article can be published immediately or saved as a
+        draft by setting the published field.
+      tags:
+        - Articles
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                article:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                      description: >-
+                        The title of the article.
+                    body_markdown:
+                      type: string
+                      description: >-
+                        The body of the article in Markdown format.
+                    published:
+                      type: boolean
+                      description: >-
+                        Whether the article should be published immediately.
+                    series:
+                      type: string
+                      description: >-
+                        The name of a series to associate this article with.
+                    main_image:
+                      type: string
+                      format: uri
+                      description: >-
+                        URL for the main cover image of the article.
+                    canonical_url:
+                      type: string
+                      format: uri
+                      description: >-
+                        The canonical URL for the article if originally published elsewhere.
+                    description:
+                      type: string
+                      description: >-
+                        A brief description or subtitle for the article.
+                    tags:
+                      type: array
+                      items:
+                        type: string
+                      maxItems: 4
+                      description: >-
+                        Up to four tags for the article.
+                    organization_id:
+                      type: integer
+                      description: >-
+                        The organization ID to publish the article under.
+                  required:
+                    - title
+      responses:
+        '201':
+          description: Article created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+        '401':
+          description: Unauthorized - invalid or missing API key
+        '422':
+          description: Unprocessable Entity - validation errors
+    get:
+      operationId: getArticles
+      summary: Published articles
+      description: >-
+        Retrieves a list of published articles, ordered by descending
+        popularity. This endpoint is publicly accessible and can be filtered
+        by tag, username, state, and other parameters.
+      tags:
+        - Articles
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perPageParam30to1000'
+        - name: tag
+          in: query
+          schema:
+            type: string
+          description: >-
+            Filter articles by a single tag name.
+        - name: tags
+          in: query
+          schema:
+            type: string
+          description: >-
+            Filter articles by a comma-separated list of tag names
+            (articles must have all specified tags).
+        - name: tags_exclude
+          in: query
+          schema:
+            type: string
+          description: >-
+            Exclude articles with these comma-separated tag names.
+        - name: username
+          in: query
+          schema:
+            type: string
+          description: >-
+            Filter articles by the author's username.
+        - name: state
+          in: query
+          schema:
+            type: string
+            enum:
+              - fresh
+              - rising
+              - all
+          description: >-
+            Filter articles by state. Defaults to the most popular articles.
+        - name: top
+          in: query
+          schema:
+            type: integer
+          description: >-
+            Return the most popular articles published in the last N days.
+        - name: collection_id
+          in: query
+          schema:
+            type: integer
+          description: >-
+            Return articles belonging to the specified collection.
+      responses:
+        '200':
+          description: A list of published articles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+  /articles/latest:
+    get:
+      operationId: getLatestArticles
+      summary: Published articles sorted by published date
+      description: >-
+        Retrieves a list of published articles sorted by publication date
+        in descending order.
+      tags:
+        - Articles
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '200':
+          description: A list of articles sorted by publication date
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+  /articles/{id}:
+    get:
+      operationId: getArticleById
+      summary: Published article by id
+      description: >-
+        Retrieves a single published article by its numeric ID.
+      tags:
+        - Articles
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/articleIdParam'
+      responses:
+        '200':
+          description: The requested article
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+        '404':
+          description: Article not found
+    put:
+      operationId: updateArticle
+      summary: Update an article by id
+      description: >-
+        Updates an existing article. Only the article's author or an admin
+        can update the article.
+      tags:
+        - Articles
+      parameters:
+        - $ref: '#/components/parameters/articleIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                article:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                      description: >-
+                        The title of the article.
+                    body_markdown:
+                      type: string
+                      description: >-
+                        The body of the article in Markdown format.
+                    published:
+                      type: boolean
+                      description: >-
+                        Whether the article should be published.
+                    series:
+                      type: string
+                      description: >-
+                        The name of a series to associate this article with.
+                    main_image:
+                      type: string
+                      format: uri
+                      description: >-
+                        URL for the main cover image of the article.
+                    canonical_url:
+                      type: string
+                      format: uri
+                      description: >-
+                        The canonical URL for the article.
+                    description:
+                      type: string
+                      description: >-
+                        A brief description or subtitle for the article.
+                    tags:
+                      type: array
+                      items:
+                        type: string
+                      maxItems: 4
+                      description: >-
+                        Up to four tags for the article.
+                    organization_id:
+                      type: integer
+                      description: >-
+                        The organization ID to publish the article under.
+      responses:
+        '200':
+          description: Article updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Article not found
+        '422':
+          description: Unprocessable Entity
+  /articles/{username}/{slug}:
+    get:
+      operationId: getArticleByPath
+      summary: Published article by path
+      description: >-
+        Retrieves a single published article by the author's username and
+        the article's slug.
+      tags:
+        - Articles
+      security: []
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+          description: >-
+            The username of the article's author.
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+          description: >-
+            The slug of the article.
+      responses:
+        '200':
+          description: The requested article
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+        '404':
+          description: Article not found
+  /articles/me:
+    get:
+      operationId: getUserArticles
+      summary: User's articles
+      description: >-
+        Retrieves all articles authored by the authenticated user.
+      tags:
+        - Articles
+        - Users
+      parameters:
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '200':
+          description: A list of the authenticated user's articles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+        '401':
+          description: Unauthorized
+  /articles/me/published:
+    get:
+      operationId: getUserPublishedArticles
+      summary: User's published articles
+      description: >-
+        Retrieves only published articles authored by the authenticated user.
+      tags:
+        - Articles
+        - Users
+      parameters:
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '200':
+          description: A list of the authenticated user's published articles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+        '401':
+          description: Unauthorized
+  /articles/me/unpublished:
+    get:
+      operationId: getUserUnpublishedArticles
+      summary: User's unpublished articles
+      description: >-
+        Retrieves only unpublished (draft) articles authored by the
+        authenticated user.
+      tags:
+        - Articles
+        - Users
+      parameters:
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '200':
+          description: A list of the authenticated user's unpublished articles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+        '401':
+          description: Unauthorized
+  /articles/me/all:
+    get:
+      operationId: getUserAllArticles
+      summary: User's all articles
+      description: >-
+        Retrieves all articles (both published and unpublished) authored by
+        the authenticated user.
+      tags:
+        - Articles
+        - Users
+      parameters:
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '200':
+          description: A list of all the authenticated user's articles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+        '401':
+          description: Unauthorized
+  /articles/{id}/unpublish:
+    put:
+      operationId: unpublishArticle
+      summary: Unpublish an article
+      description: >-
+        Unpublishes an article by its ID. Requires admin-level API key.
+      tags:
+        - Articles
+      parameters:
+        - $ref: '#/components/parameters/articleIdParam'
+      responses:
+        '204':
+          description: Article unpublished successfully
+        '401':
+          description: Unauthorized
+        '404':
+          description: Article not found
+  /comments:
+    get:
+      operationId: getCommentsByArticleId
+      summary: Comments
+      description: >-
+        Retrieves all comments belonging to an article or podcast episode,
+        returned as threaded conversations. Provide either a_id for articles
+        or p_id for podcast episodes.
+      tags:
+        - Comments
+      security: []
+      parameters:
+        - name: a_id
+          in: query
+          schema:
+            type: integer
+          description: >-
+            The article ID to retrieve comments for.
+        - name: p_id
+          in: query
+          schema:
+            type: integer
+          description: >-
+            The podcast episode ID to retrieve comments for.
+      responses:
+        '200':
+          description: A list of threaded comments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+  /comments/{id}:
+    get:
+      operationId: getCommentById
+      summary: Comment by id
+      description: >-
+        Retrieves a single comment and its descendants by the comment ID.
+      tags:
+        - Comments
+      security: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: >-
+            The ID of the comment.
+      responses:
+        '200':
+          description: The requested comment with its descendants
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        '404':
+          description: Comment not found
+  /display_ads:
+    get:
+      operationId: getDisplayAds
+      summary: Display ads
+      description: >-
+        Retrieves all display ads. Requires admin-level API key.
+      tags:
+        - DisplayAds
+      responses:
+        '200':
+          description: A list of display ads
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DisplayAd'
+        '401':
+          description: Unauthorized
+    post:
+      operationId: createDisplayAd
+      summary: Create display ad
+      description: >-
+        Creates a new display ad. Requires admin-level API key.
+      tags:
+        - DisplayAds
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DisplayAd'
+      responses:
+        '201':
+          description: Display ad created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DisplayAd'
+        '401':
+          description: Unauthorized
+        '422':
+          description: Unprocessable Entity
+  /display_ads/{id}:
+    get:
+      operationId: getDisplayAdById
+      summary: Display ad
+      description: >-
+        Retrieves a single display ad by ID. Requires admin-level API key.
+      tags:
+        - DisplayAds
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: >-
+            The ID of the display ad.
+      responses:
+        '200':
+          description: The requested display ad
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DisplayAd'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Display ad not found
+    put:
+      operationId: updateDisplayAd
+      summary: Update display ad
+      description: >-
+        Updates an existing display ad. Requires admin-level API key.
+      tags:
+        - DisplayAds
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: >-
+            The ID of the display ad.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DisplayAd'
+      responses:
+        '200':
+          description: Display ad updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DisplayAd'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Display ad not found
+        '422':
+          description: Unprocessable Entity
+  /display_ads/{id}/unpublish:
+    put:
+      operationId: unpublishDisplayAd
+      summary: Unpublish display ad
+      description: >-
+        Unpublishes a display ad by ID. Requires admin-level API key.
+      tags:
+        - DisplayAds
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: >-
+            The ID of the display ad.
+      responses:
+        '204':
+          description: Display ad unpublished
+        '401':
+          description: Unauthorized
+        '404':
+          description: Display ad not found
+  /follows/tags:
+    get:
+      operationId: getFollowedTags
+      summary: Followed Tags
+      description: >-
+        Retrieves a list of tags followed by the authenticated user.
+      tags:
+        - FollowedTags
+        - Tags
+      responses:
+        '200':
+          description: A list of followed tags
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FollowedTag'
+        '401':
+          description: Unauthorized
+  /followers/users:
+    get:
+      operationId: getFollowers
+      summary: Followers
+      description: >-
+        Retrieves a list of users who follow the authenticated user.
+      tags:
+        - Followers
+      parameters:
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perPageParam30to1000'
+        - name: sort
+          in: query
+          schema:
+            type: string
+          description: >-
+            Sort order for followers.
+      responses:
+        '200':
+          description: A list of followers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized
+  /organizations/{username}:
+    get:
+      operationId: getOrganization
+      summary: An organization
+      description: >-
+        Retrieves a single organization by its username (slug).
+      tags:
+        - Organizations
+      security: []
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+          description: >-
+            The username (slug) of the organization.
+      responses:
+        '200':
+          description: The requested organization
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+        '404':
+          description: Organization not found
+  /organizations/{username}/users:
+    get:
+      operationId: getOrgUsers
+      summary: Organization's users
+      description: >-
+        Retrieves a list of users belonging to the specified organization.
+      tags:
+        - Organizations
+        - Users
+      security: []
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+          description: >-
+            The username (slug) of the organization.
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '200':
+          description: A list of organization members
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '404':
+          description: Organization not found
+  /organizations/{username}/articles:
+    get:
+      operationId: getOrgArticles
+      summary: Organization's Articles
+      description: >-
+        Retrieves a list of articles published under the specified
+        organization.
+      tags:
+        - Organizations
+        - Articles
+      security: []
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+          description: >-
+            The username (slug) of the organization.
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '200':
+          description: A list of articles from the organization
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+        '404':
+          description: Organization not found
+  /pages:
+    get:
+      operationId: getPages
+      summary: Show details for all pages
+      description: >-
+        Retrieves all static pages on the platform. Requires admin-level
+        API key.
+      tags:
+        - Pages
+      responses:
+        '200':
+          description: A list of pages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Page'
+        '401':
+          description: Unauthorized
+    post:
+      operationId: createPage
+      summary: Create a new page
+      description: >-
+        Creates a new static page. Requires admin-level API key.
+      tags:
+        - Pages
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Page'
+      responses:
+        '201':
+          description: Page created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page'
+        '401':
+          description: Unauthorized
+        '422':
+          description: Unprocessable Entity
+  /pages/{id}:
+    get:
+      operationId: getPageById
+      summary: Show details for a page
+      description: >-
+        Retrieves a single static page by ID. Requires admin-level API key.
+      tags:
+        - Pages
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: >-
+            The ID of the page.
+      responses:
+        '200':
+          description: The requested page
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Page not found
+    put:
+      operationId: updatePage
+      summary: Update details for a page
+      description: >-
+        Updates an existing static page. Requires admin-level API key.
+      tags:
+        - Pages
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: >-
+            The ID of the page.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Page'
+      responses:
+        '200':
+          description: Page updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Page not found
+        '422':
+          description: Unprocessable Entity
+    delete:
+      operationId: deletePage
+      summary: Remove a page
+      description: >-
+        Deletes a static page by ID. Requires admin-level API key.
+      tags:
+        - Pages
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: >-
+            The ID of the page.
+      responses:
+        '204':
+          description: Page deleted
+        '401':
+          description: Unauthorized
+        '404':
+          description: Page not found
+  /podcast_episodes:
+    get:
+      operationId: getPodcastEpisodes
+      summary: Podcast Episodes
+      description: >-
+        Retrieves a list of published podcast episodes. Can be filtered by
+        username.
+      tags:
+        - PodcastEpisodes
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perPageParam10to1000'
+        - name: username
+          in: query
+          schema:
+            type: string
+          description: >-
+            Filter podcast episodes by the podcast owner's username.
+      responses:
+        '200':
+          description: A list of podcast episodes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PodcastEpisodeIndex'
+  /profile_images/{username}:
+    get:
+      operationId: getProfileImage
+      summary: A Users or organizations profile image
+      description: >-
+        Retrieves the profile image URL for a user or organization by
+        username.
+      tags:
+        - ProfileImages
+      security: []
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+          description: >-
+            The username of the user or organization.
+      responses:
+        '200':
+          description: Profile image URLs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileImage'
+        '404':
+          description: User or organization not found
+  /reactions/toggle:
+    post:
+      operationId: toggleReaction
+      summary: Toggle reaction
+      description: >-
+        Toggles a reaction on or off for an article, comment, or user.
+        If the reaction already exists it will be removed; otherwise it
+        will be created.
+      tags:
+        - Reactions
+      parameters:
+        - name: category
+          in: query
+          required: true
+          schema:
+            type: string
+            enum:
+              - like
+              - unicorn
+              - exploding_head
+              - raised_hands
+              - fire
+          description: >-
+            The category of reaction.
+        - name: reactable_id
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: >-
+            The ID of the reactable entity.
+        - name: reactable_type
+          in: query
+          required: true
+          schema:
+            type: string
+            enum:
+              - Comment
+              - Article
+              - User
+          description: >-
+            The type of entity being reacted to.
+      responses:
+        '200':
+          description: Reaction toggled successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reaction'
+        '401':
+          description: Unauthorized
+  /reactions:
+    post:
+      operationId: createReaction
+      summary: Create reaction
+      description: >-
+        Creates a new reaction on an article, comment, or user.
+      tags:
+        - Reactions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - category
+                - reactable_id
+                - reactable_type
+              properties:
+                category:
+                  type: string
+                  enum:
+                    - like
+                    - unicorn
+                    - exploding_head
+                    - raised_hands
+                    - fire
+                  description: >-
+                    The category of reaction.
+                reactable_id:
+                  type: integer
+                  description: >-
+                    The ID of the reactable entity.
+                reactable_type:
+                  type: string
+                  enum:
+                    - Comment
+                    - Article
+                    - User
+                  description: >-
+                    The type of entity being reacted to.
+      responses:
+        '200':
+          description: Reaction created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reaction'
+        '401':
+          description: Unauthorized
+  /readinglist:
+    get:
+      operationId: getReadinglist
+      summary: Readinglist
+      description: >-
+        Retrieves the authenticated user's reading list (bookmarked articles).
+      tags:
+        - ReadingList
+      parameters:
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '200':
+          description: A list of reading list items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+        '401':
+          description: Unauthorized
+  /tags:
+    get:
+      operationId: getTags
+      summary: Tags
+      description: >-
+        Retrieves a list of available tags on the platform, ordered by
+        popularity.
+      tags:
+        - Tags
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perPageParam10to1000'
+      responses:
+        '200':
+          description: A list of tags
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag'
+  /users/me:
+    get:
+      operationId: getUserMe
+      summary: The authenticated user
+      description: >-
+        Retrieves the profile of the currently authenticated user.
+      tags:
+        - Users
+      responses:
+        '200':
+          description: The authenticated user's profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized
+  /users/{id}:
+    get:
+      operationId: getUser
+      summary: A User
+      description: >-
+        Retrieves a single user by their numeric ID.
+      tags:
+        - Users
+      security: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: >-
+            The ID of the user.
+      responses:
+        '200':
+          description: The requested user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+  /users/{id}/unpublish:
+    put:
+      operationId: unpublishUser
+      summary: Unpublish a User's Articles and Comments
+      description: >-
+        Unpublishes all articles and comments for the specified user.
+        Requires admin-level API key.
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: >-
+            The ID of the user.
+      responses:
+        '204':
+          description: User content unpublished successfully
+        '401':
+          description: Unauthorized
+        '404':
+          description: User not found
+  /users/{id}/suspend:
+    put:
+      operationId: suspendUser
+      summary: Suspend a User
+      description: >-
+        Suspends a user account. Requires admin-level API key.
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: >-
+            The ID of the user.
+      responses:
+        '204':
+          description: User suspended successfully
+        '401':
+          description: Unauthorized
+        '404':
+          description: User not found
+  /webhooks:
+    get:
+      operationId: getWebhooks
+      summary: Webhooks
+      description: >-
+        Retrieves a list of webhook subscriptions for the authenticated user.
+      tags:
+        - Webhooks
+      responses:
+        '200':
+          description: A list of webhook subscriptions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Webhook'
+        '401':
+          description: Unauthorized
+    post:
+      operationId: createWebhook
+      summary: Create a webhook
+      description: >-
+        Creates a new webhook subscription. The webhook will receive HTTP
+        POST callbacks at the specified target URL when subscribed events
+        occur.
+      tags:
+        - Webhooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - webhook_endpoint
+              properties:
+                webhook_endpoint:
+                  type: object
+                  required:
+                    - target_url
+                    - source
+                    - events
+                  properties:
+                    target_url:
+                      type: string
+                      format: uri
+                      description: >-
+                        The URL to receive webhook callbacks.
+                    source:
+                      type: string
+                      description: >-
+                        The source identifier, typically "DEV".
+                    events:
+                      type: array
+                      items:
+                        type: string
+                        enum:
+                          - article_created
+                          - article_updated
+                          - article_destroyed
+                      description: >-
+                        The events to subscribe to.
+      responses:
+        '201':
+          description: Webhook created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+        '401':
+          description: Unauthorized
+        '422':
+          description: Unprocessable Entity
+  /webhooks/{id}:
+    get:
+      operationId: getWebhookById
+      summary: A webhook endpoint
+      description: >-
+        Retrieves a single webhook subscription by ID.
+      tags:
+        - Webhooks
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: >-
+            The ID of the webhook.
+      responses:
+        '200':
+          description: The requested webhook
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Webhook not found
+    delete:
+      operationId: deleteWebhook
+      summary: Delete a webhook endpoint
+      description: >-
+        Deletes a webhook subscription by ID.
+      tags:
+        - Webhooks
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: >-
+            The ID of the webhook.
+      responses:
+        '204':
+          description: Webhook deleted
+        '401':
+          description: Unauthorized
+        '404':
+          description: Webhook not found
+components:
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: api-key
+      description: >-
+        API key obtained from the DEV.to settings page. Pass in the
+        api-key header for authenticated requests.
+  parameters:
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: >-
+        Pagination page number.
+    perPageParam30to1000:
+      name: per_page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 1000
+        default: 30
+      description: >-
+        Number of items per page (max 1000, default 30).
+    perPageParam10to1000:
+      name: per_page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 1000
+        default: 10
+      description: >-
+        Number of items per page (max 1000, default 10).
+    articleIdParam:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: >-
+        The numeric ID of the article.
+  schemas:
+    Article:
+      type: object
+      description: >-
+        A full article object with all detail fields, returned when
+        retrieving a single article.
+      properties:
+        type_of:
+          type: string
+          description: >-
+            The type of resource, always "article".
+        id:
+          type: integer
+          description: >-
+            The unique identifier of the article.
+        title:
+          type: string
+          description: >-
+            The title of the article.
+        description:
+          type: string
+          description: >-
+            A short description or subtitle for the article.
+        readable_publish_date:
+          type: string
+          description: >-
+            The publish date in a human-readable format.
+        slug:
+          type: string
+          description: >-
+            The URL slug of the article.
+        path:
+          type: string
+          description: >-
+            The relative path to the article on DEV.
+        url:
+          type: string
+          format: uri
+          description: >-
+            The full URL of the article.
+        comments_count:
+          type: integer
+          description: >-
+            The number of comments on the article.
+        public_reactions_count:
+          type: integer
+          description: >-
+            The total number of public reactions on the article.
+        collection_id:
+          type: integer
+          nullable: true
+          description: >-
+            The ID of the collection (series) the article belongs to.
+        published_timestamp:
+          type: string
+          format: date-time
+          description: >-
+            The ISO 8601 timestamp when the article was published.
+        positive_reactions_count:
+          type: integer
+          description: >-
+            The count of positive reactions on the article.
+        cover_image:
+          type: string
+          format: uri
+          nullable: true
+          description: >-
+            The URL of the article's cover image.
+        social_image:
+          type: string
+          format: uri
+          description: >-
+            The URL of the social sharing image.
+        canonical_url:
+          type: string
+          format: uri
+          description: >-
+            The canonical URL if the article was originally published
+            elsewhere.
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The ISO 8601 timestamp when the article was created.
+        edited_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: >-
+            The ISO 8601 timestamp when the article was last edited.
+        crossposted_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: >-
+            The ISO 8601 timestamp when the article was crossposted.
+        published_at:
+          type: string
+          format: date-time
+          description: >-
+            The ISO 8601 timestamp when the article was published.
+        last_comment_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: >-
+            The ISO 8601 timestamp of the last comment.
+        reading_time_minutes:
+          type: integer
+          description: >-
+            The estimated reading time in minutes.
+        tag_list:
+          type: array
+          items:
+            type: string
+          description: >-
+            A list of tags associated with the article.
+        tags:
+          type: string
+          description: >-
+            A comma-separated string of tags.
+        body_html:
+          type: string
+          description: >-
+            The article body rendered as HTML.
+        body_markdown:
+          type: string
+          description: >-
+            The article body in the original Markdown format.
+        user:
+          $ref: '#/components/schemas/User'
+        organization:
+          $ref: '#/components/schemas/Organization'
+    ArticleIndex:
+      type: object
+      description: >-
+        A summary article object returned in list endpoints, with fewer
+        fields than the full article representation.
+      properties:
+        type_of:
+          type: string
+          description: >-
+            The type of resource, always "article".
+        id:
+          type: integer
+          description: >-
+            The unique identifier of the article.
+        title:
+          type: string
+          description: >-
+            The title of the article.
+        description:
+          type: string
+          description: >-
+            A short description or subtitle for the article.
+        readable_publish_date:
+          type: string
+          description: >-
+            The publish date in a human-readable format.
+        slug:
+          type: string
+          description: >-
+            The URL slug of the article.
+        path:
+          type: string
+          description: >-
+            The relative path to the article on DEV.
+        url:
+          type: string
+          format: uri
+          description: >-
+            The full URL of the article.
+        comments_count:
+          type: integer
+          description: >-
+            The number of comments on the article.
+        public_reactions_count:
+          type: integer
+          description: >-
+            The total number of public reactions.
+        collection_id:
+          type: integer
+          nullable: true
+          description: >-
+            The ID of the collection (series) the article belongs to.
+        published_timestamp:
+          type: string
+          format: date-time
+          description: >-
+            The ISO 8601 timestamp when the article was published.
+        positive_reactions_count:
+          type: integer
+          description: >-
+            The count of positive reactions.
+        cover_image:
+          type: string
+          format: uri
+          nullable: true
+          description: >-
+            The URL of the article's cover image.
+        social_image:
+          type: string
+          format: uri
+          description: >-
+            The URL of the social sharing image.
+        canonical_url:
+          type: string
+          format: uri
+          description: >-
+            The canonical URL of the article.
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The ISO 8601 timestamp when the article was created.
+        reading_time_minutes:
+          type: integer
+          description: >-
+            The estimated reading time in minutes.
+        tag_list:
+          type: array
+          items:
+            type: string
+          description: >-
+            A list of tags associated with the article.
+        tags:
+          type: string
+          description: >-
+            A comma-separated string of tags.
+        user:
+          $ref: '#/components/schemas/User'
+        organization:
+          $ref: '#/components/schemas/Organization'
+    Comment:
+      type: object
+      description: >-
+        A comment on an article or podcast episode, with nested children
+        for threaded conversations.
+      properties:
+        type_of:
+          type: string
+          description: >-
+            The type of resource, always "comment".
+        id_code:
+          type: string
+          description: >-
+            The unique identifier code of the comment.
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The ISO 8601 timestamp when the comment was created.
+        body_html:
+          type: string
+          description: >-
+            The comment body rendered as HTML.
+        user:
+          $ref: '#/components/schemas/User'
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+          description: >-
+            Nested child comments in the thread.
+    DisplayAd:
+      type: object
+      description: >-
+        A display advertisement on the platform.
+      properties:
+        id:
+          type: integer
+          description: >-
+            The unique identifier of the display ad.
+        name:
+          type: string
+          description: >-
+            The name of the display ad.
+        body_markdown:
+          type: string
+          description: >-
+            The ad content in Markdown format.
+        approved:
+          type: boolean
+          description: >-
+            Whether the ad has been approved for display.
+        published:
+          type: boolean
+          description: >-
+            Whether the ad is currently published.
+        organization_id:
+          type: integer
+          nullable: true
+          description: >-
+            The organization ID the ad belongs to.
+        placement_area:
+          type: string
+          description: >-
+            Where on the page the ad should be displayed.
+        tag_list:
+          type: string
+          description: >-
+            Comma-separated tags for targeting the ad.
+        display_to:
+          type: string
+          enum:
+            - all
+            - logged_in
+            - logged_out
+          description: >-
+            Who should see the ad.
+        type_of:
+          type: string
+          description: >-
+            The type of display ad (e.g. in_house, community, external).
+    FollowedTag:
+      type: object
+      description: >-
+        A tag that the authenticated user follows, with a weight indicating
+        how much content from this tag should appear in the feed.
+      properties:
+        id:
+          type: integer
+          description: >-
+            The unique identifier of the tag.
+        name:
+          type: string
+          description: >-
+            The name of the tag.
+        points:
+          type: number
+          description: >-
+            The follow weight or points assigned to this tag.
+    Organization:
+      type: object
+      description: >-
+        An organization on the DEV platform that can publish articles and
+        have members.
+      properties:
+        name:
+          type: string
+          description: >-
+            The display name of the organization.
+        username:
+          type: string
+          description: >-
+            The unique username (slug) of the organization.
+        slug:
+          type: string
+          description: >-
+            The URL slug of the organization.
+        profile_image:
+          type: string
+          format: uri
+          description: >-
+            The URL of the organization's profile image.
+        profile_image_90:
+          type: string
+          format: uri
+          description: >-
+            The URL of the 90px profile image.
+    Page:
+      type: object
+      description: >-
+        A static page on the platform, managed by administrators.
+      properties:
+        id:
+          type: integer
+          description: >-
+            The unique identifier of the page.
+        title:
+          type: string
+          description: >-
+            The title of the page.
+        slug:
+          type: string
+          description: >-
+            The URL slug of the page.
+        description:
+          type: string
+          description: >-
+            A description of the page.
+        body_markdown:
+          type: string
+          description: >-
+            The page content in Markdown format.
+        body_json:
+          type: string
+          nullable: true
+          description: >-
+            The page content in JSON format, if applicable.
+        is_top_level_path:
+          type: boolean
+          description: >-
+            Whether the page is accessible at a top-level URL path.
+        social_image:
+          type: object
+          nullable: true
+          description: >-
+            Social image configuration for the page.
+        template:
+          type: string
+          description: >-
+            The template used to render the page.
+    PodcastEpisodeIndex:
+      type: object
+      description: >-
+        A podcast episode summary returned in list endpoints.
+      properties:
+        type_of:
+          type: string
+          description: >-
+            The type of resource, always "podcast_episodes".
+        id:
+          type: integer
+          description: >-
+            The unique identifier of the episode.
+        class_name:
+          type: string
+          description: >-
+            The class name of the resource.
+        path:
+          type: string
+          description: >-
+            The relative path to the episode on DEV.
+        title:
+          type: string
+          description: >-
+            The title of the podcast episode.
+        image_url:
+          type: string
+          format: uri
+          description: >-
+            The URL of the episode's image.
+        podcast:
+          type: object
+          properties:
+            title:
+              type: string
+              description: >-
+                The title of the podcast.
+            slug:
+              type: string
+              description: >-
+                The URL slug of the podcast.
+            image_url:
+              type: string
+              format: uri
+              description: >-
+                The URL of the podcast's image.
+          description: >-
+            The parent podcast information.
+    ProfileImage:
+      type: object
+      description: >-
+        Profile image URLs for a user or organization.
+      properties:
+        type_of:
+          type: string
+          description: >-
+            The type of resource (user or organization).
+        image_of:
+          type: string
+          description: >-
+            The entity type the image belongs to.
+        profile_image:
+          type: string
+          format: uri
+          description: >-
+            The URL of the standard profile image.
+        profile_image_90:
+          type: string
+          format: uri
+          description: >-
+            The URL of the 90px profile image.
+    Reaction:
+      type: object
+      description: >-
+        A reaction (like, unicorn, etc.) on an article, comment, or user.
+      properties:
+        result:
+          type: string
+          description: >-
+            The result of the reaction operation (created or destroyed).
+        category:
+          type: string
+          enum:
+            - like
+            - unicorn
+            - exploding_head
+            - raised_hands
+            - fire
+          description: >-
+            The category of the reaction.
+        id:
+          type: integer
+          description: >-
+            The unique identifier of the reaction.
+        reactable_id:
+          type: integer
+          description: >-
+            The ID of the entity the reaction is on.
+        reactable_type:
+          type: string
+          description: >-
+            The type of entity the reaction is on.
+    Tag:
+      type: object
+      description: >-
+        A tag used to categorize articles on the platform.
+      properties:
+        id:
+          type: integer
+          description: >-
+            The unique identifier of the tag.
+        name:
+          type: string
+          description: >-
+            The name of the tag.
+        bg_color_hex:
+          type: string
+          pattern: '^#[0-9a-fA-F]{6}$'
+          description: >-
+            The background color hex code for the tag.
+        text_color_hex:
+          type: string
+          pattern: '^#[0-9a-fA-F]{6}$'
+          description: >-
+            The text color hex code for the tag.
+    User:
+      type: object
+      description: >-
+        A user account on the DEV platform.
+      properties:
+        name:
+          type: string
+          description: >-
+            The display name of the user.
+        username:
+          type: string
+          description: >-
+            The unique username of the user.
+        twitter_username:
+          type: string
+          nullable: true
+          description: >-
+            The user's Twitter username.
+        github_username:
+          type: string
+          nullable: true
+          description: >-
+            The user's GitHub username.
+        user_id:
+          type: integer
+          description: >-
+            The unique numeric ID of the user.
+        website_url:
+          type: string
+          format: uri
+          nullable: true
+          description: >-
+            The user's website URL.
+        location:
+          type: string
+          nullable: true
+          description: >-
+            The user's location.
+        summary:
+          type: string
+          nullable: true
+          description: >-
+            A brief bio or summary of the user.
+        profile_image:
+          type: string
+          format: uri
+          description: >-
+            The URL of the user's profile image.
+        profile_image_90:
+          type: string
+          format: uri
+          description: >-
+            The URL of the 90px profile image.
+        joined_at:
+          type: string
+          format: date-time
+          description: >-
+            The ISO 8601 timestamp when the user joined.
+    Webhook:
+      type: object
+      description: >-
+        A webhook subscription that receives HTTP callbacks when subscribed
+        events occur on the platform.
+      properties:
+        type_of:
+          type: string
+          description: >-
+            The type of resource, always "webhook_endpoint".
+        id:
+          type: integer
+          description: >-
+            The unique identifier of the webhook.
+        source:
+          type: string
+          description: >-
+            The source identifier for the webhook (e.g. DEV).
+        target_url:
+          type: string
+          format: uri
+          description: >-
+            The URL that will receive webhook callbacks.
+        events:
+          type: array
+          items:
+            type: string
+            enum:
+              - article_created
+              - article_updated
+              - article_destroyed
+          description: >-
+            The list of events this webhook is subscribed to.
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The ISO 8601 timestamp when the webhook was created.
+        user:
+          $ref: '#/components/schemas/User'

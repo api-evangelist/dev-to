@@ -1,0 +1,264 @@
+asyncapi: 2.6.0
+info:
+  title: Dev.to Webhooks Events
+  description: >-
+    The Dev.to Webhooks event-driven interface allows applications to receive
+    real-time HTTP POST callbacks when specific events occur on the Dev.to
+    platform. Webhook subscriptions are managed via the Forem REST API, and
+    once configured, the platform sends JSON payloads to the registered
+    target URL whenever subscribed article lifecycle events are triggered.
+    Supported events include article creation, updates, and deletion.
+  version: '1.0.0'
+  contact:
+    name: Forem Support
+    url: https://forem.com
+servers:
+  devToWebhookSource:
+    url: dev.to
+    protocol: https
+    description: >-
+      Dev.to platform server that dispatches webhook events to registered
+      subscriber endpoints when article lifecycle events occur.
+channels:
+  /webhook:
+    description: >-
+      The subscriber's webhook endpoint URL that receives HTTP POST
+      callbacks from Dev.to. This URL is registered via the Forem REST API
+      when creating a webhook subscription. Dev.to sends a JSON payload to
+      this URL whenever a subscribed event occurs.
+    publish:
+      operationId: receiveArticleEvent
+      summary: Receive article lifecycle events
+      description: >-
+        Receives article lifecycle event notifications from the Dev.to
+        platform. Each event includes the full article data as a JSON
+        payload delivered via HTTP POST to the registered target URL.
+      message:
+        oneOf:
+          - $ref: '#/components/messages/ArticleCreated'
+          - $ref: '#/components/messages/ArticleUpdated'
+          - $ref: '#/components/messages/ArticleDestroyed'
+components:
+  securitySchemes:
+    apiKey:
+      type: httpApiKey
+      name: api-key
+      in: header
+      description: >-
+        API key used to manage webhook subscriptions via the Forem REST API.
+        Webhook callback payloads themselves do not include authentication
+        headers from the sender.
+  messages:
+    ArticleCreated:
+      name: article_created
+      title: Article Created
+      summary: >-
+        Triggered when a new article is published on the platform.
+      description: >-
+        This event fires when a user publishes a new article on Dev.to.
+        The payload contains the full article object including title, body,
+        tags, author information, and publication metadata.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/ArticleEventPayload'
+    ArticleUpdated:
+      name: article_updated
+      title: Article Updated
+      summary: >-
+        Triggered when an existing published article is updated.
+      description: >-
+        This event fires when a previously published article is edited on
+        Dev.to. The payload contains the updated article object reflecting
+        the latest changes to the article's content and metadata.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/ArticleEventPayload'
+    ArticleDestroyed:
+      name: article_destroyed
+      title: Article Destroyed
+      summary: >-
+        Triggered when a published article is deleted from the platform.
+      description: >-
+        This event fires when an article is removed from Dev.to. The
+        payload contains the article object as it existed before deletion,
+        allowing subscribers to identify which article was removed and
+        take appropriate action.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/ArticleEventPayload'
+  schemas:
+    ArticleEventPayload:
+      type: object
+      description: >-
+        The webhook event payload sent by Dev.to when an article lifecycle
+        event occurs. Contains the full article data along with author and
+        organization information.
+      properties:
+        type_of:
+          type: string
+          description: >-
+            The type of resource, always "article".
+        id:
+          type: integer
+          description: >-
+            The unique identifier of the article.
+        title:
+          type: string
+          description: >-
+            The title of the article.
+        description:
+          type: string
+          description: >-
+            A short description or subtitle for the article.
+        slug:
+          type: string
+          description: >-
+            The URL slug of the article.
+        path:
+          type: string
+          description: >-
+            The relative path to the article on DEV.
+        url:
+          type: string
+          format: uri
+          description: >-
+            The full URL of the article.
+        comments_count:
+          type: integer
+          description: >-
+            The number of comments on the article.
+        public_reactions_count:
+          type: integer
+          description: >-
+            The total number of public reactions on the article.
+        published_timestamp:
+          type: string
+          format: date-time
+          description: >-
+            The ISO 8601 timestamp when the article was published.
+        positive_reactions_count:
+          type: integer
+          description: >-
+            The count of positive reactions.
+        cover_image:
+          type: string
+          format: uri
+          nullable: true
+          description: >-
+            The URL of the article's cover image.
+        social_image:
+          type: string
+          format: uri
+          description: >-
+            The URL of the social sharing image.
+        canonical_url:
+          type: string
+          format: uri
+          description: >-
+            The canonical URL of the article.
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The ISO 8601 timestamp when the article was created.
+        edited_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: >-
+            The ISO 8601 timestamp when the article was last edited.
+        published_at:
+          type: string
+          format: date-time
+          description: >-
+            The ISO 8601 timestamp when the article was published.
+        reading_time_minutes:
+          type: integer
+          description: >-
+            The estimated reading time in minutes.
+        tag_list:
+          type: array
+          items:
+            type: string
+          description: >-
+            A list of tags associated with the article.
+        body_html:
+          type: string
+          description: >-
+            The article body rendered as HTML.
+        body_markdown:
+          type: string
+          description: >-
+            The article body in the original Markdown format.
+        user:
+          $ref: '#/components/schemas/WebhookUser'
+        organization:
+          $ref: '#/components/schemas/WebhookOrganization'
+    WebhookUser:
+      type: object
+      description: >-
+        The author of the article included in webhook event payloads.
+      properties:
+        name:
+          type: string
+          description: >-
+            The display name of the user.
+        username:
+          type: string
+          description: >-
+            The unique username of the user.
+        twitter_username:
+          type: string
+          nullable: true
+          description: >-
+            The user's Twitter username.
+        github_username:
+          type: string
+          nullable: true
+          description: >-
+            The user's GitHub username.
+        website_url:
+          type: string
+          format: uri
+          nullable: true
+          description: >-
+            The user's website URL.
+        profile_image:
+          type: string
+          format: uri
+          description: >-
+            The URL of the user's profile image.
+        profile_image_90:
+          type: string
+          format: uri
+          description: >-
+            The URL of the 90px profile image.
+    WebhookOrganization:
+      type: object
+      nullable: true
+      description: >-
+        The organization the article was published under, if applicable.
+        May be null if the article was not published under an organization.
+      properties:
+        name:
+          type: string
+          description: >-
+            The display name of the organization.
+        username:
+          type: string
+          description: >-
+            The unique username (slug) of the organization.
+        slug:
+          type: string
+          description: >-
+            The URL slug of the organization.
+        profile_image:
+          type: string
+          format: uri
+          description: >-
+            The URL of the organization's profile image.
+        profile_image_90:
+          type: string
+          format: uri
+          description: >-
+            The URL of the 90px profile image.

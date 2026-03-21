@@ -1,0 +1,229 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dev.to/schemas/dev-to/article.json",
+  "title": "Dev.to Article",
+  "description": "A blog post, discussion, or help thread published on the Dev.to developer community platform. Articles are the primary content type and can include Markdown body text, cover images, tags, and series associations.",
+  "type": "object",
+  "required": ["id", "title", "type_of"],
+  "properties": {
+    "type_of": {
+      "type": "string",
+      "const": "article",
+      "description": "The type of resource, always 'article' for article objects."
+    },
+    "id": {
+      "type": "integer",
+      "description": "The unique numeric identifier of the article."
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The title of the article."
+    },
+    "description": {
+      "type": "string",
+      "description": "A short description or subtitle for the article, typically used for SEO and social sharing."
+    },
+    "readable_publish_date": {
+      "type": "string",
+      "description": "The publication date in a human-readable format (e.g., 'Mar 20')."
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "description": "The URL-friendly slug derived from the article title."
+    },
+    "path": {
+      "type": "string",
+      "description": "The relative path to the article on DEV (e.g., '/username/article-slug-1a2b')."
+    },
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "description": "The full URL of the article on DEV."
+    },
+    "comments_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "The total number of comments on the article."
+    },
+    "public_reactions_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "The total number of public reactions (likes, unicorns, etc.) on the article."
+    },
+    "collection_id": {
+      "type": ["integer", "null"],
+      "description": "The ID of the collection (series) the article belongs to, or null if not part of a series."
+    },
+    "published_timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The ISO 8601 timestamp when the article was published."
+    },
+    "positive_reactions_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "The count of positive reactions on the article."
+    },
+    "cover_image": {
+      "type": ["string", "null"],
+      "format": "uri",
+      "description": "The URL of the article's cover image, or null if no cover image is set."
+    },
+    "social_image": {
+      "type": "string",
+      "format": "uri",
+      "description": "The URL of the social sharing image generated for the article."
+    },
+    "canonical_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "The canonical URL if the article was originally published elsewhere, or the DEV URL."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The ISO 8601 timestamp when the article was created."
+    },
+    "edited_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "The ISO 8601 timestamp when the article was last edited, or null if never edited."
+    },
+    "crossposted_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "The ISO 8601 timestamp when the article was crossposted, or null."
+    },
+    "published_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The ISO 8601 timestamp when the article was published."
+    },
+    "last_comment_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "The ISO 8601 timestamp of the most recent comment, or null if no comments exist."
+    },
+    "reading_time_minutes": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "The estimated reading time of the article in minutes."
+    },
+    "tag_list": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 4,
+      "description": "A list of up to four tags associated with the article."
+    },
+    "tags": {
+      "type": "string",
+      "description": "A comma-separated string of tags associated with the article."
+    },
+    "body_html": {
+      "type": "string",
+      "description": "The article body rendered as HTML."
+    },
+    "body_markdown": {
+      "type": "string",
+      "description": "The article body in the original Markdown format."
+    },
+    "published": {
+      "type": "boolean",
+      "description": "Whether the article is currently published."
+    },
+    "user": {
+      "$ref": "#/$defs/User"
+    },
+    "organization": {
+      "$ref": "#/$defs/Organization"
+    }
+  },
+  "$defs": {
+    "User": {
+      "type": "object",
+      "description": "The author of the article.",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The display name of the user."
+        },
+        "username": {
+          "type": "string",
+          "description": "The unique username of the user."
+        },
+        "twitter_username": {
+          "type": ["string", "null"],
+          "description": "The user's Twitter username, or null if not set."
+        },
+        "github_username": {
+          "type": ["string", "null"],
+          "description": "The user's GitHub username, or null if not set."
+        },
+        "user_id": {
+          "type": "integer",
+          "description": "The unique numeric ID of the user."
+        },
+        "website_url": {
+          "type": ["string", "null"],
+          "format": "uri",
+          "description": "The user's website URL, or null if not set."
+        },
+        "location": {
+          "type": ["string", "null"],
+          "description": "The user's location, or null if not set."
+        },
+        "summary": {
+          "type": ["string", "null"],
+          "description": "A brief bio or summary of the user."
+        },
+        "profile_image": {
+          "type": "string",
+          "format": "uri",
+          "description": "The URL of the user's profile image."
+        },
+        "profile_image_90": {
+          "type": "string",
+          "format": "uri",
+          "description": "The URL of the 90px profile image."
+        },
+        "joined_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The ISO 8601 timestamp when the user joined the platform."
+        }
+      }
+    },
+    "Organization": {
+      "type": ["object", "null"],
+      "description": "The organization the article was published under, or null if published as an individual.",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The display name of the organization."
+        },
+        "username": {
+          "type": "string",
+          "description": "The unique username (slug) of the organization."
+        },
+        "slug": {
+          "type": "string",
+          "description": "The URL slug of the organization."
+        },
+        "profile_image": {
+          "type": "string",
+          "format": "uri",
+          "description": "The URL of the organization's profile image."
+        },
+        "profile_image_90": {
+          "type": "string",
+          "format": "uri",
+          "description": "The URL of the 90px profile image."
+        }
+      }
+    }
+  }
+}

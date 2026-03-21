@@ -1,0 +1,200 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "forem": "https://dev.to/ns/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+
+    "Article": {
+      "@id": "schema:BlogPosting",
+      "@context": {
+        "title": "schema:headline",
+        "description": "schema:description",
+        "body_html": "schema:articleBody",
+        "body_markdown": {
+          "@id": "forem:bodyMarkdown",
+          "@type": "xsd:string"
+        },
+        "url": {
+          "@id": "schema:url",
+          "@type": "@id"
+        },
+        "canonical_url": {
+          "@id": "schema:mainEntityOfPage",
+          "@type": "@id"
+        },
+        "cover_image": {
+          "@id": "schema:image",
+          "@type": "@id"
+        },
+        "social_image": {
+          "@id": "schema:thumbnailUrl",
+          "@type": "@id"
+        },
+        "slug": "forem:slug",
+        "path": "forem:path",
+        "tag_list": {
+          "@id": "schema:keywords",
+          "@container": "@set"
+        },
+        "reading_time_minutes": {
+          "@id": "schema:timeRequired",
+          "@type": "xsd:integer"
+        },
+        "comments_count": {
+          "@id": "schema:commentCount",
+          "@type": "xsd:integer"
+        },
+        "public_reactions_count": {
+          "@id": "schema:interactionCount",
+          "@type": "xsd:integer"
+        },
+        "positive_reactions_count": {
+          "@id": "forem:positiveReactionsCount",
+          "@type": "xsd:integer"
+        },
+        "published_at": {
+          "@id": "schema:datePublished",
+          "@type": "xsd:dateTime"
+        },
+        "created_at": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "edited_at": {
+          "@id": "dcterms:modified",
+          "@type": "xsd:dateTime"
+        },
+        "published_timestamp": {
+          "@id": "schema:datePublished",
+          "@type": "xsd:dateTime"
+        },
+        "collection_id": {
+          "@id": "schema:isPartOf",
+          "@type": "xsd:integer"
+        },
+        "user": {
+          "@id": "schema:author",
+          "@type": "@id"
+        },
+        "organization": {
+          "@id": "schema:publisher",
+          "@type": "@id"
+        }
+      }
+    },
+
+    "Comment": {
+      "@id": "schema:Comment",
+      "@context": {
+        "body_html": "schema:text",
+        "created_at": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "user": {
+          "@id": "schema:author",
+          "@type": "@id"
+        },
+        "children": {
+          "@id": "schema:comment",
+          "@container": "@set"
+        }
+      }
+    },
+
+    "User": {
+      "@id": "schema:Person",
+      "@context": {
+        "name": "schema:name",
+        "username": "schema:alternateName",
+        "profile_image": {
+          "@id": "schema:image",
+          "@type": "@id"
+        },
+        "website_url": {
+          "@id": "schema:url",
+          "@type": "@id"
+        },
+        "location": "schema:homeLocation",
+        "summary": "schema:description",
+        "twitter_username": {
+          "@id": "forem:twitterUsername",
+          "@type": "xsd:string"
+        },
+        "github_username": {
+          "@id": "forem:githubUsername",
+          "@type": "xsd:string"
+        },
+        "joined_at": {
+          "@id": "schema:dateCreated",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "Organization": {
+      "@id": "schema:Organization",
+      "@context": {
+        "name": "schema:name",
+        "username": "schema:alternateName",
+        "slug": "forem:slug",
+        "profile_image": {
+          "@id": "schema:image",
+          "@type": "@id"
+        }
+      }
+    },
+
+    "Tag": {
+      "@id": "schema:DefinedTerm",
+      "@context": {
+        "name": "schema:name",
+        "bg_color_hex": {
+          "@id": "forem:bgColorHex",
+          "@type": "xsd:string"
+        },
+        "text_color_hex": {
+          "@id": "forem:textColorHex",
+          "@type": "xsd:string"
+        }
+      }
+    },
+
+    "PodcastEpisode": {
+      "@id": "schema:PodcastEpisode",
+      "@context": {
+        "title": "schema:name",
+        "path": "forem:path",
+        "image_url": {
+          "@id": "schema:image",
+          "@type": "@id"
+        },
+        "podcast": {
+          "@id": "schema:partOfSeries",
+          "@type": "@id"
+        }
+      }
+    },
+
+    "Webhook": {
+      "@id": "forem:WebhookEndpoint",
+      "@context": {
+        "target_url": {
+          "@id": "forem:targetUrl",
+          "@type": "@id"
+        },
+        "source": "forem:source",
+        "events": {
+          "@id": "forem:subscribedEvents",
+          "@container": "@set"
+        },
+        "created_at": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        }
+      }
+    }
+  }
+}
