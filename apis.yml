@@ -1,18 +1,15 @@
 aid: dev-to
-url: 
-  https://raw.githubusercontent.com/api-evangelist/dev-to/refs/heads/main/apis.yml
+url: https://raw.githubusercontent.com/api-evangelist/dev-to/refs/heads/main/apis.yml
 apis:
   - aid: dev-to:forem-api
     name: Dev.to Forem API
     tags:
-      - Blogging
-      - Developer Community
       - Articles
+      - Blogging
       - Content Management
+      - Developer Community
       - Social
-      - Tags
-    image: 
-      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://dev.to/api
     humanURL: https://developers.forem.com/api/v1
     properties:
@@ -30,12 +27,11 @@ apis:
   - aid: dev-to:webhooks-api
     name: Dev.to Webhooks API
     tags:
-      - Webhooks
+      - Automation
       - Events
       - Notifications
-      - Automation
-    image: 
-      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+      - Webhooks
+    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://dev.to/api
     humanURL: https://developers.forem.com/api/v1
     properties:

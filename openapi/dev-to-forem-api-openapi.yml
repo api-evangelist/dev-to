@@ -61,9 +61,6 @@ tags:
   - name: ReadingList
     description: >-
       Endpoints for retrieving the authenticated user's reading list.
-  - name: Tags
-    description: >-
-      Endpoints for retrieving available tags on the platform.
   - name: Users
     description: >-
       Endpoints for retrieving user profiles and managing user accounts.
@@ -672,7 +669,6 @@ paths:
         Retrieves a list of tags followed by the authenticated user.
       tags:
         - FollowedTags
-        - Tags
       responses:
         '200':
           description: A list of followed tags
@@ -777,8 +773,8 @@ paths:
         Retrieves a list of articles published under the specified
         organization.
       tags:
-        - Organizations
         - Articles
+        - Organizations
       security: []
       parameters:
         - name: username
@@ -1113,8 +1109,7 @@ paths:
       description: >-
         Retrieves a list of available tags on the platform, ordered by
         popularity.
-      tags:
-        - Tags
+      tags: []
       security: []
       parameters:
         - $ref: '#/components/parameters/pageParam'
