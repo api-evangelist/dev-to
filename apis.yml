@@ -48,7 +48,7 @@ apis:
       immediately to activity on the platform without the need to continuously
       poll the REST API for changes.
 common:
-  - type: JSON-LD
+  - type: JSONLD
     url: json-ld/dev-to-context.jsonld
   - type: JSONSchema
     url: json-schema/dev-to-article-schema.json
