@@ -1,0 +1,72 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Dev.to Forem API — ReadingList
+  description: 'Dev.to Forem API — ReadingList. 1 operations. Lead operation: Readinglist. Self-contained Naftiko capability
+    covering one Dev To business surface.'
+  tags:
+  - Dev To
+  - ReadingList
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DEV_TO_API_KEY: DEV_TO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: forem-readinglist
+    baseUri: https://dev.to/api
+    description: Dev.to Forem API — ReadingList business capability. Self-contained, no shared references.
+    resources:
+    - name: readinglist
+      path: /readinglist
+      operations:
+      - name: getreadinglist
+        method: GET
+        description: Readinglist
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: api-key
+      value: '{{env.DEV_TO_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: forem-readinglist-rest
+    port: 8080
+    description: REST adapter for Dev.to Forem API — ReadingList. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/readinglist
+      name: readinglist
+      description: REST surface for readinglist.
+      operations:
+      - method: GET
+        name: getreadinglist
+        description: Readinglist
+        call: forem-readinglist.getreadinglist
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: forem-readinglist-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Dev.to Forem API — ReadingList. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: readinglist
+      description: Readinglist
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: forem-readinglist.getreadinglist
+      outputParameters:
+      - type: object
+        mapping: $.

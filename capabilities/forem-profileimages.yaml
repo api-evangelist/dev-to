@@ -1,0 +1,82 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Dev.to Forem API — ProfileImages
+  description: 'Dev.to Forem API — ProfileImages. 1 operations. Lead operation: A Users or organizations profile image. Self-contained
+    Naftiko capability covering one Dev To business surface.'
+  tags:
+  - Dev To
+  - ProfileImages
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DEV_TO_API_KEY: DEV_TO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: forem-profileimages
+    baseUri: https://dev.to/api
+    description: Dev.to Forem API — ProfileImages business capability. Self-contained, no shared references.
+    resources:
+    - name: profile_images-username
+      path: /profile_images/{username}
+      operations:
+      - name: getprofileimage
+        method: GET
+        description: A Users or organizations profile image
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: username
+          in: path
+          type: string
+          description: The username of the user or organization.
+          required: true
+    authentication:
+      type: apikey
+      key: api-key
+      value: '{{env.DEV_TO_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: forem-profileimages-rest
+    port: 8080
+    description: REST adapter for Dev.to Forem API — ProfileImages. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/profile-images/{username}
+      name: profile-images-username
+      description: REST surface for profile_images-username.
+      operations:
+      - method: GET
+        name: getprofileimage
+        description: A Users or organizations profile image
+        call: forem-profileimages.getprofileimage
+        with:
+          username: rest.username
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: forem-profileimages-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Dev.to Forem API — ProfileImages. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: users-organizations-profile-image
+      description: A Users or organizations profile image
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: forem-profileimages.getprofileimage
+      with:
+        username: tools.username
+      outputParameters:
+      - type: object
+        mapping: $.

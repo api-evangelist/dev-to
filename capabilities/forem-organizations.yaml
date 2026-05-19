@@ -1,0 +1,166 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Dev.to Forem API — Organizations
+  description: 'Dev.to Forem API — Organizations. 3 operations. Lead operation: An organization. Self-contained Naftiko capability
+    covering one Dev To business surface.'
+  tags:
+  - Dev To
+  - Organizations
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DEV_TO_API_KEY: DEV_TO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: forem-organizations
+    baseUri: https://dev.to/api
+    description: Dev.to Forem API — Organizations business capability. Self-contained, no shared references.
+    resources:
+    - name: organizations-username
+      path: /organizations/{username}
+      operations:
+      - name: getorganization
+        method: GET
+        description: An organization
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: username
+          in: path
+          type: string
+          description: The username (slug) of the organization.
+          required: true
+    - name: organizations-username-articles
+      path: /organizations/{username}/articles
+      operations:
+      - name: getorgarticles
+        method: GET
+        description: Organization's Articles
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: username
+          in: path
+          type: string
+          description: The username (slug) of the organization.
+          required: true
+    - name: organizations-username-users
+      path: /organizations/{username}/users
+      operations:
+      - name: getorgusers
+        method: GET
+        description: Organization's users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: username
+          in: path
+          type: string
+          description: The username (slug) of the organization.
+          required: true
+    authentication:
+      type: apikey
+      key: api-key
+      value: '{{env.DEV_TO_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: forem-organizations-rest
+    port: 8080
+    description: REST adapter for Dev.to Forem API — Organizations. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/organizations/{username}
+      name: organizations-username
+      description: REST surface for organizations-username.
+      operations:
+      - method: GET
+        name: getorganization
+        description: An organization
+        call: forem-organizations.getorganization
+        with:
+          username: rest.username
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/organizations/{username}/articles
+      name: organizations-username-articles
+      description: REST surface for organizations-username-articles.
+      operations:
+      - method: GET
+        name: getorgarticles
+        description: Organization's Articles
+        call: forem-organizations.getorgarticles
+        with:
+          username: rest.username
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/organizations/{username}/users
+      name: organizations-username-users
+      description: REST surface for organizations-username-users.
+      operations:
+      - method: GET
+        name: getorgusers
+        description: Organization's users
+        call: forem-organizations.getorgusers
+        with:
+          username: rest.username
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: forem-organizations-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Dev.to Forem API — Organizations. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: organization
+      description: An organization
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: forem-organizations.getorganization
+      with:
+        username: tools.username
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: organization-s-articles
+      description: Organization's Articles
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: forem-organizations.getorgarticles
+      with:
+        username: tools.username
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: organization-s-users
+      description: Organization's users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: forem-organizations.getorgusers
+      with:
+        username: tools.username
+      outputParameters:
+      - type: object
+        mapping: $.
