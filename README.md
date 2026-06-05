@@ -1,67 +1,61 @@
-# Dev.to (dev-to)
-Dev.to is a community platform for software developers to share articles, tutorials, and discussions, built on the open-source Forem framework. Their developer platform provides a RESTful API and webhooks for programmatic access to articles, comments, users, organizations, tags, and real-time event notifications.
+# dev-to (dev-to)
 
-**URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/api-evangelist/dev-to/refs/heads/main/apis.yml)
+Access Forem articles, users and other resources via API. For a real-world example of Forem in action, check out [DEV](https://www.dev.to). All endpoints can be accessed with the 'api-key' header and a accept header, but some of them are accessible publicly without authentication. Dates and date times, unless otherwise specified, must be in the [RFC 3339](https://tools.ietf.org/html/rfc3339) format.
 
-## Scope
-
-- **Type:** Contract
-- **Position:** Consuming
-- **Access:** 3rd-Party
-
-## Tags:
-
- - Blogging, Developer Community, Articles, Content Management, Webhooks
+**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/dev-to/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/dev-to/refs/heads/main/apis.yml)
 
 ## Timestamps
 
-- **Created:** 2026-03-20
-- **Modified:** 2026-04-28
+- **Modified:** 2026-05-19
 
 ## APIs
 
 ### Dev.to Forem API
-The Dev.to Forem API (v1) is a RESTful API that provides programmatic access to the Dev.to developer community platform, which is built on the open-source Forem framework. The API enables developers to create, read, update, and manage articles (blog posts, discussions, help threads), comments, users, organizations, tags, followers, listings, and webhooks. It uses API key authentication, requires an accept header of application/vnd.forem.api-v1+json, and returns JSON responses. Unauthenticated endpoints are CORS-enabled, making it possible to fetch public content directly from browser-based applications.
 
-**Human URL:** [https://developers.forem.com/api/v1](https://developers.forem.com/api/v1)
+The Dev.to Forem API (v1) is a RESTful API that provides programmatic access to the Dev.to developer community platform, which is built on the open-source Forem framework. The API enables developers to create, read, update, and manage articles (blog posts, discussions, help threads), comments, users, organizations, tags, followers, listings, and webhooks. It uses API key authentication, requires an accept header of application/vnd.forem.api-v1+json, and returns JSON responses.
 
+- **Human URL:** [https://developers.forem.com/api/v1](https://developers.forem.com/api/v1)
+- **Base URL:** `https://dev.to/api`
 
-#### Tags:
+#### Tags
 
- - Blogging, Developer Community, Articles, Content Management, Social, Tags
+- Articles
+- Blogging
+- Content Management
+- Developer Community
+- Social
 
 #### Properties
 
 - [Documentation](https://developers.forem.com/api/v1)
-- [OpenAPI](openapi/dev-to-forem-api-openapi.yml)
+- [OpenAPI](openapi/dev-to-forem-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [Postman Collection](collections/dev-to-forem-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/dev-to-forem-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
 
 ### Dev.to Webhooks API
+
 The Dev.to Webhooks API allows developers to subscribe to real-time notifications for events occurring on the Dev.to platform. By creating webhook subscriptions, applications can receive HTTP callbacks when specific events happen, such as new articles being published. This enables event-driven integrations and automation workflows that respond immediately to activity on the platform without the need to continuously poll the REST API for changes.
 
-**Human URL:** [https://developers.forem.com/api/v1](https://developers.forem.com/api/v1)
+- **Human URL:** [https://developers.forem.com/api/v1](https://developers.forem.com/api/v1)
+- **Base URL:** `https://dev.to/api`
 
+#### Tags
 
-#### Tags:
-
- - Webhooks, Events, Notifications, Automation
+- Automation
+- Events
+- Notifications
+- Webhooks
 
 #### Properties
 
 - [Documentation](https://developers.forem.com/api/v1)
-- [AsyncAPI](asyncapi/dev-to-webhooks-asyncapi.yml)
+- [AsyncAPI](asyncapi/dev-to-webhooks-asyncapi.yml) — [AsyncAPI Specification](https://www.asyncapi.com/docs/reference/specification/latest)
+- [Postman Collection](collections/dev-to-forem-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/dev-to-forem-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
 
 ## Common Properties
 
-- [Developer Portal](https://developers.forem.com)
-- [Documentation](https://developers.forem.com/api/v1)
-- [Website](https://dev.to)
-- [PrivacyPolicy](https://dev.to/privacy)
-- [TermsOfService](https://dev.to/terms)
-- [Blog](https://dev.to/devteam)
-- [Login](https://dev.to/enter)
-
-## Maintainers
-
-**FN:** API Evangelist
-
-**Email:** info@apievangelist.com
+- [GitHub Organization](https://github.com/forem)
+- [LinkedIn](https://www.linkedin.com/company/thepracticaldev)
+- [JSON-LD](json-ld/dev-to-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
+- [JSON Schema](json-schema/dev-to-article-schema.json) — [JSON Schema](https://json-schema.org/specification)
