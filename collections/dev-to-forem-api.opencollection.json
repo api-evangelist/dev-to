@@ -1,0 +1,1042 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Dev.to Forem API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "api-key",
+      "value": "{{api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Articles",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Published articles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/articles",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Pagination page number."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page (max 1000, default 30)."
+              },
+              {
+                "name": "tag",
+                "value": "",
+                "type": "query",
+                "description": "Filter articles by a single tag name."
+              },
+              {
+                "name": "tags",
+                "value": "",
+                "type": "query",
+                "description": "Filter articles by a comma-separated list of tag names (articles must have all specified tags)."
+              },
+              {
+                "name": "tags_exclude",
+                "value": "",
+                "type": "query",
+                "description": "Exclude articles with these comma-separated tag names."
+              },
+              {
+                "name": "username",
+                "value": "",
+                "type": "query",
+                "description": "Filter articles by the author's username."
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query",
+                "description": "Filter articles by state. Defaults to the most popular articles."
+              },
+              {
+                "name": "top",
+                "value": "",
+                "type": "query",
+                "description": "Return the most popular articles published in the last N days."
+              },
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "query",
+                "description": "Return articles belonging to the specified collection."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of published articles, ordered by descending popularity. This endpoint is publicly accessible and can be filtered by tag, username, state, and other parameters."
+        },
+        {
+          "info": {
+            "name": "Publish article",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://dev.to/api/articles",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new article. The authenticated user will be the author of the article. The article can be published immediately or saved as a draft by setting the published field."
+        },
+        {
+          "info": {
+            "name": "Published articles sorted by published date",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/articles/latest",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Pagination page number."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page (max 1000, default 30)."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of published articles sorted by publication date in descending order."
+        },
+        {
+          "info": {
+            "name": "Published article by id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/articles/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The numeric ID of the article."
+              }
+            ]
+          },
+          "docs": "Retrieves a single published article by its numeric ID."
+        },
+        {
+          "info": {
+            "name": "Update an article by id",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://dev.to/api/articles/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The numeric ID of the article."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing article. Only the article's author or an admin can update the article."
+        },
+        {
+          "info": {
+            "name": "Published article by path",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/articles/:username/:slug",
+            "params": [
+              {
+                "name": "username",
+                "value": "",
+                "type": "path",
+                "description": "The username of the article's author."
+              },
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path",
+                "description": "The slug of the article."
+              }
+            ]
+          },
+          "docs": "Retrieves a single published article by the author's username and the article's slug."
+        },
+        {
+          "info": {
+            "name": "User's articles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/articles/me",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Pagination page number."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page (max 1000, default 30)."
+              }
+            ]
+          },
+          "docs": "Retrieves all articles authored by the authenticated user."
+        },
+        {
+          "info": {
+            "name": "User's published articles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/articles/me/published",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Pagination page number."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page (max 1000, default 30)."
+              }
+            ]
+          },
+          "docs": "Retrieves only published articles authored by the authenticated user."
+        },
+        {
+          "info": {
+            "name": "User's unpublished articles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/articles/me/unpublished",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Pagination page number."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page (max 1000, default 30)."
+              }
+            ]
+          },
+          "docs": "Retrieves only unpublished (draft) articles authored by the authenticated user."
+        },
+        {
+          "info": {
+            "name": "User's all articles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/articles/me/all",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Pagination page number."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page (max 1000, default 30)."
+              }
+            ]
+          },
+          "docs": "Retrieves all articles (both published and unpublished) authored by the authenticated user."
+        },
+        {
+          "info": {
+            "name": "Unpublish an article",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://dev.to/api/articles/:id/unpublish",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The numeric ID of the article."
+              }
+            ]
+          },
+          "docs": "Unpublishes an article by its ID. Requires admin-level API key."
+        },
+        {
+          "info": {
+            "name": "Organization's Articles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/organizations/:username/articles",
+            "params": [
+              {
+                "name": "username",
+                "value": "",
+                "type": "path",
+                "description": "The username (slug) of the organization."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Pagination page number."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page (max 1000, default 30)."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of articles published under the specified organization."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Comments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Comments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/comments",
+            "params": [
+              {
+                "name": "a_id",
+                "value": "",
+                "type": "query",
+                "description": "The article ID to retrieve comments for."
+              },
+              {
+                "name": "p_id",
+                "value": "",
+                "type": "query",
+                "description": "The podcast episode ID to retrieve comments for."
+              }
+            ]
+          },
+          "docs": "Retrieves all comments belonging to an article or podcast episode, returned as threaded conversations. Provide either a_id for articles or p_id for podcast episodes."
+        },
+        {
+          "info": {
+            "name": "Comment by id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/comments/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the comment."
+              }
+            ]
+          },
+          "docs": "Retrieves a single comment and its descendants by the comment ID."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "DisplayAds",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Display ads",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/display_ads"
+          },
+          "docs": "Retrieves all display ads. Requires admin-level API key."
+        },
+        {
+          "info": {
+            "name": "Create display ad",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://dev.to/api/display_ads",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new display ad. Requires admin-level API key."
+        },
+        {
+          "info": {
+            "name": "Display ad",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/display_ads/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the display ad."
+              }
+            ]
+          },
+          "docs": "Retrieves a single display ad by ID. Requires admin-level API key."
+        },
+        {
+          "info": {
+            "name": "Update display ad",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://dev.to/api/display_ads/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the display ad."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing display ad. Requires admin-level API key."
+        },
+        {
+          "info": {
+            "name": "Unpublish display ad",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://dev.to/api/display_ads/:id/unpublish",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the display ad."
+              }
+            ]
+          },
+          "docs": "Unpublishes a display ad by ID. Requires admin-level API key."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "FollowedTags",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Followed Tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/follows/tags"
+          },
+          "docs": "Retrieves a list of tags followed by the authenticated user."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Followers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Followers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/followers/users",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Pagination page number."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page (max 1000, default 30)."
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for followers."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of users who follow the authenticated user."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Organizations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "An organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/organizations/:username",
+            "params": [
+              {
+                "name": "username",
+                "value": "",
+                "type": "path",
+                "description": "The username (slug) of the organization."
+              }
+            ]
+          },
+          "docs": "Retrieves a single organization by its username (slug)."
+        },
+        {
+          "info": {
+            "name": "Organization's users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/organizations/:username/users",
+            "params": [
+              {
+                "name": "username",
+                "value": "",
+                "type": "path",
+                "description": "The username (slug) of the organization."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Pagination page number."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page (max 1000, default 30)."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of users belonging to the specified organization."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Pages",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Show details for all pages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/pages"
+          },
+          "docs": "Retrieves all static pages on the platform. Requires admin-level API key."
+        },
+        {
+          "info": {
+            "name": "Create a new page",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://dev.to/api/pages",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new static page. Requires admin-level API key."
+        },
+        {
+          "info": {
+            "name": "Show details for a page",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/pages/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the page."
+              }
+            ]
+          },
+          "docs": "Retrieves a single static page by ID. Requires admin-level API key."
+        },
+        {
+          "info": {
+            "name": "Update details for a page",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://dev.to/api/pages/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the page."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing static page. Requires admin-level API key."
+        },
+        {
+          "info": {
+            "name": "Remove a page",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://dev.to/api/pages/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the page."
+              }
+            ]
+          },
+          "docs": "Deletes a static page by ID. Requires admin-level API key."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "PodcastEpisodes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Podcast Episodes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/podcast_episodes",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Pagination page number."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page (max 1000, default 10)."
+              },
+              {
+                "name": "username",
+                "value": "",
+                "type": "query",
+                "description": "Filter podcast episodes by the podcast owner's username."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of published podcast episodes. Can be filtered by username."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "ProfileImages",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "A Users or organizations profile image",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/profile_images/:username",
+            "params": [
+              {
+                "name": "username",
+                "value": "",
+                "type": "path",
+                "description": "The username of the user or organization."
+              }
+            ]
+          },
+          "docs": "Retrieves the profile image URL for a user or organization by username."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Reactions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Toggle reaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://dev.to/api/reactions/toggle",
+            "params": [
+              {
+                "name": "category",
+                "value": "",
+                "type": "query",
+                "description": "The category of reaction."
+              },
+              {
+                "name": "reactable_id",
+                "value": "",
+                "type": "query",
+                "description": "The ID of the reactable entity."
+              },
+              {
+                "name": "reactable_type",
+                "value": "",
+                "type": "query",
+                "description": "The type of entity being reacted to."
+              }
+            ]
+          },
+          "docs": "Toggles a reaction on or off for an article, comment, or user. If the reaction already exists it will be removed; otherwise it will be created."
+        },
+        {
+          "info": {
+            "name": "Create reaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://dev.to/api/reactions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new reaction on an article, comment, or user."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "ReadingList",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Readinglist",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/readinglist",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Pagination page number."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page (max 1000, default 30)."
+              }
+            ]
+          },
+          "docs": "Retrieves the authenticated user's reading list (bookmarked articles)."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Default",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/tags",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Pagination page number."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page (max 1000, default 10)."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of available tags on the platform, ordered by popularity."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Users",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "The authenticated user",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/users/me"
+          },
+          "docs": "Retrieves the profile of the currently authenticated user."
+        },
+        {
+          "info": {
+            "name": "A User",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/users/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user."
+              }
+            ]
+          },
+          "docs": "Retrieves a single user by their numeric ID."
+        },
+        {
+          "info": {
+            "name": "Unpublish a User's Articles and Comments",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://dev.to/api/users/:id/unpublish",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user."
+              }
+            ]
+          },
+          "docs": "Unpublishes all articles and comments for the specified user. Requires admin-level API key."
+        },
+        {
+          "info": {
+            "name": "Suspend a User",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://dev.to/api/users/:id/suspend",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user."
+              }
+            ]
+          },
+          "docs": "Suspends a user account. Requires admin-level API key."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Webhooks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Webhooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/webhooks"
+          },
+          "docs": "Retrieves a list of webhook subscriptions for the authenticated user."
+        },
+        {
+          "info": {
+            "name": "Create a webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://dev.to/api/webhooks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new webhook subscription. The webhook will receive HTTP POST callbacks at the specified target URL when subscribed events occur."
+        },
+        {
+          "info": {
+            "name": "A webhook endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/webhooks/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the webhook."
+              }
+            ]
+          },
+          "docs": "Retrieves a single webhook subscription by ID."
+        },
+        {
+          "info": {
+            "name": "Delete a webhook endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://dev.to/api/webhooks/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the webhook."
+              }
+            ]
+          },
+          "docs": "Deletes a webhook subscription by ID."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
