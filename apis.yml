@@ -9,7 +9,7 @@ apis:
       - Content Management
       - Developer Community
       - Social
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     baseURL: https://dev.to/api
     humanURL: https://developers.forem.com/api/v1
     properties:
@@ -30,7 +30,7 @@ apis:
       - Events
       - Notifications
       - Webhooks
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     baseURL: https://dev.to/api
     humanURL: https://developers.forem.com/api/v1
     properties:
