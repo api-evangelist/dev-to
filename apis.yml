@@ -44,6 +44,8 @@ apis:
       happen, such as new articles being published. This enables event-driven integrations and automation workflows that
       respond immediately to activity on the platform without the need to continuously poll the REST API for changes.
 common:
+  - type: AgenticAccess
+    url: agentic-access/dev-to-agentic-access.yml
   - type: DomainSecurity
     url: security/dev-to-domain-security.yml
   - type: Authentication
