@@ -1,0 +1,71 @@
+openapi: 3.1.0
+info:
+  title: Dev.to Forem Articles ProfileImages API
+  description: The Dev.to Forem API (v1) is a RESTful API that provides programmatic access to the Dev.to developer community platform, which is built on the open-source Forem framework. The API enables developers to create, read, update, and manage articles, comments, users, organizations, tags, followers, listings, podcast episodes, pages, display ads, reactions, reading lists, and webhooks. It uses API key authentication, requires an accept header of application/vnd.forem.api-v1+json, and returns JSON responses. Unauthenticated endpoints are CORS-enabled, making it possible to fetch public content directly from browser-based applications.
+  version: 1.0.0
+  contact:
+    name: Forem Support
+    url: https://forem.com
+  termsOfService: https://dev.to/terms
+servers:
+- url: https://dev.to/api
+  description: Dev.to Production Server
+security:
+- apiKey: []
+tags:
+- name: ProfileImages
+  description: Endpoints for retrieving profile images of users and organizations.
+paths:
+  /profile_images/{username}:
+    get:
+      operationId: getProfileImage
+      summary: A Users or organizations profile image
+      description: Retrieves the profile image URL for a user or organization by username.
+      tags:
+      - ProfileImages
+      security: []
+      parameters:
+      - name: username
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The username of the user or organization.
+      responses:
+        '200':
+          description: Profile image URLs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileImage'
+        '404':
+          description: User or organization not found
+components:
+  schemas:
+    ProfileImage:
+      type: object
+      description: Profile image URLs for a user or organization.
+      properties:
+        type_of:
+          type: string
+          description: The type of resource (user or organization).
+        image_of:
+          type: string
+          description: The entity type the image belongs to.
+        profile_image:
+          type: string
+          format: uri
+          description: The URL of the standard profile image.
+        profile_image_90:
+          type: string
+          format: uri
+          description: The URL of the 90px profile image.
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: api-key
+      description: API key obtained from the DEV.to settings page. Pass in the api-key header for authenticated requests.
+externalDocs:
+  description: Forem API V1 Documentation
+  url: https://developers.forem.com/api/v1

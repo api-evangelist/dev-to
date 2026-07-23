@@ -1,0 +1,145 @@
+openapi: 3.1.0
+info:
+  title: Dev.to Forem Articles Reactions API
+  description: The Dev.to Forem API (v1) is a RESTful API that provides programmatic access to the Dev.to developer community platform, which is built on the open-source Forem framework. The API enables developers to create, read, update, and manage articles, comments, users, organizations, tags, followers, listings, podcast episodes, pages, display ads, reactions, reading lists, and webhooks. It uses API key authentication, requires an accept header of application/vnd.forem.api-v1+json, and returns JSON responses. Unauthenticated endpoints are CORS-enabled, making it possible to fetch public content directly from browser-based applications.
+  version: 1.0.0
+  contact:
+    name: Forem Support
+    url: https://forem.com
+  termsOfService: https://dev.to/terms
+servers:
+- url: https://dev.to/api
+  description: Dev.to Production Server
+security:
+- apiKey: []
+tags:
+- name: Reactions
+  description: Endpoints for creating and toggling reactions on articles, comments, and users.
+paths:
+  /reactions/toggle:
+    post:
+      operationId: toggleReaction
+      summary: Toggle reaction
+      description: Toggles a reaction on or off for an article, comment, or user. If the reaction already exists it will be removed; otherwise it will be created.
+      tags:
+      - Reactions
+      parameters:
+      - name: category
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - like
+          - unicorn
+          - exploding_head
+          - raised_hands
+          - fire
+        description: The category of reaction.
+      - name: reactable_id
+        in: query
+        required: true
+        schema:
+          type: integer
+        description: The ID of the reactable entity.
+      - name: reactable_type
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - Comment
+          - Article
+          - User
+        description: The type of entity being reacted to.
+      responses:
+        '200':
+          description: Reaction toggled successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reaction'
+        '401':
+          description: Unauthorized
+  /reactions:
+    post:
+      operationId: createReaction
+      summary: Create reaction
+      description: Creates a new reaction on an article, comment, or user.
+      tags:
+      - Reactions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - category
+              - reactable_id
+              - reactable_type
+              properties:
+                category:
+                  type: string
+                  enum:
+                  - like
+                  - unicorn
+                  - exploding_head
+                  - raised_hands
+                  - fire
+                  description: The category of reaction.
+                reactable_id:
+                  type: integer
+                  description: The ID of the reactable entity.
+                reactable_type:
+                  type: string
+                  enum:
+                  - Comment
+                  - Article
+                  - User
+                  description: The type of entity being reacted to.
+      responses:
+        '200':
+          description: Reaction created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reaction'
+        '401':
+          description: Unauthorized
+components:
+  schemas:
+    Reaction:
+      type: object
+      description: A reaction (like, unicorn, etc.) on an article, comment, or user.
+      properties:
+        result:
+          type: string
+          description: The result of the reaction operation (created or destroyed).
+        category:
+          type: string
+          enum:
+          - like
+          - unicorn
+          - exploding_head
+          - raised_hands
+          - fire
+          description: The category of the reaction.
+        id:
+          type: integer
+          description: The unique identifier of the reaction.
+        reactable_id:
+          type: integer
+          description: The ID of the entity the reaction is on.
+        reactable_type:
+          type: string
+          description: The type of entity the reaction is on.
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: api-key
+      description: API key obtained from the DEV.to settings page. Pass in the api-key header for authenticated requests.
+externalDocs:
+  description: Forem API V1 Documentation
+  url: https://developers.forem.com/api/v1

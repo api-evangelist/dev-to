@@ -1,0 +1,119 @@
+openapi: 3.1.0
+info:
+  title: Dev.to Forem Articles Followers API
+  description: The Dev.to Forem API (v1) is a RESTful API that provides programmatic access to the Dev.to developer community platform, which is built on the open-source Forem framework. The API enables developers to create, read, update, and manage articles, comments, users, organizations, tags, followers, listings, podcast episodes, pages, display ads, reactions, reading lists, and webhooks. It uses API key authentication, requires an accept header of application/vnd.forem.api-v1+json, and returns JSON responses. Unauthenticated endpoints are CORS-enabled, making it possible to fetch public content directly from browser-based applications.
+  version: 1.0.0
+  contact:
+    name: Forem Support
+    url: https://forem.com
+  termsOfService: https://dev.to/terms
+servers:
+- url: https://dev.to/api
+  description: Dev.to Production Server
+security:
+- apiKey: []
+tags:
+- name: Followers
+  description: Endpoints for retrieving followers of the authenticated user.
+paths:
+  /followers/users:
+    get:
+      operationId: getFollowers
+      summary: Followers
+      description: Retrieves a list of users who follow the authenticated user.
+      tags:
+      - Followers
+      parameters:
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      - name: sort
+        in: query
+        schema:
+          type: string
+        description: Sort order for followers.
+      responses:
+        '200':
+          description: A list of followers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized
+components:
+  schemas:
+    User:
+      type: object
+      description: A user account on the DEV platform.
+      properties:
+        name:
+          type: string
+          description: The display name of the user.
+        username:
+          type: string
+          description: The unique username of the user.
+        twitter_username:
+          type: string
+          nullable: true
+          description: The user's Twitter username.
+        github_username:
+          type: string
+          nullable: true
+          description: The user's GitHub username.
+        user_id:
+          type: integer
+          description: The unique numeric ID of the user.
+        website_url:
+          type: string
+          format: uri
+          nullable: true
+          description: The user's website URL.
+        location:
+          type: string
+          nullable: true
+          description: The user's location.
+        summary:
+          type: string
+          nullable: true
+          description: A brief bio or summary of the user.
+        profile_image:
+          type: string
+          format: uri
+          description: The URL of the user's profile image.
+        profile_image_90:
+          type: string
+          format: uri
+          description: The URL of the 90px profile image.
+        joined_at:
+          type: string
+          format: date-time
+          description: The ISO 8601 timestamp when the user joined.
+  parameters:
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Pagination page number.
+    perPageParam30to1000:
+      name: per_page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 1000
+        default: 30
+      description: Number of items per page (max 1000, default 30).
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: api-key
+      description: API key obtained from the DEV.to settings page. Pass in the api-key header for authenticated requests.
+externalDocs:
+  description: Forem API V1 Documentation
+  url: https://developers.forem.com/api/v1

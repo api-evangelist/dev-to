@@ -1,0 +1,151 @@
+openapi: 3.1.0
+info:
+  title: Dev.to Forem Articles Comments API
+  description: The Dev.to Forem API (v1) is a RESTful API that provides programmatic access to the Dev.to developer community platform, which is built on the open-source Forem framework. The API enables developers to create, read, update, and manage articles, comments, users, organizations, tags, followers, listings, podcast episodes, pages, display ads, reactions, reading lists, and webhooks. It uses API key authentication, requires an accept header of application/vnd.forem.api-v1+json, and returns JSON responses. Unauthenticated endpoints are CORS-enabled, making it possible to fetch public content directly from browser-based applications.
+  version: 1.0.0
+  contact:
+    name: Forem Support
+    url: https://forem.com
+  termsOfService: https://dev.to/terms
+servers:
+- url: https://dev.to/api
+  description: Dev.to Production Server
+security:
+- apiKey: []
+tags:
+- name: Comments
+  description: Endpoints for retrieving comments on articles and podcast episodes, including threaded conversation views.
+paths:
+  /comments:
+    get:
+      operationId: getCommentsByArticleId
+      summary: Comments
+      description: Retrieves all comments belonging to an article or podcast episode, returned as threaded conversations. Provide either a_id for articles or p_id for podcast episodes.
+      tags:
+      - Comments
+      security: []
+      parameters:
+      - name: a_id
+        in: query
+        schema:
+          type: integer
+        description: The article ID to retrieve comments for.
+      - name: p_id
+        in: query
+        schema:
+          type: integer
+        description: The podcast episode ID to retrieve comments for.
+      responses:
+        '200':
+          description: A list of threaded comments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+  /comments/{id}:
+    get:
+      operationId: getCommentById
+      summary: Comment by id
+      description: Retrieves a single comment and its descendants by the comment ID.
+      tags:
+      - Comments
+      security: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of the comment.
+      responses:
+        '200':
+          description: The requested comment with its descendants
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        '404':
+          description: Comment not found
+components:
+  schemas:
+    User:
+      type: object
+      description: A user account on the DEV platform.
+      properties:
+        name:
+          type: string
+          description: The display name of the user.
+        username:
+          type: string
+          description: The unique username of the user.
+        twitter_username:
+          type: string
+          nullable: true
+          description: The user's Twitter username.
+        github_username:
+          type: string
+          nullable: true
+          description: The user's GitHub username.
+        user_id:
+          type: integer
+          description: The unique numeric ID of the user.
+        website_url:
+          type: string
+          format: uri
+          nullable: true
+          description: The user's website URL.
+        location:
+          type: string
+          nullable: true
+          description: The user's location.
+        summary:
+          type: string
+          nullable: true
+          description: A brief bio or summary of the user.
+        profile_image:
+          type: string
+          format: uri
+          description: The URL of the user's profile image.
+        profile_image_90:
+          type: string
+          format: uri
+          description: The URL of the 90px profile image.
+        joined_at:
+          type: string
+          format: date-time
+          description: The ISO 8601 timestamp when the user joined.
+    Comment:
+      type: object
+      description: A comment on an article or podcast episode, with nested children for threaded conversations.
+      properties:
+        type_of:
+          type: string
+          description: The type of resource, always "comment".
+        id_code:
+          type: string
+          description: The unique identifier code of the comment.
+        created_at:
+          type: string
+          format: date-time
+          description: The ISO 8601 timestamp when the comment was created.
+        body_html:
+          type: string
+          description: The comment body rendered as HTML.
+        user:
+          $ref: '#/components/schemas/User'
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+          description: Nested child comments in the thread.
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: api-key
+      description: API key obtained from the DEV.to settings page. Pass in the api-key header for authenticated requests.
+externalDocs:
+  description: Forem API V1 Documentation
+  url: https://developers.forem.com/api/v1

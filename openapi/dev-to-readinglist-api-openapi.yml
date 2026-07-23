@@ -1,0 +1,213 @@
+openapi: 3.1.0
+info:
+  title: Dev.to Forem Articles ReadingList API
+  description: The Dev.to Forem API (v1) is a RESTful API that provides programmatic access to the Dev.to developer community platform, which is built on the open-source Forem framework. The API enables developers to create, read, update, and manage articles, comments, users, organizations, tags, followers, listings, podcast episodes, pages, display ads, reactions, reading lists, and webhooks. It uses API key authentication, requires an accept header of application/vnd.forem.api-v1+json, and returns JSON responses. Unauthenticated endpoints are CORS-enabled, making it possible to fetch public content directly from browser-based applications.
+  version: 1.0.0
+  contact:
+    name: Forem Support
+    url: https://forem.com
+  termsOfService: https://dev.to/terms
+servers:
+- url: https://dev.to/api
+  description: Dev.to Production Server
+security:
+- apiKey: []
+tags:
+- name: ReadingList
+  description: Endpoints for retrieving the authenticated user's reading list.
+paths:
+  /readinglist:
+    get:
+      operationId: getReadinglist
+      summary: Readinglist
+      description: Retrieves the authenticated user's reading list (bookmarked articles).
+      tags:
+      - ReadingList
+      parameters:
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '200':
+          description: A list of reading list items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+        '401':
+          description: Unauthorized
+components:
+  schemas:
+    Organization:
+      type: object
+      description: An organization on the DEV platform that can publish articles and have members.
+      properties:
+        name:
+          type: string
+          description: The display name of the organization.
+        username:
+          type: string
+          description: The unique username (slug) of the organization.
+        slug:
+          type: string
+          description: The URL slug of the organization.
+        profile_image:
+          type: string
+          format: uri
+          description: The URL of the organization's profile image.
+        profile_image_90:
+          type: string
+          format: uri
+          description: The URL of the 90px profile image.
+    ArticleIndex:
+      type: object
+      description: A summary article object returned in list endpoints, with fewer fields than the full article representation.
+      properties:
+        type_of:
+          type: string
+          description: The type of resource, always "article".
+        id:
+          type: integer
+          description: The unique identifier of the article.
+        title:
+          type: string
+          description: The title of the article.
+        description:
+          type: string
+          description: A short description or subtitle for the article.
+        readable_publish_date:
+          type: string
+          description: The publish date in a human-readable format.
+        slug:
+          type: string
+          description: The URL slug of the article.
+        path:
+          type: string
+          description: The relative path to the article on DEV.
+        url:
+          type: string
+          format: uri
+          description: The full URL of the article.
+        comments_count:
+          type: integer
+          description: The number of comments on the article.
+        public_reactions_count:
+          type: integer
+          description: The total number of public reactions.
+        collection_id:
+          type: integer
+          nullable: true
+          description: The ID of the collection (series) the article belongs to.
+        published_timestamp:
+          type: string
+          format: date-time
+          description: The ISO 8601 timestamp when the article was published.
+        positive_reactions_count:
+          type: integer
+          description: The count of positive reactions.
+        cover_image:
+          type: string
+          format: uri
+          nullable: true
+          description: The URL of the article's cover image.
+        social_image:
+          type: string
+          format: uri
+          description: The URL of the social sharing image.
+        canonical_url:
+          type: string
+          format: uri
+          description: The canonical URL of the article.
+        created_at:
+          type: string
+          format: date-time
+          description: The ISO 8601 timestamp when the article was created.
+        reading_time_minutes:
+          type: integer
+          description: The estimated reading time in minutes.
+        tag_list:
+          type: array
+          items:
+            type: string
+          description: A list of tags associated with the article.
+        tags:
+          type: string
+          description: A comma-separated string of tags.
+        user:
+          $ref: '#/components/schemas/User'
+        organization:
+          $ref: '#/components/schemas/Organization'
+    User:
+      type: object
+      description: A user account on the DEV platform.
+      properties:
+        name:
+          type: string
+          description: The display name of the user.
+        username:
+          type: string
+          description: The unique username of the user.
+        twitter_username:
+          type: string
+          nullable: true
+          description: The user's Twitter username.
+        github_username:
+          type: string
+          nullable: true
+          description: The user's GitHub username.
+        user_id:
+          type: integer
+          description: The unique numeric ID of the user.
+        website_url:
+          type: string
+          format: uri
+          nullable: true
+          description: The user's website URL.
+        location:
+          type: string
+          nullable: true
+          description: The user's location.
+        summary:
+          type: string
+          nullable: true
+          description: A brief bio or summary of the user.
+        profile_image:
+          type: string
+          format: uri
+          description: The URL of the user's profile image.
+        profile_image_90:
+          type: string
+          format: uri
+          description: The URL of the 90px profile image.
+        joined_at:
+          type: string
+          format: date-time
+          description: The ISO 8601 timestamp when the user joined.
+  parameters:
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Pagination page number.
+    perPageParam30to1000:
+      name: per_page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 1000
+        default: 30
+      description: Number of items per page (max 1000, default 30).
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: api-key
+      description: API key obtained from the DEV.to settings page. Pass in the api-key header for authenticated requests.
+externalDocs:
+  description: Forem API V1 Documentation
+  url: https://developers.forem.com/api/v1

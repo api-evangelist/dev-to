@@ -1,0 +1,219 @@
+openapi: 3.1.0
+info:
+  title: Dev.to Forem Articles Webhooks API
+  description: The Dev.to Forem API (v1) is a RESTful API that provides programmatic access to the Dev.to developer community platform, which is built on the open-source Forem framework. The API enables developers to create, read, update, and manage articles, comments, users, organizations, tags, followers, listings, podcast episodes, pages, display ads, reactions, reading lists, and webhooks. It uses API key authentication, requires an accept header of application/vnd.forem.api-v1+json, and returns JSON responses. Unauthenticated endpoints are CORS-enabled, making it possible to fetch public content directly from browser-based applications.
+  version: 1.0.0
+  contact:
+    name: Forem Support
+    url: https://forem.com
+  termsOfService: https://dev.to/terms
+servers:
+- url: https://dev.to/api
+  description: Dev.to Production Server
+security:
+- apiKey: []
+tags:
+- name: Webhooks
+  description: Endpoints for creating, listing, retrieving, and deleting webhook subscriptions for real-time event notifications.
+paths:
+  /webhooks:
+    get:
+      operationId: getWebhooks
+      summary: Webhooks
+      description: Retrieves a list of webhook subscriptions for the authenticated user.
+      tags:
+      - Webhooks
+      responses:
+        '200':
+          description: A list of webhook subscriptions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Webhook'
+        '401':
+          description: Unauthorized
+    post:
+      operationId: createWebhook
+      summary: Create a webhook
+      description: Creates a new webhook subscription. The webhook will receive HTTP POST callbacks at the specified target URL when subscribed events occur.
+      tags:
+      - Webhooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - webhook_endpoint
+              properties:
+                webhook_endpoint:
+                  type: object
+                  required:
+                  - target_url
+                  - source
+                  - events
+                  properties:
+                    target_url:
+                      type: string
+                      format: uri
+                      description: The URL to receive webhook callbacks.
+                    source:
+                      type: string
+                      description: The source identifier, typically "DEV".
+                    events:
+                      type: array
+                      items:
+                        type: string
+                        enum:
+                        - article_created
+                        - article_updated
+                        - article_destroyed
+                      description: The events to subscribe to.
+      responses:
+        '201':
+          description: Webhook created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+        '401':
+          description: Unauthorized
+        '422':
+          description: Unprocessable Entity
+  /webhooks/{id}:
+    get:
+      operationId: getWebhookById
+      summary: A webhook endpoint
+      description: Retrieves a single webhook subscription by ID.
+      tags:
+      - Webhooks
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: The ID of the webhook.
+      responses:
+        '200':
+          description: The requested webhook
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Webhook not found
+    delete:
+      operationId: deleteWebhook
+      summary: Delete a webhook endpoint
+      description: Deletes a webhook subscription by ID.
+      tags:
+      - Webhooks
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: The ID of the webhook.
+      responses:
+        '204':
+          description: Webhook deleted
+        '401':
+          description: Unauthorized
+        '404':
+          description: Webhook not found
+components:
+  schemas:
+    User:
+      type: object
+      description: A user account on the DEV platform.
+      properties:
+        name:
+          type: string
+          description: The display name of the user.
+        username:
+          type: string
+          description: The unique username of the user.
+        twitter_username:
+          type: string
+          nullable: true
+          description: The user's Twitter username.
+        github_username:
+          type: string
+          nullable: true
+          description: The user's GitHub username.
+        user_id:
+          type: integer
+          description: The unique numeric ID of the user.
+        website_url:
+          type: string
+          format: uri
+          nullable: true
+          description: The user's website URL.
+        location:
+          type: string
+          nullable: true
+          description: The user's location.
+        summary:
+          type: string
+          nullable: true
+          description: A brief bio or summary of the user.
+        profile_image:
+          type: string
+          format: uri
+          description: The URL of the user's profile image.
+        profile_image_90:
+          type: string
+          format: uri
+          description: The URL of the 90px profile image.
+        joined_at:
+          type: string
+          format: date-time
+          description: The ISO 8601 timestamp when the user joined.
+    Webhook:
+      type: object
+      description: A webhook subscription that receives HTTP callbacks when subscribed events occur on the platform.
+      properties:
+        type_of:
+          type: string
+          description: The type of resource, always "webhook_endpoint".
+        id:
+          type: integer
+          description: The unique identifier of the webhook.
+        source:
+          type: string
+          description: The source identifier for the webhook (e.g. DEV).
+        target_url:
+          type: string
+          format: uri
+          description: The URL that will receive webhook callbacks.
+        events:
+          type: array
+          items:
+            type: string
+            enum:
+            - article_created
+            - article_updated
+            - article_destroyed
+          description: The list of events this webhook is subscribed to.
+        created_at:
+          type: string
+          format: date-time
+          description: The ISO 8601 timestamp when the webhook was created.
+        user:
+          $ref: '#/components/schemas/User'
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: api-key
+      description: API key obtained from the DEV.to settings page. Pass in the api-key header for authenticated requests.
+externalDocs:
+  description: Forem API V1 Documentation
+  url: https://developers.forem.com/api/v1

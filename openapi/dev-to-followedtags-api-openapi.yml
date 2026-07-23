@@ -1,0 +1,60 @@
+openapi: 3.1.0
+info:
+  title: Dev.to Forem Articles FollowedTags API
+  description: The Dev.to Forem API (v1) is a RESTful API that provides programmatic access to the Dev.to developer community platform, which is built on the open-source Forem framework. The API enables developers to create, read, update, and manage articles, comments, users, organizations, tags, followers, listings, podcast episodes, pages, display ads, reactions, reading lists, and webhooks. It uses API key authentication, requires an accept header of application/vnd.forem.api-v1+json, and returns JSON responses. Unauthenticated endpoints are CORS-enabled, making it possible to fetch public content directly from browser-based applications.
+  version: 1.0.0
+  contact:
+    name: Forem Support
+    url: https://forem.com
+  termsOfService: https://dev.to/terms
+servers:
+- url: https://dev.to/api
+  description: Dev.to Production Server
+security:
+- apiKey: []
+tags:
+- name: FollowedTags
+  description: Endpoints for retrieving the tags followed by the authenticated user.
+paths:
+  /follows/tags:
+    get:
+      operationId: getFollowedTags
+      summary: Followed Tags
+      description: Retrieves a list of tags followed by the authenticated user.
+      tags:
+      - FollowedTags
+      responses:
+        '200':
+          description: A list of followed tags
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FollowedTag'
+        '401':
+          description: Unauthorized
+components:
+  schemas:
+    FollowedTag:
+      type: object
+      description: A tag that the authenticated user follows, with a weight indicating how much content from this tag should appear in the feed.
+      properties:
+        id:
+          type: integer
+          description: The unique identifier of the tag.
+        name:
+          type: string
+          description: The name of the tag.
+        points:
+          type: number
+          description: The follow weight or points assigned to this tag.
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: api-key
+      description: API key obtained from the DEV.to settings page. Pass in the api-key header for authenticated requests.
+externalDocs:
+  description: Forem API V1 Documentation
+  url: https://developers.forem.com/api/v1

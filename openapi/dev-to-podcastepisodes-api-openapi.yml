@@ -1,0 +1,109 @@
+openapi: 3.1.0
+info:
+  title: Dev.to Forem Articles PodcastEpisodes API
+  description: The Dev.to Forem API (v1) is a RESTful API that provides programmatic access to the Dev.to developer community platform, which is built on the open-source Forem framework. The API enables developers to create, read, update, and manage articles, comments, users, organizations, tags, followers, listings, podcast episodes, pages, display ads, reactions, reading lists, and webhooks. It uses API key authentication, requires an accept header of application/vnd.forem.api-v1+json, and returns JSON responses. Unauthenticated endpoints are CORS-enabled, making it possible to fetch public content directly from browser-based applications.
+  version: 1.0.0
+  contact:
+    name: Forem Support
+    url: https://forem.com
+  termsOfService: https://dev.to/terms
+servers:
+- url: https://dev.to/api
+  description: Dev.to Production Server
+security:
+- apiKey: []
+tags:
+- name: PodcastEpisodes
+  description: Endpoints for retrieving published podcast episodes.
+paths:
+  /podcast_episodes:
+    get:
+      operationId: getPodcastEpisodes
+      summary: Podcast Episodes
+      description: Retrieves a list of published podcast episodes. Can be filtered by username.
+      tags:
+      - PodcastEpisodes
+      security: []
+      parameters:
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam10to1000'
+      - name: username
+        in: query
+        schema:
+          type: string
+        description: Filter podcast episodes by the podcast owner's username.
+      responses:
+        '200':
+          description: A list of podcast episodes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PodcastEpisodeIndex'
+components:
+  parameters:
+    perPageParam10to1000:
+      name: per_page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 1000
+        default: 10
+      description: Number of items per page (max 1000, default 10).
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Pagination page number.
+  schemas:
+    PodcastEpisodeIndex:
+      type: object
+      description: A podcast episode summary returned in list endpoints.
+      properties:
+        type_of:
+          type: string
+          description: The type of resource, always "podcast_episodes".
+        id:
+          type: integer
+          description: The unique identifier of the episode.
+        class_name:
+          type: string
+          description: The class name of the resource.
+        path:
+          type: string
+          description: The relative path to the episode on DEV.
+        title:
+          type: string
+          description: The title of the podcast episode.
+        image_url:
+          type: string
+          format: uri
+          description: The URL of the episode's image.
+        podcast:
+          type: object
+          properties:
+            title:
+              type: string
+              description: The title of the podcast.
+            slug:
+              type: string
+              description: The URL slug of the podcast.
+            image_url:
+              type: string
+              format: uri
+              description: The URL of the podcast's image.
+          description: The parent podcast information.
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: api-key
+      description: API key obtained from the DEV.to settings page. Pass in the api-key header for authenticated requests.
+externalDocs:
+  description: Forem API V1 Documentation
+  url: https://developers.forem.com/api/v1

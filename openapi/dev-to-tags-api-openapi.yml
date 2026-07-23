@@ -1,0 +1,84 @@
+openapi: 3.1.0
+info:
+  title: Dev.to Forem Articles Tags API
+  description: The Dev.to Forem API (v1) is a RESTful API that provides programmatic access to the Dev.to developer community platform, which is built on the open-source Forem framework. The API enables developers to create, read, update, and manage articles, comments, users, organizations, tags, followers, listings, podcast episodes, pages, display ads, reactions, reading lists, and webhooks. It uses API key authentication, requires an accept header of application/vnd.forem.api-v1+json, and returns JSON responses. Unauthenticated endpoints are CORS-enabled, making it possible to fetch public content directly from browser-based applications.
+  version: 1.0.0
+  contact:
+    name: Forem Support
+    url: https://forem.com
+  termsOfService: https://dev.to/terms
+servers:
+- url: https://dev.to/api
+  description: Dev.to Production Server
+security:
+- apiKey: []
+tags:
+- name: Tags
+paths:
+  /tags:
+    get:
+      operationId: getTags
+      summary: Tags
+      description: Retrieves a list of available tags on the platform, ordered by popularity.
+      tags:
+      - Tags
+      security: []
+      parameters:
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam10to1000'
+      responses:
+        '200':
+          description: A list of tags
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag'
+components:
+  parameters:
+    perPageParam10to1000:
+      name: per_page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 1000
+        default: 10
+      description: Number of items per page (max 1000, default 10).
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Pagination page number.
+  schemas:
+    Tag:
+      type: object
+      description: A tag used to categorize articles on the platform.
+      properties:
+        id:
+          type: integer
+          description: The unique identifier of the tag.
+        name:
+          type: string
+          description: The name of the tag.
+        bg_color_hex:
+          type: string
+          pattern: ^#[0-9a-fA-F]{6}$
+          description: The background color hex code for the tag.
+        text_color_hex:
+          type: string
+          pattern: ^#[0-9a-fA-F]{6}$
+          description: The text color hex code for the tag.
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: api-key
+      description: API key obtained from the DEV.to settings page. Pass in the api-key header for authenticated requests.
+externalDocs:
+  description: Forem API V1 Documentation
+  url: https://developers.forem.com/api/v1
