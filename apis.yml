@@ -1,48 +1,216 @@
 aid: dev-to
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/dev-to.png
 url: https://raw.githubusercontent.com/api-evangelist/dev-to/refs/heads/main/apis.yml
 apis:
-  - aid: dev-to:forem-api
-    name: Dev.to Forem API
-    tags:
-      - Articles
-      - Blogging
-      - Content Management
-      - Developer Community
-      - Social
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    baseURL: https://dev.to/api
-    humanURL: https://developers.forem.com/api/v1
-    properties:
-      - url: https://developers.forem.com/api/v1
-        type: Documentation
-      - url: openapi/dev-to-forem-api-openapi.yml
-        type: OpenAPI
-    description: >-
-      The Dev.to Forem API (v1) is a RESTful API that provides programmatic access to the Dev.to developer community
-      platform, which is built on the open-source Forem framework. The API enables developers to create, read, update,
-      and manage articles (blog posts, discussions, help threads), comments, users, organizations, tags, followers,
-      listings, and webhooks. It uses API key authentication, requires an accept header of
-      application/vnd.forem.api-v1+json, and returns JSON responses.
-  - aid: dev-to:webhooks-api
-    name: Dev.to Webhooks API
-    tags:
-      - Automation
-      - Events
-      - Notifications
-      - Webhooks
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    baseURL: https://dev.to/api
-    humanURL: https://developers.forem.com/api/v1
-    properties:
-      - url: https://developers.forem.com/api/v1
-        type: Documentation
-      - url: asyncapi/dev-to-webhooks-asyncapi.yml
-        type: AsyncAPI
-    description: >-
-      The Dev.to Webhooks API allows developers to subscribe to real-time notifications for events occurring on the
-      Dev.to platform. By creating webhook subscriptions, applications can receive HTTP callbacks when specific events
-      happen, such as new articles being published. This enables event-driven integrations and automation workflows that
-      respond immediately to activity on the platform without the need to continuously poll the REST API for changes.
+- aid: dev-to:webhooks-api
+  name: Dev.to Webhooks API
+  tags:
+  - Automation
+  - Events
+  - Notifications
+  - Webhooks
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  baseURL: https://dev.to/api
+  humanURL: https://developers.forem.com/api/v1
+  properties:
+  - url: https://developers.forem.com/api/v1
+    type: Documentation
+  - url: asyncapi/dev-to-webhooks-asyncapi.yml
+    type: AsyncAPI
+  description: >-
+    The Dev.to Webhooks API allows developers to subscribe to real-time notifications for events occurring
+    on the Dev.to platform. By creating webhook subscriptions, applications can receive HTTP callbacks
+    when specific events happen, such as new articles being published. This enables event-driven integrations
+    and automation workflows that respond immediately to activity on the platform without the need to
+    continuously poll the REST API for changes.
+- aid: dev-to:dev-to-articles-api
+  name: dev-to Articles API
+  description: >-
+    Endpoints for creating, reading, updating, and managing articles (blog posts, discussions, help threads)
+    on the platform.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - Articles
+  properties:
+  - type: OpenAPI
+    url: openapi/dev-to-articles-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:dev-to-comments-api
+  name: dev-to Comments API
+  description: >-
+    Endpoints for retrieving comments on articles and podcast episodes, including threaded conversation
+    views.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - Comments
+  properties:
+  - type: OpenAPI
+    url: openapi/dev-to-comments-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:dev-to-displayads-api
+  name: dev-to DisplayAds API
+  description: >-
+    Endpoints for managing display advertisements on the platform. Requires admin-level API key.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - DisplayAds
+  properties:
+  - type: OpenAPI
+    url: openapi/dev-to-displayads-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:dev-to-followedtags-api
+  name: dev-to FollowedTags API
+  description: Endpoints for retrieving the tags followed by the authenticated user.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - FollowedTags
+  properties:
+  - type: OpenAPI
+    url: openapi/dev-to-followedtags-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:dev-to-followers-api
+  name: dev-to Followers API
+  description: Endpoints for retrieving followers of the authenticated user.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - Followers
+  properties:
+  - type: OpenAPI
+    url: openapi/dev-to-followers-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:dev-to-organizations-api
+  name: dev-to Organizations API
+  description: Endpoints for retrieving organization details, members, and articles.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - Organizations
+  properties:
+  - type: OpenAPI
+    url: openapi/dev-to-organizations-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:dev-to-pages-api
+  name: dev-to Pages API
+  description: Endpoints for managing static pages on the platform. Requires admin-level API key.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - Pages
+  properties:
+  - type: OpenAPI
+    url: openapi/dev-to-pages-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:dev-to-podcastepisodes-api
+  name: dev-to PodcastEpisodes API
+  description: Endpoints for retrieving published podcast episodes.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - PodcastEpisodes
+  properties:
+  - type: OpenAPI
+    url: openapi/dev-to-podcastepisodes-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:dev-to-profileimages-api
+  name: dev-to ProfileImages API
+  description: Endpoints for retrieving profile images of users and organizations.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - ProfileImages
+  properties:
+  - type: OpenAPI
+    url: openapi/dev-to-profileimages-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:dev-to-reactions-api
+  name: dev-to Reactions API
+  description: Endpoints for creating and toggling reactions on articles, comments, and users.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - Reactions
+  properties:
+  - type: OpenAPI
+    url: openapi/dev-to-reactions-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:dev-to-readinglist-api
+  name: dev-to ReadingList API
+  description: Endpoints for retrieving the authenticated user's reading list.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - ReadingList
+  properties:
+  - type: OpenAPI
+    url: openapi/dev-to-readinglist-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:dev-to-tags-api
+  name: dev-to Tags API
+  description: The Tags API from dev-to — 1 operation(s) for tags.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - Tags
+  properties:
+  - type: OpenAPI
+    url: openapi/dev-to-tags-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:dev-to-users-api
+  name: dev-to Users API
+  description: Endpoints for retrieving user profiles and managing user accounts.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - Users
+  properties:
+  - type: OpenAPI
+    url: openapi/dev-to-users-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:dev-to-webhooks-api
+  name: dev-to Webhooks API
+  description: >-
+    Endpoints for creating, listing, retrieving, and deleting webhook subscriptions for real-time event
+    notifications.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - Webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/dev-to-webhooks-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
 common:
   - type: AgenticAccess
     url: agentic-access/dev-to-agentic-access.yml
