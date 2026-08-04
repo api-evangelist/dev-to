@@ -1,0 +1,40 @@
+{
+  "provider": "dev-to",
+  "sources": [
+    "dev-to-articles-api-openapi.yml",
+    "dev-to-comments-api-openapi.yml",
+    "dev-to-displayads-api-openapi.yml",
+    "dev-to-followedtags-api-openapi.yml",
+    "dev-to-followers-api-openapi.yml",
+    "dev-to-organizations-api-openapi.yml",
+    "dev-to-pages-api-openapi.yml",
+    "dev-to-podcastepisodes-api-openapi.yml",
+    "dev-to-profileimages-api-openapi.yml",
+    "dev-to-reactions-api-openapi.yml",
+    "dev-to-readinglist-api-openapi.yml",
+    "dev-to-tags-api-openapi.yml",
+    "dev-to-users-api-openapi.yml",
+    "dev-to-webhooks-api-openapi.yml"
+  ],
+  "outputs": [
+    "dev-to-articles-api-openapi.yml",
+    "dev-to-comments-api-openapi.yml",
+    "dev-to-displayads-api-openapi.yml",
+    "dev-to-followedtags-api-openapi.yml",
+    "dev-to-followers-api-openapi.yml",
+    "dev-to-organizations-api-openapi.yml",
+    "dev-to-pages-api-openapi.yml",
+    "dev-to-podcastepisodes-api-openapi.yml",
+    "dev-to-profileimages-api-openapi.yml",
+    "dev-to-reactions-api-openapi.yml",
+    "dev-to-readinglist-api-openapi.yml",
+    "dev-to-tags-api-openapi.yml",
+    "dev-to-users-api-openapi.yml",
+    "dev-to-webhooks-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
