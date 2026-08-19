@@ -1,0 +1,72 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Dev.to Forem Articles Reactions API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "api-key",
+      "value": "{{api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Reactions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Toggle reaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://dev.to/api/reactions/toggle",
+            "params": [
+              {
+                "name": "category",
+                "value": "",
+                "type": "query",
+                "description": "The category of reaction."
+              },
+              {
+                "name": "reactable_id",
+                "value": "",
+                "type": "query",
+                "description": "The ID of the reactable entity."
+              },
+              {
+                "name": "reactable_type",
+                "value": "",
+                "type": "query",
+                "description": "The type of entity being reacted to."
+              }
+            ]
+          },
+          "docs": "Toggles a reaction on or off for an article, comment, or user. If the reaction already exists it will be removed; otherwise it will be created."
+        },
+        {
+          "info": {
+            "name": "Create reaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://dev.to/api/reactions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new reaction on an article, comment, or user."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

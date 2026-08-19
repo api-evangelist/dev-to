@@ -1,0 +1,350 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Dev.to Forem Articles API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "api-key",
+      "value": "{{api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Articles",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Published articles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/articles",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Pagination page number."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page (max 1000, default 30)."
+              },
+              {
+                "name": "tag",
+                "value": "",
+                "type": "query",
+                "description": "Filter articles by a single tag name."
+              },
+              {
+                "name": "tags",
+                "value": "",
+                "type": "query",
+                "description": "Filter articles by a comma-separated list of tag names (articles must have all specified tags)."
+              },
+              {
+                "name": "tags_exclude",
+                "value": "",
+                "type": "query",
+                "description": "Exclude articles with these comma-separated tag names."
+              },
+              {
+                "name": "username",
+                "value": "",
+                "type": "query",
+                "description": "Filter articles by the author's username."
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query",
+                "description": "Filter articles by state. Defaults to the most popular articles."
+              },
+              {
+                "name": "top",
+                "value": "",
+                "type": "query",
+                "description": "Return the most popular articles published in the last N days."
+              },
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "query",
+                "description": "Return articles belonging to the specified collection."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of published articles, ordered by descending popularity. This endpoint is publicly accessible and can be filtered by tag, username, state, and other parameters."
+        },
+        {
+          "info": {
+            "name": "Publish article",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://dev.to/api/articles",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new article. The authenticated user will be the author of the article. The article can be published immediately or saved as a draft by setting the published field."
+        },
+        {
+          "info": {
+            "name": "Published articles sorted by published date",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/articles/latest",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Pagination page number."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page (max 1000, default 30)."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of published articles sorted by publication date in descending order."
+        },
+        {
+          "info": {
+            "name": "Published article by id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/articles/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The numeric ID of the article."
+              }
+            ]
+          },
+          "docs": "Retrieves a single published article by its numeric ID."
+        },
+        {
+          "info": {
+            "name": "Update an article by id",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://dev.to/api/articles/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The numeric ID of the article."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing article. Only the article's author or an admin can update the article."
+        },
+        {
+          "info": {
+            "name": "Published article by path",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/articles/:username/:slug",
+            "params": [
+              {
+                "name": "username",
+                "value": "",
+                "type": "path",
+                "description": "The username of the article's author."
+              },
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path",
+                "description": "The slug of the article."
+              }
+            ]
+          },
+          "docs": "Retrieves a single published article by the author's username and the article's slug."
+        },
+        {
+          "info": {
+            "name": "User's articles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/articles/me",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Pagination page number."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page (max 1000, default 30)."
+              }
+            ]
+          },
+          "docs": "Retrieves all articles authored by the authenticated user."
+        },
+        {
+          "info": {
+            "name": "User's published articles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/articles/me/published",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Pagination page number."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page (max 1000, default 30)."
+              }
+            ]
+          },
+          "docs": "Retrieves only published articles authored by the authenticated user."
+        },
+        {
+          "info": {
+            "name": "User's unpublished articles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/articles/me/unpublished",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Pagination page number."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page (max 1000, default 30)."
+              }
+            ]
+          },
+          "docs": "Retrieves only unpublished (draft) articles authored by the authenticated user."
+        },
+        {
+          "info": {
+            "name": "User's all articles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/articles/me/all",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Pagination page number."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page (max 1000, default 30)."
+              }
+            ]
+          },
+          "docs": "Retrieves all articles (both published and unpublished) authored by the authenticated user."
+        },
+        {
+          "info": {
+            "name": "Unpublish an article",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://dev.to/api/articles/:id/unpublish",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The numeric ID of the article."
+              }
+            ]
+          },
+          "docs": "Unpublishes an article by its ID. Requires admin-level API key."
+        },
+        {
+          "info": {
+            "name": "Organization's Articles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/organizations/:username/articles",
+            "params": [
+              {
+                "name": "username",
+                "value": "",
+                "type": "path",
+                "description": "The username (slug) of the organization."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Pagination page number."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page (max 1000, default 30)."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of articles published under the specified organization."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

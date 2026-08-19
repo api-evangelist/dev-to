@@ -1,0 +1,51 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Dev.to Forem Articles ReadingList API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "api-key",
+      "value": "{{api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "ReadingList",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Readinglist",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/readinglist",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Pagination page number."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page (max 1000, default 30)."
+              }
+            ]
+          },
+          "docs": "Retrieves the authenticated user's reading list (bookmarked articles)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

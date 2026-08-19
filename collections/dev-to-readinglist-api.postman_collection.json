@@ -1,0 +1,197 @@
+{
+  "item": [
+    {
+      "id": "63af0413-7db9-4470-ae64-25fa7d6a69f2",
+      "name": "ReadingList",
+      "description": {
+        "content": "Endpoints for retrieving the authenticated user's reading list.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "072dcabb-2953-4edd-9291-84f248aacd4f",
+          "name": "Readinglist",
+          "request": {
+            "name": "Readinglist",
+            "description": {
+              "content": "Retrieves the authenticated user's reading list (bookmarked articles).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "readinglist"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Pagination page number."
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "30",
+                  "description": "Number of items per page (max 1000, default 30)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ca0c2b9b-51c2-49d0-8efd-0ca7a044ca26",
+              "name": "A list of reading list items",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "readinglist"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "30"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"type_of\": \"string\",\n    \"id\": 8345,\n    \"title\": \"string\",\n    \"description\": \"string\",\n    \"readable_publish_date\": \"string\",\n    \"slug\": \"string\",\n    \"path\": \"string\",\n    \"url\": \"https://mFh.hgd33PoY+-IH-Bz5H8BVz3yQvLX.107V-VD+0uijUhaRhJ,JxT\",\n    \"comments_count\": 4946,\n    \"public_reactions_count\": 2093,\n    \"collection_id\": 4506,\n    \"published_timestamp\": \"2023-05-08T21:41:28.522Z\",\n    \"positive_reactions_count\": 8363,\n    \"cover_image\": \"https://iPDisRKYxhToyIyHGLNQicTF.yaknufZ\",\n    \"social_image\": \"https://ZusXcMeLQUTWCwM.cwctf6qnvKAeaAWv\",\n    \"canonical_url\": \"http://PQhyALCuPZIaqHPctLtPxMfd.xaVjw9b1kK+Czv.f9JvVy+M7FWaeBiKdqbKGxUIGifx4VV22iM-qRiwc09PLDydwX,5B\",\n    \"created_at\": \"2021-03-09T21:07:53.455Z\",\n    \"reading_time_minutes\": 5851,\n    \"tag_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tags\": \"string\",\n    \"user\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"twitter_username\": \"string\",\n      \"github_username\": \"string\",\n      \"user_id\": 7469,\n      \"website_url\": \"https://llGaFfXluFjwAHCccDXZVpDcYORfw.ynuFU0MTX+.Mb\",\n      \"location\": \"string\",\n      \"summary\": \"string\",\n      \"profile_image\": \"https://yVEjDgcXbCMjyXcActONxJ.yxxqJUgC8kTYMoRrWUdYG9oaM\",\n      \"profile_image_90\": \"https://b.xgFzCPO4T.QWfI\",\n      \"joined_at\": \"1967-11-26T10:47:19.153Z\"\n    },\n    \"organization\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"slug\": \"string\",\n      \"profile_image\": \"http://FUcAZTHRcYlJcHLRNXyJwgZ.zannfDn5H86XI.sk9ayfrs,f-y5xhG5+eBhk0RLAV\",\n      \"profile_image_90\": \"https://wEHKQsY.nojrurUYgm7ZIae1Z1Y61uyL9PlOFfbvGTjyprcGW\"\n    }\n  },\n  {\n    \"type_of\": \"string\",\n    \"id\": 7859,\n    \"title\": \"string\",\n    \"description\": \"string\",\n    \"readable_publish_date\": \"string\",\n    \"slug\": \"string\",\n    \"path\": \"string\",\n    \"url\": \"https://lJRoMpcCPGfCxz.syvlLyucAugTKkDVc9.UUURECcl,RoMgTzgFa0ve6VEpTkMddfpWH5MgUP7f,yJR-dr2Hh0sHAIaa,IS4rDHsS\",\n    \"comments_count\": 5849,\n    \"public_reactions_count\": 4026,\n    \"collection_id\": 8984,\n    \"published_timestamp\": \"1975-03-18T02:44:06.652Z\",\n    \"positive_reactions_count\": 2494,\n    \"cover_image\": \"https://iaIJqblmAlLKOVvRFmXAAWCRac.fkgzPS1wFTuud9Fyy1tvde7lnkEkME6HWBtpUx3rZz\",\n    \"social_image\": \"http://EghQzTkZPbNUWdltIPKkYTBVCM.thgmweo\",\n    \"canonical_url\": \"http://BDeSIdggYgAJ.rfgn4keA+3euCkHfEN\",\n    \"created_at\": \"1998-09-29T00:01:01.291Z\",\n    \"reading_time_minutes\": 6044,\n    \"tag_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tags\": \"string\",\n    \"user\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"twitter_username\": \"string\",\n      \"github_username\": \"string\",\n      \"user_id\": 8387,\n      \"website_url\": \"https://utgwNOGcYJBZsuemxRiz.kqmfrj3XbXCwEvMZ1aunoqnczvI5iDVxqXHWrOMC1nA\",\n      \"location\": \"string\",\n      \"summary\": \"string\",\n      \"profile_image\": \"https://UlaxUiEpxEwJlvSkHljhi.ljkhZ4CueyKXu6jB5C-YQptTG66Uo-l.egnrnpZn-.IsuWi8PNy6\",\n      \"profile_image_90\": \"https://GPFzPzNAXgIxXBVezczTjLIJp.edtBaCLSkQ,CRwFSRWysbn-Yt00JJJ+jy72QffRT6CFL9kziTQlt6he5veVV+Xih1UBq\",\n      \"joined_at\": \"1997-04-01T13:31:39.778Z\"\n    },\n    \"organization\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"slug\": \"string\",\n      \"profile_image\": \"http://rVtCjZroLzndlOmOqAzEYPPpFultIy.jfmxmzNLH,+ylmlLIy,C.TfycwoNNUKtIJZPLyt3fEl8L\",\n      \"profile_image_90\": \"http://VxyZONbshWgAImLepX.edatfG6pvNGV+lg7D0kyeFHkXdm\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ad1f6914-ee74-44ff-81f9-163f46bf23ec",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "readinglist"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "30"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://dev.to/api",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "25810635-d77a-4082-945e-22b4c910081b",
+    "name": "Dev.to Forem Articles ReadingList API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Dev.to Forem API (v1) is a RESTful API that provides programmatic access to the Dev.to developer community platform, which is built on the open-source Forem framework. The API enables developers to create, read, update, and manage articles, comments, users, organizations, tags, followers, listings, podcast episodes, pages, display ads, reactions, reading lists, and webhooks. It uses API key authentication, requires an accept header of application/vnd.forem.api-v1+json, and returns JSON responses. Unauthenticated endpoints are CORS-enabled, making it possible to fetch public content directly from browser-based applications.\n\nContact Support:\n Name: Forem Support",
+      "type": "text/plain"
+    }
+  }
+}

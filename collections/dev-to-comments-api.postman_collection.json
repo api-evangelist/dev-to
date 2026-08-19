@@ -1,0 +1,293 @@
+{
+  "item": [
+    {
+      "id": "65953eaa-9a03-48fd-85aa-edf353c38b92",
+      "name": "Comments",
+      "description": {
+        "content": "Endpoints for retrieving comments on articles and podcast episodes, including threaded conversation views.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4367bb33-35cd-4834-bf91-f5cde38fd046",
+          "name": "Comments",
+          "request": {
+            "name": "Comments",
+            "description": {
+              "content": "Retrieves all comments belonging to an article or podcast episode, returned as threaded conversations. Provide either a_id for articles or p_id for podcast episodes.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "comments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "a_id",
+                  "value": "<integer>",
+                  "description": "The article ID to retrieve comments for."
+                },
+                {
+                  "disabled": false,
+                  "key": "p_id",
+                  "value": "<integer>",
+                  "description": "The podcast episode ID to retrieve comments for."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a87f240f-5edd-4268-a4b1-d222f1fa3db1",
+              "name": "A list of threaded comments",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "comments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "a_id",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "p_id",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"type_of\": \"string\",\n    \"id_code\": \"string\",\n    \"created_at\": \"1997-12-25T00:38:44.970Z\",\n    \"body_html\": \"string\",\n    \"user\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"twitter_username\": \"string\",\n      \"github_username\": \"string\",\n      \"user_id\": 4149,\n      \"website_url\": \"https://odqAVT.aaaLj+63,VpsA3eLOvPfW34QuMi1bO+6t4.hCY,25-IY+WxqzNsbsMBSBvyx3UGMHY56Ouop\",\n      \"location\": \"string\",\n      \"summary\": \"string\",\n      \"profile_image\": \"http://XuBWlrzTZ.ifo4pVCIdEDLMZwLdkf4rffwNUPlnKtA\",\n      \"profile_image_90\": \"http://deNnVfXuCQd.znkmpxVZfSsAL7QbY+ox3z\",\n      \"joined_at\": \"1979-11-07T00:35:44.636Z\"\n    },\n    \"children\": [\n      {\n        \"value\": \"<Circular reference to #/components/schemas/Comment detected>\"\n      },\n      {\n        \"value\": \"<Circular reference to #/components/schemas/Comment detected>\"\n      }\n    ]\n  },\n  {\n    \"type_of\": \"string\",\n    \"id_code\": \"string\",\n    \"created_at\": \"1994-04-08T05:51:43.962Z\",\n    \"body_html\": \"string\",\n    \"user\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"twitter_username\": \"string\",\n      \"github_username\": \"string\",\n      \"user_id\": 2816,\n      \"website_url\": \"http://pXzRUNcsRnFAmWuGeGTcdrOsOyGwjvMn.mszzeZ2Ip1LEb9SSjpbJkpZxO.ulvHyc2Bx.2oWw0OnZvZmTdXfqGOZdgxQAPMFxizF-,0TiK\",\n      \"location\": \"string\",\n      \"summary\": \"string\",\n      \"profile_image\": \"https://JWAmScKzGFtrjsovnENf.cemHSfOVoMLRSjLhip4I+X6GX,jzuWCCZlV3\",\n      \"profile_image_90\": \"https://aALiMgtDHmIGXtmAd.dbudNyq-fpLfNyeiXFR9DpfKr\",\n      \"joined_at\": \"1991-08-04T22:55:59.536Z\"\n    },\n    \"children\": [\n      {\n        \"value\": \"<Circular reference to #/components/schemas/Comment detected>\"\n      },\n      {\n        \"value\": \"<Circular reference to #/components/schemas/Comment detected>\"\n      }\n    ]\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "37d89273-79ca-4f85-9d0d-d39aca3d702e",
+          "name": "Comment by id",
+          "request": {
+            "name": "Comment by id",
+            "description": {
+              "content": "Retrieves a single comment and its descendants by the comment ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "comments",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The ID of the comment."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "eb3d04f0-84fb-40cd-bb1b-a7fe7da70767",
+              "name": "The requested comment with its descendants",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "comments",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the comment."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type_of\": \"string\",\n  \"id_code\": \"string\",\n  \"created_at\": \"2024-09-10T13:49:24.288Z\",\n  \"body_html\": \"string\",\n  \"user\": {\n    \"name\": \"string\",\n    \"username\": \"string\",\n    \"twitter_username\": \"string\",\n    \"github_username\": \"string\",\n    \"user_id\": 888,\n    \"website_url\": \"http://rDpdtnFiBuoKrfzBgzbeMVuvfhIA.kzyr5EOprVM0omEGUCdeZbqTdYRhbMqzdvXwsrTg4azlSrCU9rG7wiLTeHeSloP8VxKaZbQYD\",\n    \"location\": \"string\",\n    \"summary\": \"string\",\n    \"profile_image\": \"https://QHuStaNbOkMj.uwQ1j.RUmW3YQ3o,dTGvcbZr8N+sJSbiah8vsICi,VsRQQgShcYsl2FhLRQCiYPJkSvLp\",\n    \"profile_image_90\": \"https://BGrGKezxyZJONWcYTWLuIMayTzY.bgeykGn9nbnJVjPlrVrA\",\n    \"joined_at\": \"1990-09-18T14:11:54.528Z\"\n  },\n  \"children\": [\n    {\n      \"type_of\": \"string\",\n      \"id_code\": \"string\",\n      \"created_at\": \"2023-01-28T05:14:54.370Z\",\n      \"body_html\": \"string\",\n      \"user\": {\n        \"name\": \"string\",\n        \"username\": \"string\",\n        \"twitter_username\": \"string\",\n        \"github_username\": \"string\",\n        \"user_id\": 1137,\n        \"website_url\": \"http://BpxjOUHeAGtWxkha.fkyjisEbPGHDV.g53SxtEc3WnDT8urseDK09SD\",\n        \"location\": \"string\",\n        \"summary\": \"string\",\n        \"profile_image\": \"https://pScvtXqVqKTrspsLLhtPmudpsxxV.llptuTo6Hap3+ebe1oZFtJjjFPgo5eY7qwny7\",\n        \"profile_image_90\": \"https://cvgIzHwrToEIryQAj.snqSzY0riagHANcUGFTMgyM42HnRctfWa6HY2g5pxDXS3RXJp3pL+8ayYBNap\",\n        \"joined_at\": \"1990-12-01T05:13:03.825Z\"\n      },\n      \"children\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/Comment detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/Comment detected>\"\n        }\n      ]\n    },\n    {\n      \"type_of\": \"string\",\n      \"id_code\": \"string\",\n      \"created_at\": \"1961-10-13T09:12:53.161Z\",\n      \"body_html\": \"string\",\n      \"user\": {\n        \"name\": \"string\",\n        \"username\": \"string\",\n        \"twitter_username\": \"string\",\n        \"github_username\": \"string\",\n        \"user_id\": 1493,\n        \"website_url\": \"https://rmwxe.uhpXM3H0xpRMZBmUDN802zPyNFEdDCZP45y9h\",\n        \"location\": \"string\",\n        \"summary\": \"string\",\n        \"profile_image\": \"https://uxR.vkmQDLgXF1w-i\",\n        \"profile_image_90\": \"http://noIRYq.puoQkRTVOKx\",\n        \"joined_at\": \"1966-01-14T13:13:43.184Z\"\n      },\n      \"children\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/Comment detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/Comment detected>\"\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9bd07271-90e8-44ca-a0e0-c27632b5da17",
+              "name": "Comment not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "comments",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the comment."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://dev.to/api",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "a85d1a13-e5e8-4f81-a95c-e798e76f137c",
+    "name": "Dev.to Forem Articles Comments API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Dev.to Forem API (v1) is a RESTful API that provides programmatic access to the Dev.to developer community platform, which is built on the open-source Forem framework. The API enables developers to create, read, update, and manage articles, comments, users, organizations, tags, followers, listings, podcast episodes, pages, display ads, reactions, reading lists, and webhooks. It uses API key authentication, requires an accept header of application/vnd.forem.api-v1+json, and returns JSON responses. Unauthenticated endpoints are CORS-enabled, making it possible to fetch public content directly from browser-based applications.\n\nContact Support:\n Name: Forem Support",
+      "type": "text/plain"
+    }
+  }
+}

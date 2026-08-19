@@ -1,0 +1,113 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Dev.to Forem Articles DisplayAds API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "api-key",
+      "value": "{{api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "DisplayAds",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Display ads",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/display_ads"
+          },
+          "docs": "Retrieves all display ads. Requires admin-level API key."
+        },
+        {
+          "info": {
+            "name": "Create display ad",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://dev.to/api/display_ads",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new display ad. Requires admin-level API key."
+        },
+        {
+          "info": {
+            "name": "Display ad",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/display_ads/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the display ad."
+              }
+            ]
+          },
+          "docs": "Retrieves a single display ad by ID. Requires admin-level API key."
+        },
+        {
+          "info": {
+            "name": "Update display ad",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://dev.to/api/display_ads/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the display ad."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing display ad. Requires admin-level API key."
+        },
+        {
+          "info": {
+            "name": "Unpublish display ad",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://dev.to/api/display_ads/:id/unpublish",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the display ad."
+              }
+            ]
+          },
+          "docs": "Unpublishes a display ad by ID. Requires admin-level API key."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

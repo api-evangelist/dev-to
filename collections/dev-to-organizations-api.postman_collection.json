@@ -1,0 +1,549 @@
+{
+  "item": [
+    {
+      "id": "d55a1db4-8205-4693-a661-75ddd6542605",
+      "name": "Organizations",
+      "description": {
+        "content": "Endpoints for retrieving organization details, members, and articles.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "96954ec1-8425-4356-b892-df6a18afcc3e",
+          "name": "An organization",
+          "request": {
+            "name": "An organization",
+            "description": {
+              "content": "Retrieves a single organization by its username (slug).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "organizations",
+                ":username"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "username",
+                  "description": "(Required) The username (slug) of the organization."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e8565c24-d931-4a27-8090-d31c5d9bccf9",
+              "name": "The requested organization",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "organizations",
+                    ":username"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "username",
+                      "description": "(Required) The username (slug) of the organization."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"string\",\n  \"username\": \"string\",\n  \"slug\": \"string\",\n  \"profile_image\": \"https://ASdvXAwUZAvQSpqIcLAzAFqPaPDSv.cpmV2BuabX-eZBKcJYqPFXXWbP2N\",\n  \"profile_image_90\": \"https://zRcRC.cismBw0dFtTz3t7na,sT5J\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "980590c3-b72d-45c7-b273-5bdc6f700777",
+              "name": "Organization not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "organizations",
+                    ":username"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "username",
+                      "description": "(Required) The username (slug) of the organization."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ed03005b-ab2d-43a3-b002-77a7b453f7ba",
+          "name": "Organization's users",
+          "request": {
+            "name": "Organization's users",
+            "description": {
+              "content": "Retrieves a list of users belonging to the specified organization.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "organizations",
+                ":username",
+                "users"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Pagination page number."
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "30",
+                  "description": "Number of items per page (max 1000, default 30)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "username",
+                  "description": "(Required) The username (slug) of the organization."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7587a8a3-1170-4393-91ed-b28b3fa9bd6e",
+              "name": "A list of organization members",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "organizations",
+                    ":username",
+                    "users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "30"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "username",
+                      "description": "(Required) The username (slug) of the organization."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"name\": \"string\",\n    \"username\": \"string\",\n    \"twitter_username\": \"string\",\n    \"github_username\": \"string\",\n    \"user_id\": 2716,\n    \"website_url\": \"http://bNrkIcTZqFDjoyVwUV.hljERBJp.kS8Crlon8l4FOyD\",\n    \"location\": \"string\",\n    \"summary\": \"string\",\n    \"profile_image\": \"http://lkJEhEEpjDdtoflBxLKE.tnpPKM2,EaOaxqrSPO7m+tkAEdqbJHwhh2gDM0\",\n    \"profile_image_90\": \"http://JzXIMBOJbbEfKkyJLz.jcuxt.CbPT.iZJMxuG+Cl7bTVrQY8ld1Zr0NxK39jYTn+Tj1MeepUXQhbjYFNRSXjqH0QdsvneXFWOhAon+\",\n    \"joined_at\": \"2019-07-19T05:23:30.909Z\"\n  },\n  {\n    \"name\": \"string\",\n    \"username\": \"string\",\n    \"twitter_username\": \"string\",\n    \"github_username\": \"string\",\n    \"user_id\": 9334,\n    \"website_url\": \"http://bYMkgSbeMdAACZvTAvfSCCMJrBn.uhxkDhc0Csl,R+36YwJV4YM8lsQy.IRvlsHUKXnrOQz\",\n    \"location\": \"string\",\n    \"summary\": \"string\",\n    \"profile_image\": \"http://ZLlhNvyzJpojLbWbJzbrnhDUUAIuOn.kssdONnnxI18PxieGfby3Q7ZZY+xTBgUcCKifEYCjUaJnPNj8WhmRcXxQ\",\n    \"profile_image_90\": \"http://EsnnrVxLwLuWdfuCoiGGsBKEguU.qlcE9AqhiBIqLD-yNNS8Zkq6oabzAAZT,.h.sFtfozwxm4GAaEI9aMnF2ag39y3TsV3,Hiir4\",\n    \"joined_at\": \"2004-08-08T19:19:03.383Z\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e288d371-6835-43a4-b526-88a0f9b8ed4f",
+              "name": "Organization not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "organizations",
+                    ":username",
+                    "users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "30"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "username",
+                      "description": "(Required) The username (slug) of the organization."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e94d5f3b-7bc6-4aa7-a62b-1fcbf2af678b",
+          "name": "Organization's Articles",
+          "request": {
+            "name": "Organization's Articles",
+            "description": {
+              "content": "Retrieves a list of articles published under the specified organization.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "organizations",
+                ":username",
+                "articles"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Pagination page number."
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "30",
+                  "description": "Number of items per page (max 1000, default 30)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "username",
+                  "description": "(Required) The username (slug) of the organization."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4bb53bd9-1cf0-4324-8bca-d7feee058c91",
+              "name": "A list of articles from the organization",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "organizations",
+                    ":username",
+                    "articles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "30"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "username",
+                      "description": "(Required) The username (slug) of the organization."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"type_of\": \"string\",\n    \"id\": 4686,\n    \"title\": \"string\",\n    \"description\": \"string\",\n    \"readable_publish_date\": \"string\",\n    \"slug\": \"string\",\n    \"path\": \"string\",\n    \"url\": \"http://UYshSBBFFAAGhOzq.iwrJjOobDrSHW\",\n    \"comments_count\": 7792,\n    \"public_reactions_count\": 9424,\n    \"collection_id\": 9417,\n    \"published_timestamp\": \"2015-03-10T13:01:28.887Z\",\n    \"positive_reactions_count\": 1019,\n    \"cover_image\": \"https://tGdHWtuKeWXQEhBPvFIVPOSbQoKb.thrtvy4PSdIksgBjsoFjLg6XxkDcCDCY-LhB\",\n    \"social_image\": \"https://PTQflYaNPKnU.zgYihhcdpZQd6JbJNcyZH4.+afNVFZCpnkc,kbTPh+L1\",\n    \"canonical_url\": \"http://shXWtbEtnUPisxjxdPqGhOOHUXNd.yhkuvgBPVmP2\",\n    \"created_at\": \"1983-06-24T12:42:01.792Z\",\n    \"reading_time_minutes\": 3775,\n    \"tag_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tags\": \"string\",\n    \"user\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"twitter_username\": \"string\",\n      \"github_username\": \"string\",\n      \"user_id\": 4851,\n      \"website_url\": \"https://WBJdPFAnqSeKojzeLxKqDwG.yfMi2crsoLNImosFTm8xH9zlEAnYWurQxJR+OAveLxX2WF9ynujNfO\",\n      \"location\": \"string\",\n      \"summary\": \"string\",\n      \"profile_image\": \"https://GQJChMPbwo.xrnPKAgb1BDyhlRy.TXlYc7ukRagE+cSKTcSqE6GThtJQHdZTKgV1+2Z\",\n      \"profile_image_90\": \"http://CoxxHoeeQ.amjxPGQsG6Xarw7hmHzoaa8GG\",\n      \"joined_at\": \"2001-08-22T02:00:50.552Z\"\n    },\n    \"organization\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"slug\": \"string\",\n      \"profile_image\": \"https://FnDtXMALJbOAljreRmuVdjrzuWpE.sevqFR.mwZ.7eEegnd,XmTm74IkAXeZbr8eD\",\n      \"profile_image_90\": \"http://ZVWHIl.etlxMc4TtSrJw6iLqJ5yHRcSQ0T.gJC3C-bwLsIeM4bHxCX8idBPNr3Ct5uZsUTuD\"\n    }\n  },\n  {\n    \"type_of\": \"string\",\n    \"id\": 8442,\n    \"title\": \"string\",\n    \"description\": \"string\",\n    \"readable_publish_date\": \"string\",\n    \"slug\": \"string\",\n    \"path\": \"string\",\n    \"url\": \"http://CGFOrPljyQAeoVhGTViJIlFny.kva\",\n    \"comments_count\": 8378,\n    \"public_reactions_count\": 7789,\n    \"collection_id\": 2712,\n    \"published_timestamp\": \"1989-03-23T03:27:32.046Z\",\n    \"positive_reactions_count\": 3906,\n    \"cover_image\": \"http://CyLGyBapNKTXTxUdsKUnqZUTesYC.ucquMUCbWfGVfMGGbhi2Lb0jlN0vI7crAOShQ,GGqJmlFKINJPYRHyJCiShFi+nJU5p06g\",\n    \"social_image\": \"https://LxtRSFrKkMb.qetSMYsrdPx0myN\",\n    \"canonical_url\": \"https://XLvEVymWyf.yvedaUOUkOv17IOWZGZT\",\n    \"created_at\": \"1965-09-06T08:11:50.792Z\",\n    \"reading_time_minutes\": 2131,\n    \"tag_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tags\": \"string\",\n    \"user\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"twitter_username\": \"string\",\n      \"github_username\": \"string\",\n      \"user_id\": 2334,\n      \"website_url\": \"https://RzOaLmiLJelpNhxjZqMCSLUryHxtCeP.cvnbkQUgkzNpP6\",\n      \"location\": \"string\",\n      \"summary\": \"string\",\n      \"profile_image\": \"http://Ap.uoHVe2znyDiLMdXaFSf\",\n      \"profile_image_90\": \"https://vKzpPhYywyKBalF.wyvxt5UpBaI1fJr.WbXWWP\",\n      \"joined_at\": \"1971-01-30T00:42:04.028Z\"\n    },\n    \"organization\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"slug\": \"string\",\n      \"profile_image\": \"https://vsfONIWtSmuC.vjUJqeln,kGwmy2fXe8V\",\n      \"profile_image_90\": \"http://VOPaw.vporG+Nvy8mFYLGiC4E7ZG2b-yFh3vc9RLtVaXNtA2CamBe6ICXx6T2+WBrgjKrMlKM\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d007448e-0d3f-428e-a32e-a1325203d690",
+              "name": "Organization not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "organizations",
+                    ":username",
+                    "articles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "30"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "username",
+                      "description": "(Required) The username (slug) of the organization."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://dev.to/api",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "d9d55dd9-134b-408d-8714-8eaf8adca944",
+    "name": "Dev.to Forem Articles Organizations API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Dev.to Forem API (v1) is a RESTful API that provides programmatic access to the Dev.to developer community platform, which is built on the open-source Forem framework. The API enables developers to create, read, update, and manage articles, comments, users, organizations, tags, followers, listings, podcast episodes, pages, display ads, reactions, reading lists, and webhooks. It uses API key authentication, requires an accept header of application/vnd.forem.api-v1+json, and returns JSON responses. Unauthenticated endpoints are CORS-enabled, making it possible to fetch public content directly from browser-based applications.\n\nContact Support:\n Name: Forem Support",
+      "type": "text/plain"
+    }
+  }
+}

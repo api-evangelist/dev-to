@@ -1,0 +1,2088 @@
+{
+  "item": [
+    {
+      "id": "15fffb45-b810-4a55-87c4-d490327ef30e",
+      "name": "Articles",
+      "description": {
+        "content": "Endpoints for creating, reading, updating, and managing articles (blog posts, discussions, help threads) on the platform.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "fcbf3282-0fc5-4c36-959c-4607eb051dd1",
+          "name": "Publish article",
+          "request": {
+            "name": "Publish article",
+            "description": {
+              "content": "Creates a new article. The authenticated user will be the author of the article. The article can be published immediately or saved as a draft by setting the published field.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "articles"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"article\": {\n    \"title\": \"<string>\",\n    \"body_markdown\": \"<string>\",\n    \"published\": \"<boolean>\",\n    \"series\": \"<string>\",\n    \"main_image\": \"<uri>\",\n    \"canonical_url\": \"<uri>\",\n    \"description\": \"<string>\",\n    \"tags\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"organization_id\": \"<integer>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e00e386e-2111-4106-a2f4-a318b93eec82",
+              "name": "Article created successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "articles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"article\": {\n    \"title\": \"<string>\",\n    \"body_markdown\": \"<string>\",\n    \"published\": \"<boolean>\",\n    \"series\": \"<string>\",\n    \"main_image\": \"<uri>\",\n    \"canonical_url\": \"<uri>\",\n    \"description\": \"<string>\",\n    \"tags\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"organization_id\": \"<integer>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type_of\": \"string\",\n  \"id\": 4538,\n  \"title\": \"string\",\n  \"description\": \"string\",\n  \"readable_publish_date\": \"string\",\n  \"slug\": \"string\",\n  \"path\": \"string\",\n  \"url\": \"http://xFwgAOxjVlXpEIVXICCkxZkfCScvbwN.fbQWwqouRe,uN1tOQ7zcn.PyH1ozB731J,42ZwcZN7mdfxUTlZ2X18K0X6jvMhgtok\",\n  \"comments_count\": 6830,\n  \"public_reactions_count\": 1219,\n  \"collection_id\": 247,\n  \"published_timestamp\": \"1954-02-25T11:28:55.656Z\",\n  \"positive_reactions_count\": 2544,\n  \"cover_image\": \"http://qVrbtsgZqJEAgKKJuisPzFXKODXsCpn.awlnTtBdOT6JYTNtusRiVm8ASmsENKbJXHirTw\",\n  \"social_image\": \"https://eZMSCXojZLzTkSWfmsxCsc.bdzHHd2SwvDwtWq4PwFYHvq8OJ1-OU2WqgeYtf.XtPakBVKEQr-dxrxln-.xmch3Of79W7mPq\",\n  \"canonical_url\": \"http://fdIRALMZtPvyjdImrVy.lifzpG\",\n  \"created_at\": \"1997-06-23T13:54:59.930Z\",\n  \"edited_at\": \"2004-11-13T23:49:00.587Z\",\n  \"crossposted_at\": \"1986-08-15T09:55:16.570Z\",\n  \"published_at\": \"2006-12-17T16:48:30.581Z\",\n  \"last_comment_at\": \"1998-11-03T22:46:06.858Z\",\n  \"reading_time_minutes\": 2670,\n  \"tag_list\": [\n    \"string\",\n    \"string\"\n  ],\n  \"tags\": \"string\",\n  \"body_html\": \"string\",\n  \"body_markdown\": \"string\",\n  \"user\": {\n    \"name\": \"string\",\n    \"username\": \"string\",\n    \"twitter_username\": \"string\",\n    \"github_username\": \"string\",\n    \"user_id\": 6663,\n    \"website_url\": \"https://XYXrYwlNwjjhBkDHY.jivxrw-XUkL3BaNfi9mnQIe,DVKlmX-ljT7.3Dg7t5xJTvPxH\",\n    \"location\": \"string\",\n    \"summary\": \"string\",\n    \"profile_image\": \"http://phqGApw.fonebSKjQ0Ejcn8s4Kr-7nD2aCNFTrXdRPbWV5nrAsiu\",\n    \"profile_image_90\": \"http://RyIYVqYMHioVgn.tdilZ.\",\n    \"joined_at\": \"1962-07-06T22:19:23.354Z\"\n  },\n  \"organization\": {\n    \"name\": \"string\",\n    \"username\": \"string\",\n    \"slug\": \"string\",\n    \"profile_image\": \"http://OoftkIMA.yrkJxBSXiBzpinDOk-KPbBWLSdUUeGgDkdT7etHfN3.P2BU30\",\n    \"profile_image_90\": \"https://pV.baoU7g,XEc+weF03I.Juaa4pp,uQkraYY.-A-kpM1D7-iIUId+yEQfSVWwuC2cr\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "16f3b311-5cb7-4865-a4bf-f3be81509336",
+              "name": "Unauthorized - invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "articles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"article\": {\n    \"title\": \"<string>\",\n    \"body_markdown\": \"<string>\",\n    \"published\": \"<boolean>\",\n    \"series\": \"<string>\",\n    \"main_image\": \"<uri>\",\n    \"canonical_url\": \"<uri>\",\n    \"description\": \"<string>\",\n    \"tags\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"organization_id\": \"<integer>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4c37191b-2028-4f5e-a0d4-e10e2903bfb1",
+              "name": "Unprocessable Entity - validation errors",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "articles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"article\": {\n    \"title\": \"<string>\",\n    \"body_markdown\": \"<string>\",\n    \"published\": \"<boolean>\",\n    \"series\": \"<string>\",\n    \"main_image\": \"<uri>\",\n    \"canonical_url\": \"<uri>\",\n    \"description\": \"<string>\",\n    \"tags\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"organization_id\": \"<integer>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bee938e2-e2e1-4e8c-841d-3102c14ea639",
+          "name": "Published articles",
+          "request": {
+            "name": "Published articles",
+            "description": {
+              "content": "Retrieves a list of published articles, ordered by descending popularity. This endpoint is publicly accessible and can be filtered by tag, username, state, and other parameters.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "articles"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Pagination page number."
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "30",
+                  "description": "Number of items per page (max 1000, default 30)."
+                },
+                {
+                  "disabled": false,
+                  "key": "tag",
+                  "value": "<string>",
+                  "description": "Filter articles by a single tag name."
+                },
+                {
+                  "disabled": false,
+                  "key": "tags",
+                  "value": "<string>",
+                  "description": "Filter articles by a comma-separated list of tag names (articles must have all specified tags)."
+                },
+                {
+                  "disabled": false,
+                  "key": "tags_exclude",
+                  "value": "<string>",
+                  "description": "Exclude articles with these comma-separated tag names."
+                },
+                {
+                  "disabled": false,
+                  "key": "username",
+                  "value": "<string>",
+                  "description": "Filter articles by the author's username."
+                },
+                {
+                  "disabled": false,
+                  "key": "state",
+                  "value": "<string>",
+                  "description": "Filter articles by state. Defaults to the most popular articles."
+                },
+                {
+                  "disabled": false,
+                  "key": "top",
+                  "value": "<integer>",
+                  "description": "Return the most popular articles published in the last N days."
+                },
+                {
+                  "disabled": false,
+                  "key": "collection_id",
+                  "value": "<integer>",
+                  "description": "Return articles belonging to the specified collection."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "31918c7a-939c-4823-9a01-9e39e1a3d41a",
+              "name": "A list of published articles",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "articles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "30"
+                    },
+                    {
+                      "key": "tag",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tags",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tags_exclude",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "username",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "state",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "top",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "collection_id",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"type_of\": \"string\",\n    \"id\": 5822,\n    \"title\": \"string\",\n    \"description\": \"string\",\n    \"readable_publish_date\": \"string\",\n    \"slug\": \"string\",\n    \"path\": \"string\",\n    \"url\": \"http://JPTHUppTDujntfRO.ctvZwn1\",\n    \"comments_count\": 4817,\n    \"public_reactions_count\": 2478,\n    \"collection_id\": 235,\n    \"published_timestamp\": \"2006-12-24T14:42:32.960Z\",\n    \"positive_reactions_count\": 1290,\n    \"cover_image\": \"http://qXbhTONdZr.vulcjCkVsw7MGU8eq+9rQquLqAFwWuszgTmEdftpoTLNutx70Je8qwV\",\n    \"social_image\": \"https://lKywTgOvWSujhRGpmtztzGhDcIcO.qfuaVme2jKFVtw9EPj.gSo2TlPvww53CS3ZXsGwbZp\",\n    \"canonical_url\": \"https://NnbxxYoZkBMwafy.gzcmFF.D2AIrpPfhAFVJ8c5R+THu0\",\n    \"created_at\": \"2001-01-07T07:09:56.437Z\",\n    \"reading_time_minutes\": 4865,\n    \"tag_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tags\": \"string\",\n    \"user\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"twitter_username\": \"string\",\n      \"github_username\": \"string\",\n      \"user_id\": 2981,\n      \"website_url\": \"https://RuRPLMioS.cjdps.kFKswgiaXdCW.3jZQbr0b-7HqGDI+RzR03eExO\",\n      \"location\": \"string\",\n      \"summary\": \"string\",\n      \"profile_image\": \"https://yHCuWFoYfvKBJdcNciKOq.ldHQjlraj83YuX36pUEA6j99wbd80jhyloBjXF,ZPlXr2oC2,Lkj\",\n      \"profile_image_90\": \"http://SjVLgPreCVdzeTjbYHZWtQnlZLGkrLqH.vpxsLoEGhMn,seso.UaHTk3wC06HdKiO9L69zgUQtQkwR,A\",\n      \"joined_at\": \"1995-01-27T18:25:42.951Z\"\n    },\n    \"organization\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"slug\": \"string\",\n      \"profile_image\": \"https://MuxUsoklhauxQrhFBDy.dfoywvHHcLWWfTBZk5avh6xVntnnrfbfgQWKdg\",\n      \"profile_image_90\": \"https://vtyEuMrGhezlvoqrpDNb.vtipVDLN7ujvtpeOC2gawn9LkcQnJdaFrK1o9gZ4vl6NS53\"\n    }\n  },\n  {\n    \"type_of\": \"string\",\n    \"id\": 8821,\n    \"title\": \"string\",\n    \"description\": \"string\",\n    \"readable_publish_date\": \"string\",\n    \"slug\": \"string\",\n    \"path\": \"string\",\n    \"url\": \"http://dWSOhjuizPjyVxskm.wroqFppcT7-\",\n    \"comments_count\": 169,\n    \"public_reactions_count\": 6464,\n    \"collection_id\": 7976,\n    \"published_timestamp\": \"2005-03-04T17:15:03.316Z\",\n    \"positive_reactions_count\": 827,\n    \"cover_image\": \"http://syLcJkUdL.jjfgECXvqHzvQ-atgkwygoaIyuYKA7GGIlfDoLogYkVIXC,\",\n    \"social_image\": \"https://khXyRDlEbwtaeUMisacNmfhbLjC.zndm610ZyzkLbWa9Dadndi+8rGa4ByzrebVIe1hqfpf0\",\n    \"canonical_url\": \"https://b.uxediiOwFqJFJgGW7A1ZRXfrdtmrfHAm1THfv\",\n    \"created_at\": \"1963-05-22T22:12:38.701Z\",\n    \"reading_time_minutes\": 7353,\n    \"tag_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tags\": \"string\",\n    \"user\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"twitter_username\": \"string\",\n      \"github_username\": \"string\",\n      \"user_id\": 6582,\n      \"website_url\": \"http://rQUZbltuRVpJvFdbSjdUiKyok.uawBd9Y1Urg6Ft8AloDy16Zeed6Y-XZ\",\n      \"location\": \"string\",\n      \"summary\": \"string\",\n      \"profile_image\": \"http://PlMPOBvCudndeaNteOPHE.jdkzOyZr75FxyYcRvePlxG6LIyqg.GWrFMF.,fLF5i6cJpziK.zkqv-xngp-iRgLXquoBuA5zRMeg2\",\n      \"profile_image_90\": \"http://hODPfwbAQMhRmqNvj.soakcdeYvEhp0C3Dn7PDuLCYZIoq3suFl,\",\n      \"joined_at\": \"1979-01-27T15:16:58.255Z\"\n    },\n    \"organization\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"slug\": \"string\",\n      \"profile_image\": \"https://vxrxrbFYbeBebrpriKJcFaT.chORwLZIRxNE\",\n      \"profile_image_90\": \"http://VFMFfGiwgFJKcTDPpuoXmbo.iveiaG4XOJ6N4rgtBJR+XVnygPyE8Cei0pMB,suI3.kBhZPtD,73N18r+iWJSJsJ+\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a555c5e7-2c2c-45b1-91e8-73dd162c0f83",
+          "name": "Published articles sorted by published date",
+          "request": {
+            "name": "Published articles sorted by published date",
+            "description": {
+              "content": "Retrieves a list of published articles sorted by publication date in descending order.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "articles",
+                "latest"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Pagination page number."
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "30",
+                  "description": "Number of items per page (max 1000, default 30)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "57fb9146-e034-4a5d-87c7-220d85a1f1eb",
+              "name": "A list of articles sorted by publication date",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "articles",
+                    "latest"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "30"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"type_of\": \"string\",\n    \"id\": 5822,\n    \"title\": \"string\",\n    \"description\": \"string\",\n    \"readable_publish_date\": \"string\",\n    \"slug\": \"string\",\n    \"path\": \"string\",\n    \"url\": \"http://JPTHUppTDujntfRO.ctvZwn1\",\n    \"comments_count\": 4817,\n    \"public_reactions_count\": 2478,\n    \"collection_id\": 235,\n    \"published_timestamp\": \"2006-12-24T14:42:32.960Z\",\n    \"positive_reactions_count\": 1290,\n    \"cover_image\": \"http://qXbhTONdZr.vulcjCkVsw7MGU8eq+9rQquLqAFwWuszgTmEdftpoTLNutx70Je8qwV\",\n    \"social_image\": \"https://lKywTgOvWSujhRGpmtztzGhDcIcO.qfuaVme2jKFVtw9EPj.gSo2TlPvww53CS3ZXsGwbZp\",\n    \"canonical_url\": \"https://NnbxxYoZkBMwafy.gzcmFF.D2AIrpPfhAFVJ8c5R+THu0\",\n    \"created_at\": \"2001-01-07T07:09:56.437Z\",\n    \"reading_time_minutes\": 4865,\n    \"tag_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tags\": \"string\",\n    \"user\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"twitter_username\": \"string\",\n      \"github_username\": \"string\",\n      \"user_id\": 2981,\n      \"website_url\": \"https://RuRPLMioS.cjdps.kFKswgiaXdCW.3jZQbr0b-7HqGDI+RzR03eExO\",\n      \"location\": \"string\",\n      \"summary\": \"string\",\n      \"profile_image\": \"https://yHCuWFoYfvKBJdcNciKOq.ldHQjlraj83YuX36pUEA6j99wbd80jhyloBjXF,ZPlXr2oC2,Lkj\",\n      \"profile_image_90\": \"http://SjVLgPreCVdzeTjbYHZWtQnlZLGkrLqH.vpxsLoEGhMn,seso.UaHTk3wC06HdKiO9L69zgUQtQkwR,A\",\n      \"joined_at\": \"1995-01-27T18:25:42.951Z\"\n    },\n    \"organization\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"slug\": \"string\",\n      \"profile_image\": \"https://MuxUsoklhauxQrhFBDy.dfoywvHHcLWWfTBZk5avh6xVntnnrfbfgQWKdg\",\n      \"profile_image_90\": \"https://vtyEuMrGhezlvoqrpDNb.vtipVDLN7ujvtpeOC2gawn9LkcQnJdaFrK1o9gZ4vl6NS53\"\n    }\n  },\n  {\n    \"type_of\": \"string\",\n    \"id\": 8821,\n    \"title\": \"string\",\n    \"description\": \"string\",\n    \"readable_publish_date\": \"string\",\n    \"slug\": \"string\",\n    \"path\": \"string\",\n    \"url\": \"http://dWSOhjuizPjyVxskm.wroqFppcT7-\",\n    \"comments_count\": 169,\n    \"public_reactions_count\": 6464,\n    \"collection_id\": 7976,\n    \"published_timestamp\": \"2005-03-04T17:15:03.316Z\",\n    \"positive_reactions_count\": 827,\n    \"cover_image\": \"http://syLcJkUdL.jjfgECXvqHzvQ-atgkwygoaIyuYKA7GGIlfDoLogYkVIXC,\",\n    \"social_image\": \"https://khXyRDlEbwtaeUMisacNmfhbLjC.zndm610ZyzkLbWa9Dadndi+8rGa4ByzrebVIe1hqfpf0\",\n    \"canonical_url\": \"https://b.uxediiOwFqJFJgGW7A1ZRXfrdtmrfHAm1THfv\",\n    \"created_at\": \"1963-05-22T22:12:38.701Z\",\n    \"reading_time_minutes\": 7353,\n    \"tag_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tags\": \"string\",\n    \"user\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"twitter_username\": \"string\",\n      \"github_username\": \"string\",\n      \"user_id\": 6582,\n      \"website_url\": \"http://rQUZbltuRVpJvFdbSjdUiKyok.uawBd9Y1Urg6Ft8AloDy16Zeed6Y-XZ\",\n      \"location\": \"string\",\n      \"summary\": \"string\",\n      \"profile_image\": \"http://PlMPOBvCudndeaNteOPHE.jdkzOyZr75FxyYcRvePlxG6LIyqg.GWrFMF.,fLF5i6cJpziK.zkqv-xngp-iRgLXquoBuA5zRMeg2\",\n      \"profile_image_90\": \"http://hODPfwbAQMhRmqNvj.soakcdeYvEhp0C3Dn7PDuLCYZIoq3suFl,\",\n      \"joined_at\": \"1979-01-27T15:16:58.255Z\"\n    },\n    \"organization\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"slug\": \"string\",\n      \"profile_image\": \"https://vxrxrbFYbeBebrpriKJcFaT.chORwLZIRxNE\",\n      \"profile_image_90\": \"http://VFMFfGiwgFJKcTDPpuoXmbo.iveiaG4XOJ6N4rgtBJR+XVnygPyE8Cei0pMB,suI3.kBhZPtD,73N18r+iWJSJsJ+\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c280e0e4-8487-402b-8f5d-34feafec11af",
+          "name": "Published article by id",
+          "request": {
+            "name": "Published article by id",
+            "description": {
+              "content": "Retrieves a single published article by its numeric ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "articles",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "id",
+                  "description": "(Required) The numeric ID of the article."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d1a2ac16-e1c0-483a-a36f-b0ddb9dbc25b",
+              "name": "The requested article",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "articles",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The numeric ID of the article."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type_of\": \"string\",\n  \"id\": 4538,\n  \"title\": \"string\",\n  \"description\": \"string\",\n  \"readable_publish_date\": \"string\",\n  \"slug\": \"string\",\n  \"path\": \"string\",\n  \"url\": \"http://xFwgAOxjVlXpEIVXICCkxZkfCScvbwN.fbQWwqouRe,uN1tOQ7zcn.PyH1ozB731J,42ZwcZN7mdfxUTlZ2X18K0X6jvMhgtok\",\n  \"comments_count\": 6830,\n  \"public_reactions_count\": 1219,\n  \"collection_id\": 247,\n  \"published_timestamp\": \"1954-02-25T11:28:55.656Z\",\n  \"positive_reactions_count\": 2544,\n  \"cover_image\": \"http://qVrbtsgZqJEAgKKJuisPzFXKODXsCpn.awlnTtBdOT6JYTNtusRiVm8ASmsENKbJXHirTw\",\n  \"social_image\": \"https://eZMSCXojZLzTkSWfmsxCsc.bdzHHd2SwvDwtWq4PwFYHvq8OJ1-OU2WqgeYtf.XtPakBVKEQr-dxrxln-.xmch3Of79W7mPq\",\n  \"canonical_url\": \"http://fdIRALMZtPvyjdImrVy.lifzpG\",\n  \"created_at\": \"1997-06-23T13:54:59.930Z\",\n  \"edited_at\": \"2004-11-13T23:49:00.587Z\",\n  \"crossposted_at\": \"1986-08-15T09:55:16.570Z\",\n  \"published_at\": \"2006-12-17T16:48:30.581Z\",\n  \"last_comment_at\": \"1998-11-03T22:46:06.858Z\",\n  \"reading_time_minutes\": 2670,\n  \"tag_list\": [\n    \"string\",\n    \"string\"\n  ],\n  \"tags\": \"string\",\n  \"body_html\": \"string\",\n  \"body_markdown\": \"string\",\n  \"user\": {\n    \"name\": \"string\",\n    \"username\": \"string\",\n    \"twitter_username\": \"string\",\n    \"github_username\": \"string\",\n    \"user_id\": 6663,\n    \"website_url\": \"https://XYXrYwlNwjjhBkDHY.jivxrw-XUkL3BaNfi9mnQIe,DVKlmX-ljT7.3Dg7t5xJTvPxH\",\n    \"location\": \"string\",\n    \"summary\": \"string\",\n    \"profile_image\": \"http://phqGApw.fonebSKjQ0Ejcn8s4Kr-7nD2aCNFTrXdRPbWV5nrAsiu\",\n    \"profile_image_90\": \"http://RyIYVqYMHioVgn.tdilZ.\",\n    \"joined_at\": \"1962-07-06T22:19:23.354Z\"\n  },\n  \"organization\": {\n    \"name\": \"string\",\n    \"username\": \"string\",\n    \"slug\": \"string\",\n    \"profile_image\": \"http://OoftkIMA.yrkJxBSXiBzpinDOk-KPbBWLSdUUeGgDkdT7etHfN3.P2BU30\",\n    \"profile_image_90\": \"https://pV.baoU7g,XEc+weF03I.Juaa4pp,uQkraYY.-A-kpM1D7-iIUId+yEQfSVWwuC2cr\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "979c4a05-4004-4f63-abee-30501a3911e4",
+              "name": "Article not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "articles",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The numeric ID of the article."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b739e6ac-f33c-4dfc-8f83-3e677e35b4df",
+          "name": "Update an article by id",
+          "request": {
+            "name": "Update an article by id",
+            "description": {
+              "content": "Updates an existing article. Only the article's author or an admin can update the article.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "articles",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "id",
+                  "description": "(Required) The numeric ID of the article."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"article\": {\n    \"title\": \"<string>\",\n    \"body_markdown\": \"<string>\",\n    \"published\": \"<boolean>\",\n    \"series\": \"<string>\",\n    \"main_image\": \"<uri>\",\n    \"canonical_url\": \"<uri>\",\n    \"description\": \"<string>\",\n    \"tags\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"organization_id\": \"<integer>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c40586eb-4a75-4ed9-ae68-8b22f26062ad",
+              "name": "Article updated successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "articles",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The numeric ID of the article."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"article\": {\n    \"title\": \"<string>\",\n    \"body_markdown\": \"<string>\",\n    \"published\": \"<boolean>\",\n    \"series\": \"<string>\",\n    \"main_image\": \"<uri>\",\n    \"canonical_url\": \"<uri>\",\n    \"description\": \"<string>\",\n    \"tags\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"organization_id\": \"<integer>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type_of\": \"string\",\n  \"id\": 4538,\n  \"title\": \"string\",\n  \"description\": \"string\",\n  \"readable_publish_date\": \"string\",\n  \"slug\": \"string\",\n  \"path\": \"string\",\n  \"url\": \"http://xFwgAOxjVlXpEIVXICCkxZkfCScvbwN.fbQWwqouRe,uN1tOQ7zcn.PyH1ozB731J,42ZwcZN7mdfxUTlZ2X18K0X6jvMhgtok\",\n  \"comments_count\": 6830,\n  \"public_reactions_count\": 1219,\n  \"collection_id\": 247,\n  \"published_timestamp\": \"1954-02-25T11:28:55.656Z\",\n  \"positive_reactions_count\": 2544,\n  \"cover_image\": \"http://qVrbtsgZqJEAgKKJuisPzFXKODXsCpn.awlnTtBdOT6JYTNtusRiVm8ASmsENKbJXHirTw\",\n  \"social_image\": \"https://eZMSCXojZLzTkSWfmsxCsc.bdzHHd2SwvDwtWq4PwFYHvq8OJ1-OU2WqgeYtf.XtPakBVKEQr-dxrxln-.xmch3Of79W7mPq\",\n  \"canonical_url\": \"http://fdIRALMZtPvyjdImrVy.lifzpG\",\n  \"created_at\": \"1997-06-23T13:54:59.930Z\",\n  \"edited_at\": \"2004-11-13T23:49:00.587Z\",\n  \"crossposted_at\": \"1986-08-15T09:55:16.570Z\",\n  \"published_at\": \"2006-12-17T16:48:30.581Z\",\n  \"last_comment_at\": \"1998-11-03T22:46:06.858Z\",\n  \"reading_time_minutes\": 2670,\n  \"tag_list\": [\n    \"string\",\n    \"string\"\n  ],\n  \"tags\": \"string\",\n  \"body_html\": \"string\",\n  \"body_markdown\": \"string\",\n  \"user\": {\n    \"name\": \"string\",\n    \"username\": \"string\",\n    \"twitter_username\": \"string\",\n    \"github_username\": \"string\",\n    \"user_id\": 6663,\n    \"website_url\": \"https://XYXrYwlNwjjhBkDHY.jivxrw-XUkL3BaNfi9mnQIe,DVKlmX-ljT7.3Dg7t5xJTvPxH\",\n    \"location\": \"string\",\n    \"summary\": \"string\",\n    \"profile_image\": \"http://phqGApw.fonebSKjQ0Ejcn8s4Kr-7nD2aCNFTrXdRPbWV5nrAsiu\",\n    \"profile_image_90\": \"http://RyIYVqYMHioVgn.tdilZ.\",\n    \"joined_at\": \"1962-07-06T22:19:23.354Z\"\n  },\n  \"organization\": {\n    \"name\": \"string\",\n    \"username\": \"string\",\n    \"slug\": \"string\",\n    \"profile_image\": \"http://OoftkIMA.yrkJxBSXiBzpinDOk-KPbBWLSdUUeGgDkdT7etHfN3.P2BU30\",\n    \"profile_image_90\": \"https://pV.baoU7g,XEc+weF03I.Juaa4pp,uQkraYY.-A-kpM1D7-iIUId+yEQfSVWwuC2cr\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "69f76398-be8b-4ee4-980c-12ac94aa919f",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "articles",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The numeric ID of the article."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"article\": {\n    \"title\": \"<string>\",\n    \"body_markdown\": \"<string>\",\n    \"published\": \"<boolean>\",\n    \"series\": \"<string>\",\n    \"main_image\": \"<uri>\",\n    \"canonical_url\": \"<uri>\",\n    \"description\": \"<string>\",\n    \"tags\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"organization_id\": \"<integer>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "1f6343c8-e1ee-4455-aba8-ad51822a779b",
+              "name": "Article not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "articles",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The numeric ID of the article."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"article\": {\n    \"title\": \"<string>\",\n    \"body_markdown\": \"<string>\",\n    \"published\": \"<boolean>\",\n    \"series\": \"<string>\",\n    \"main_image\": \"<uri>\",\n    \"canonical_url\": \"<uri>\",\n    \"description\": \"<string>\",\n    \"tags\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"organization_id\": \"<integer>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c5ffdb78-4689-434f-b8a2-bff7962235b7",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "articles",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The numeric ID of the article."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"article\": {\n    \"title\": \"<string>\",\n    \"body_markdown\": \"<string>\",\n    \"published\": \"<boolean>\",\n    \"series\": \"<string>\",\n    \"main_image\": \"<uri>\",\n    \"canonical_url\": \"<uri>\",\n    \"description\": \"<string>\",\n    \"tags\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"organization_id\": \"<integer>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e8ccb4c6-f6b1-4a13-a625-2df1e1acbda1",
+          "name": "Published article by path",
+          "request": {
+            "name": "Published article by path",
+            "description": {
+              "content": "Retrieves a single published article by the author's username and the article's slug.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "articles",
+                ":username",
+                ":slug"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "username",
+                  "description": "(Required) The username of the article's author."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "slug",
+                  "description": "(Required) The slug of the article."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "87422e8d-5329-4140-badc-87e0ac83a9fd",
+              "name": "The requested article",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "articles",
+                    ":username",
+                    ":slug"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "username",
+                      "description": "(Required) The username of the article's author."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "slug",
+                      "description": "(Required) The slug of the article."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type_of\": \"string\",\n  \"id\": 4538,\n  \"title\": \"string\",\n  \"description\": \"string\",\n  \"readable_publish_date\": \"string\",\n  \"slug\": \"string\",\n  \"path\": \"string\",\n  \"url\": \"http://xFwgAOxjVlXpEIVXICCkxZkfCScvbwN.fbQWwqouRe,uN1tOQ7zcn.PyH1ozB731J,42ZwcZN7mdfxUTlZ2X18K0X6jvMhgtok\",\n  \"comments_count\": 6830,\n  \"public_reactions_count\": 1219,\n  \"collection_id\": 247,\n  \"published_timestamp\": \"1954-02-25T11:28:55.656Z\",\n  \"positive_reactions_count\": 2544,\n  \"cover_image\": \"http://qVrbtsgZqJEAgKKJuisPzFXKODXsCpn.awlnTtBdOT6JYTNtusRiVm8ASmsENKbJXHirTw\",\n  \"social_image\": \"https://eZMSCXojZLzTkSWfmsxCsc.bdzHHd2SwvDwtWq4PwFYHvq8OJ1-OU2WqgeYtf.XtPakBVKEQr-dxrxln-.xmch3Of79W7mPq\",\n  \"canonical_url\": \"http://fdIRALMZtPvyjdImrVy.lifzpG\",\n  \"created_at\": \"1997-06-23T13:54:59.930Z\",\n  \"edited_at\": \"2004-11-13T23:49:00.587Z\",\n  \"crossposted_at\": \"1986-08-15T09:55:16.570Z\",\n  \"published_at\": \"2006-12-17T16:48:30.581Z\",\n  \"last_comment_at\": \"1998-11-03T22:46:06.858Z\",\n  \"reading_time_minutes\": 2670,\n  \"tag_list\": [\n    \"string\",\n    \"string\"\n  ],\n  \"tags\": \"string\",\n  \"body_html\": \"string\",\n  \"body_markdown\": \"string\",\n  \"user\": {\n    \"name\": \"string\",\n    \"username\": \"string\",\n    \"twitter_username\": \"string\",\n    \"github_username\": \"string\",\n    \"user_id\": 6663,\n    \"website_url\": \"https://XYXrYwlNwjjhBkDHY.jivxrw-XUkL3BaNfi9mnQIe,DVKlmX-ljT7.3Dg7t5xJTvPxH\",\n    \"location\": \"string\",\n    \"summary\": \"string\",\n    \"profile_image\": \"http://phqGApw.fonebSKjQ0Ejcn8s4Kr-7nD2aCNFTrXdRPbWV5nrAsiu\",\n    \"profile_image_90\": \"http://RyIYVqYMHioVgn.tdilZ.\",\n    \"joined_at\": \"1962-07-06T22:19:23.354Z\"\n  },\n  \"organization\": {\n    \"name\": \"string\",\n    \"username\": \"string\",\n    \"slug\": \"string\",\n    \"profile_image\": \"http://OoftkIMA.yrkJxBSXiBzpinDOk-KPbBWLSdUUeGgDkdT7etHfN3.P2BU30\",\n    \"profile_image_90\": \"https://pV.baoU7g,XEc+weF03I.Juaa4pp,uQkraYY.-A-kpM1D7-iIUId+yEQfSVWwuC2cr\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "090661df-7841-4c99-9b90-eca6b752fad5",
+              "name": "Article not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "articles",
+                    ":username",
+                    ":slug"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "username",
+                      "description": "(Required) The username of the article's author."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "slug",
+                      "description": "(Required) The slug of the article."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cce38954-b9ac-47dc-9b5b-eaef4467c499",
+          "name": "User's articles",
+          "request": {
+            "name": "User's articles",
+            "description": {
+              "content": "Retrieves all articles authored by the authenticated user.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "articles",
+                "me"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Pagination page number."
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "30",
+                  "description": "Number of items per page (max 1000, default 30)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "08183f65-a97f-4266-9baa-9e5c7b7e8897",
+              "name": "A list of the authenticated user's articles",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "articles",
+                    "me"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "30"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"type_of\": \"string\",\n    \"id\": 5822,\n    \"title\": \"string\",\n    \"description\": \"string\",\n    \"readable_publish_date\": \"string\",\n    \"slug\": \"string\",\n    \"path\": \"string\",\n    \"url\": \"http://JPTHUppTDujntfRO.ctvZwn1\",\n    \"comments_count\": 4817,\n    \"public_reactions_count\": 2478,\n    \"collection_id\": 235,\n    \"published_timestamp\": \"2006-12-24T14:42:32.960Z\",\n    \"positive_reactions_count\": 1290,\n    \"cover_image\": \"http://qXbhTONdZr.vulcjCkVsw7MGU8eq+9rQquLqAFwWuszgTmEdftpoTLNutx70Je8qwV\",\n    \"social_image\": \"https://lKywTgOvWSujhRGpmtztzGhDcIcO.qfuaVme2jKFVtw9EPj.gSo2TlPvww53CS3ZXsGwbZp\",\n    \"canonical_url\": \"https://NnbxxYoZkBMwafy.gzcmFF.D2AIrpPfhAFVJ8c5R+THu0\",\n    \"created_at\": \"2001-01-07T07:09:56.437Z\",\n    \"reading_time_minutes\": 4865,\n    \"tag_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tags\": \"string\",\n    \"user\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"twitter_username\": \"string\",\n      \"github_username\": \"string\",\n      \"user_id\": 2981,\n      \"website_url\": \"https://RuRPLMioS.cjdps.kFKswgiaXdCW.3jZQbr0b-7HqGDI+RzR03eExO\",\n      \"location\": \"string\",\n      \"summary\": \"string\",\n      \"profile_image\": \"https://yHCuWFoYfvKBJdcNciKOq.ldHQjlraj83YuX36pUEA6j99wbd80jhyloBjXF,ZPlXr2oC2,Lkj\",\n      \"profile_image_90\": \"http://SjVLgPreCVdzeTjbYHZWtQnlZLGkrLqH.vpxsLoEGhMn,seso.UaHTk3wC06HdKiO9L69zgUQtQkwR,A\",\n      \"joined_at\": \"1995-01-27T18:25:42.951Z\"\n    },\n    \"organization\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"slug\": \"string\",\n      \"profile_image\": \"https://MuxUsoklhauxQrhFBDy.dfoywvHHcLWWfTBZk5avh6xVntnnrfbfgQWKdg\",\n      \"profile_image_90\": \"https://vtyEuMrGhezlvoqrpDNb.vtipVDLN7ujvtpeOC2gawn9LkcQnJdaFrK1o9gZ4vl6NS53\"\n    }\n  },\n  {\n    \"type_of\": \"string\",\n    \"id\": 8821,\n    \"title\": \"string\",\n    \"description\": \"string\",\n    \"readable_publish_date\": \"string\",\n    \"slug\": \"string\",\n    \"path\": \"string\",\n    \"url\": \"http://dWSOhjuizPjyVxskm.wroqFppcT7-\",\n    \"comments_count\": 169,\n    \"public_reactions_count\": 6464,\n    \"collection_id\": 7976,\n    \"published_timestamp\": \"2005-03-04T17:15:03.316Z\",\n    \"positive_reactions_count\": 827,\n    \"cover_image\": \"http://syLcJkUdL.jjfgECXvqHzvQ-atgkwygoaIyuYKA7GGIlfDoLogYkVIXC,\",\n    \"social_image\": \"https://khXyRDlEbwtaeUMisacNmfhbLjC.zndm610ZyzkLbWa9Dadndi+8rGa4ByzrebVIe1hqfpf0\",\n    \"canonical_url\": \"https://b.uxediiOwFqJFJgGW7A1ZRXfrdtmrfHAm1THfv\",\n    \"created_at\": \"1963-05-22T22:12:38.701Z\",\n    \"reading_time_minutes\": 7353,\n    \"tag_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tags\": \"string\",\n    \"user\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"twitter_username\": \"string\",\n      \"github_username\": \"string\",\n      \"user_id\": 6582,\n      \"website_url\": \"http://rQUZbltuRVpJvFdbSjdUiKyok.uawBd9Y1Urg6Ft8AloDy16Zeed6Y-XZ\",\n      \"location\": \"string\",\n      \"summary\": \"string\",\n      \"profile_image\": \"http://PlMPOBvCudndeaNteOPHE.jdkzOyZr75FxyYcRvePlxG6LIyqg.GWrFMF.,fLF5i6cJpziK.zkqv-xngp-iRgLXquoBuA5zRMeg2\",\n      \"profile_image_90\": \"http://hODPfwbAQMhRmqNvj.soakcdeYvEhp0C3Dn7PDuLCYZIoq3suFl,\",\n      \"joined_at\": \"1979-01-27T15:16:58.255Z\"\n    },\n    \"organization\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"slug\": \"string\",\n      \"profile_image\": \"https://vxrxrbFYbeBebrpriKJcFaT.chORwLZIRxNE\",\n      \"profile_image_90\": \"http://VFMFfGiwgFJKcTDPpuoXmbo.iveiaG4XOJ6N4rgtBJR+XVnygPyE8Cei0pMB,suI3.kBhZPtD,73N18r+iWJSJsJ+\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e6cb2b5e-22bd-4a12-88a9-6b30eea2d563",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "articles",
+                    "me"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "30"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f3cb3e42-8f7d-4eb4-bd88-65cd2f3daac0",
+          "name": "User's published articles",
+          "request": {
+            "name": "User's published articles",
+            "description": {
+              "content": "Retrieves only published articles authored by the authenticated user.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "articles",
+                "me",
+                "published"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Pagination page number."
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "30",
+                  "description": "Number of items per page (max 1000, default 30)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "76497f43-0e5f-4e1e-9a9c-5c7b4dedf1e5",
+              "name": "A list of the authenticated user's published articles",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "articles",
+                    "me",
+                    "published"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "30"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"type_of\": \"string\",\n    \"id\": 5822,\n    \"title\": \"string\",\n    \"description\": \"string\",\n    \"readable_publish_date\": \"string\",\n    \"slug\": \"string\",\n    \"path\": \"string\",\n    \"url\": \"http://JPTHUppTDujntfRO.ctvZwn1\",\n    \"comments_count\": 4817,\n    \"public_reactions_count\": 2478,\n    \"collection_id\": 235,\n    \"published_timestamp\": \"2006-12-24T14:42:32.960Z\",\n    \"positive_reactions_count\": 1290,\n    \"cover_image\": \"http://qXbhTONdZr.vulcjCkVsw7MGU8eq+9rQquLqAFwWuszgTmEdftpoTLNutx70Je8qwV\",\n    \"social_image\": \"https://lKywTgOvWSujhRGpmtztzGhDcIcO.qfuaVme2jKFVtw9EPj.gSo2TlPvww53CS3ZXsGwbZp\",\n    \"canonical_url\": \"https://NnbxxYoZkBMwafy.gzcmFF.D2AIrpPfhAFVJ8c5R+THu0\",\n    \"created_at\": \"2001-01-07T07:09:56.437Z\",\n    \"reading_time_minutes\": 4865,\n    \"tag_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tags\": \"string\",\n    \"user\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"twitter_username\": \"string\",\n      \"github_username\": \"string\",\n      \"user_id\": 2981,\n      \"website_url\": \"https://RuRPLMioS.cjdps.kFKswgiaXdCW.3jZQbr0b-7HqGDI+RzR03eExO\",\n      \"location\": \"string\",\n      \"summary\": \"string\",\n      \"profile_image\": \"https://yHCuWFoYfvKBJdcNciKOq.ldHQjlraj83YuX36pUEA6j99wbd80jhyloBjXF,ZPlXr2oC2,Lkj\",\n      \"profile_image_90\": \"http://SjVLgPreCVdzeTjbYHZWtQnlZLGkrLqH.vpxsLoEGhMn,seso.UaHTk3wC06HdKiO9L69zgUQtQkwR,A\",\n      \"joined_at\": \"1995-01-27T18:25:42.951Z\"\n    },\n    \"organization\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"slug\": \"string\",\n      \"profile_image\": \"https://MuxUsoklhauxQrhFBDy.dfoywvHHcLWWfTBZk5avh6xVntnnrfbfgQWKdg\",\n      \"profile_image_90\": \"https://vtyEuMrGhezlvoqrpDNb.vtipVDLN7ujvtpeOC2gawn9LkcQnJdaFrK1o9gZ4vl6NS53\"\n    }\n  },\n  {\n    \"type_of\": \"string\",\n    \"id\": 8821,\n    \"title\": \"string\",\n    \"description\": \"string\",\n    \"readable_publish_date\": \"string\",\n    \"slug\": \"string\",\n    \"path\": \"string\",\n    \"url\": \"http://dWSOhjuizPjyVxskm.wroqFppcT7-\",\n    \"comments_count\": 169,\n    \"public_reactions_count\": 6464,\n    \"collection_id\": 7976,\n    \"published_timestamp\": \"2005-03-04T17:15:03.316Z\",\n    \"positive_reactions_count\": 827,\n    \"cover_image\": \"http://syLcJkUdL.jjfgECXvqHzvQ-atgkwygoaIyuYKA7GGIlfDoLogYkVIXC,\",\n    \"social_image\": \"https://khXyRDlEbwtaeUMisacNmfhbLjC.zndm610ZyzkLbWa9Dadndi+8rGa4ByzrebVIe1hqfpf0\",\n    \"canonical_url\": \"https://b.uxediiOwFqJFJgGW7A1ZRXfrdtmrfHAm1THfv\",\n    \"created_at\": \"1963-05-22T22:12:38.701Z\",\n    \"reading_time_minutes\": 7353,\n    \"tag_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tags\": \"string\",\n    \"user\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"twitter_username\": \"string\",\n      \"github_username\": \"string\",\n      \"user_id\": 6582,\n      \"website_url\": \"http://rQUZbltuRVpJvFdbSjdUiKyok.uawBd9Y1Urg6Ft8AloDy16Zeed6Y-XZ\",\n      \"location\": \"string\",\n      \"summary\": \"string\",\n      \"profile_image\": \"http://PlMPOBvCudndeaNteOPHE.jdkzOyZr75FxyYcRvePlxG6LIyqg.GWrFMF.,fLF5i6cJpziK.zkqv-xngp-iRgLXquoBuA5zRMeg2\",\n      \"profile_image_90\": \"http://hODPfwbAQMhRmqNvj.soakcdeYvEhp0C3Dn7PDuLCYZIoq3suFl,\",\n      \"joined_at\": \"1979-01-27T15:16:58.255Z\"\n    },\n    \"organization\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"slug\": \"string\",\n      \"profile_image\": \"https://vxrxrbFYbeBebrpriKJcFaT.chORwLZIRxNE\",\n      \"profile_image_90\": \"http://VFMFfGiwgFJKcTDPpuoXmbo.iveiaG4XOJ6N4rgtBJR+XVnygPyE8Cei0pMB,suI3.kBhZPtD,73N18r+iWJSJsJ+\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "70aca2e3-640d-4c35-9dd8-f3516161ce78",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "articles",
+                    "me",
+                    "published"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "30"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e1827ffc-de4d-405d-b664-9eeceba9eacc",
+          "name": "User's unpublished articles",
+          "request": {
+            "name": "User's unpublished articles",
+            "description": {
+              "content": "Retrieves only unpublished (draft) articles authored by the authenticated user.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "articles",
+                "me",
+                "unpublished"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Pagination page number."
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "30",
+                  "description": "Number of items per page (max 1000, default 30)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6d29eb3c-f8be-4695-8b97-dc8b92f7819d",
+              "name": "A list of the authenticated user's unpublished articles",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "articles",
+                    "me",
+                    "unpublished"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "30"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"type_of\": \"string\",\n    \"id\": 5822,\n    \"title\": \"string\",\n    \"description\": \"string\",\n    \"readable_publish_date\": \"string\",\n    \"slug\": \"string\",\n    \"path\": \"string\",\n    \"url\": \"http://JPTHUppTDujntfRO.ctvZwn1\",\n    \"comments_count\": 4817,\n    \"public_reactions_count\": 2478,\n    \"collection_id\": 235,\n    \"published_timestamp\": \"2006-12-24T14:42:32.960Z\",\n    \"positive_reactions_count\": 1290,\n    \"cover_image\": \"http://qXbhTONdZr.vulcjCkVsw7MGU8eq+9rQquLqAFwWuszgTmEdftpoTLNutx70Je8qwV\",\n    \"social_image\": \"https://lKywTgOvWSujhRGpmtztzGhDcIcO.qfuaVme2jKFVtw9EPj.gSo2TlPvww53CS3ZXsGwbZp\",\n    \"canonical_url\": \"https://NnbxxYoZkBMwafy.gzcmFF.D2AIrpPfhAFVJ8c5R+THu0\",\n    \"created_at\": \"2001-01-07T07:09:56.437Z\",\n    \"reading_time_minutes\": 4865,\n    \"tag_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tags\": \"string\",\n    \"user\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"twitter_username\": \"string\",\n      \"github_username\": \"string\",\n      \"user_id\": 2981,\n      \"website_url\": \"https://RuRPLMioS.cjdps.kFKswgiaXdCW.3jZQbr0b-7HqGDI+RzR03eExO\",\n      \"location\": \"string\",\n      \"summary\": \"string\",\n      \"profile_image\": \"https://yHCuWFoYfvKBJdcNciKOq.ldHQjlraj83YuX36pUEA6j99wbd80jhyloBjXF,ZPlXr2oC2,Lkj\",\n      \"profile_image_90\": \"http://SjVLgPreCVdzeTjbYHZWtQnlZLGkrLqH.vpxsLoEGhMn,seso.UaHTk3wC06HdKiO9L69zgUQtQkwR,A\",\n      \"joined_at\": \"1995-01-27T18:25:42.951Z\"\n    },\n    \"organization\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"slug\": \"string\",\n      \"profile_image\": \"https://MuxUsoklhauxQrhFBDy.dfoywvHHcLWWfTBZk5avh6xVntnnrfbfgQWKdg\",\n      \"profile_image_90\": \"https://vtyEuMrGhezlvoqrpDNb.vtipVDLN7ujvtpeOC2gawn9LkcQnJdaFrK1o9gZ4vl6NS53\"\n    }\n  },\n  {\n    \"type_of\": \"string\",\n    \"id\": 8821,\n    \"title\": \"string\",\n    \"description\": \"string\",\n    \"readable_publish_date\": \"string\",\n    \"slug\": \"string\",\n    \"path\": \"string\",\n    \"url\": \"http://dWSOhjuizPjyVxskm.wroqFppcT7-\",\n    \"comments_count\": 169,\n    \"public_reactions_count\": 6464,\n    \"collection_id\": 7976,\n    \"published_timestamp\": \"2005-03-04T17:15:03.316Z\",\n    \"positive_reactions_count\": 827,\n    \"cover_image\": \"http://syLcJkUdL.jjfgECXvqHzvQ-atgkwygoaIyuYKA7GGIlfDoLogYkVIXC,\",\n    \"social_image\": \"https://khXyRDlEbwtaeUMisacNmfhbLjC.zndm610ZyzkLbWa9Dadndi+8rGa4ByzrebVIe1hqfpf0\",\n    \"canonical_url\": \"https://b.uxediiOwFqJFJgGW7A1ZRXfrdtmrfHAm1THfv\",\n    \"created_at\": \"1963-05-22T22:12:38.701Z\",\n    \"reading_time_minutes\": 7353,\n    \"tag_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tags\": \"string\",\n    \"user\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"twitter_username\": \"string\",\n      \"github_username\": \"string\",\n      \"user_id\": 6582,\n      \"website_url\": \"http://rQUZbltuRVpJvFdbSjdUiKyok.uawBd9Y1Urg6Ft8AloDy16Zeed6Y-XZ\",\n      \"location\": \"string\",\n      \"summary\": \"string\",\n      \"profile_image\": \"http://PlMPOBvCudndeaNteOPHE.jdkzOyZr75FxyYcRvePlxG6LIyqg.GWrFMF.,fLF5i6cJpziK.zkqv-xngp-iRgLXquoBuA5zRMeg2\",\n      \"profile_image_90\": \"http://hODPfwbAQMhRmqNvj.soakcdeYvEhp0C3Dn7PDuLCYZIoq3suFl,\",\n      \"joined_at\": \"1979-01-27T15:16:58.255Z\"\n    },\n    \"organization\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"slug\": \"string\",\n      \"profile_image\": \"https://vxrxrbFYbeBebrpriKJcFaT.chORwLZIRxNE\",\n      \"profile_image_90\": \"http://VFMFfGiwgFJKcTDPpuoXmbo.iveiaG4XOJ6N4rgtBJR+XVnygPyE8Cei0pMB,suI3.kBhZPtD,73N18r+iWJSJsJ+\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4afba8eb-01dc-4ccc-92d7-c60bd7806755",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "articles",
+                    "me",
+                    "unpublished"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "30"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7a41653f-85fa-4dc1-9c76-47722464075e",
+          "name": "User's all articles",
+          "request": {
+            "name": "User's all articles",
+            "description": {
+              "content": "Retrieves all articles (both published and unpublished) authored by the authenticated user.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "articles",
+                "me",
+                "all"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Pagination page number."
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "30",
+                  "description": "Number of items per page (max 1000, default 30)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "009994da-90c4-41d1-9555-e5f0881be000",
+              "name": "A list of all the authenticated user's articles",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "articles",
+                    "me",
+                    "all"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "30"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"type_of\": \"string\",\n    \"id\": 5822,\n    \"title\": \"string\",\n    \"description\": \"string\",\n    \"readable_publish_date\": \"string\",\n    \"slug\": \"string\",\n    \"path\": \"string\",\n    \"url\": \"http://JPTHUppTDujntfRO.ctvZwn1\",\n    \"comments_count\": 4817,\n    \"public_reactions_count\": 2478,\n    \"collection_id\": 235,\n    \"published_timestamp\": \"2006-12-24T14:42:32.960Z\",\n    \"positive_reactions_count\": 1290,\n    \"cover_image\": \"http://qXbhTONdZr.vulcjCkVsw7MGU8eq+9rQquLqAFwWuszgTmEdftpoTLNutx70Je8qwV\",\n    \"social_image\": \"https://lKywTgOvWSujhRGpmtztzGhDcIcO.qfuaVme2jKFVtw9EPj.gSo2TlPvww53CS3ZXsGwbZp\",\n    \"canonical_url\": \"https://NnbxxYoZkBMwafy.gzcmFF.D2AIrpPfhAFVJ8c5R+THu0\",\n    \"created_at\": \"2001-01-07T07:09:56.437Z\",\n    \"reading_time_minutes\": 4865,\n    \"tag_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tags\": \"string\",\n    \"user\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"twitter_username\": \"string\",\n      \"github_username\": \"string\",\n      \"user_id\": 2981,\n      \"website_url\": \"https://RuRPLMioS.cjdps.kFKswgiaXdCW.3jZQbr0b-7HqGDI+RzR03eExO\",\n      \"location\": \"string\",\n      \"summary\": \"string\",\n      \"profile_image\": \"https://yHCuWFoYfvKBJdcNciKOq.ldHQjlraj83YuX36pUEA6j99wbd80jhyloBjXF,ZPlXr2oC2,Lkj\",\n      \"profile_image_90\": \"http://SjVLgPreCVdzeTjbYHZWtQnlZLGkrLqH.vpxsLoEGhMn,seso.UaHTk3wC06HdKiO9L69zgUQtQkwR,A\",\n      \"joined_at\": \"1995-01-27T18:25:42.951Z\"\n    },\n    \"organization\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"slug\": \"string\",\n      \"profile_image\": \"https://MuxUsoklhauxQrhFBDy.dfoywvHHcLWWfTBZk5avh6xVntnnrfbfgQWKdg\",\n      \"profile_image_90\": \"https://vtyEuMrGhezlvoqrpDNb.vtipVDLN7ujvtpeOC2gawn9LkcQnJdaFrK1o9gZ4vl6NS53\"\n    }\n  },\n  {\n    \"type_of\": \"string\",\n    \"id\": 8821,\n    \"title\": \"string\",\n    \"description\": \"string\",\n    \"readable_publish_date\": \"string\",\n    \"slug\": \"string\",\n    \"path\": \"string\",\n    \"url\": \"http://dWSOhjuizPjyVxskm.wroqFppcT7-\",\n    \"comments_count\": 169,\n    \"public_reactions_count\": 6464,\n    \"collection_id\": 7976,\n    \"published_timestamp\": \"2005-03-04T17:15:03.316Z\",\n    \"positive_reactions_count\": 827,\n    \"cover_image\": \"http://syLcJkUdL.jjfgECXvqHzvQ-atgkwygoaIyuYKA7GGIlfDoLogYkVIXC,\",\n    \"social_image\": \"https://khXyRDlEbwtaeUMisacNmfhbLjC.zndm610ZyzkLbWa9Dadndi+8rGa4ByzrebVIe1hqfpf0\",\n    \"canonical_url\": \"https://b.uxediiOwFqJFJgGW7A1ZRXfrdtmrfHAm1THfv\",\n    \"created_at\": \"1963-05-22T22:12:38.701Z\",\n    \"reading_time_minutes\": 7353,\n    \"tag_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tags\": \"string\",\n    \"user\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"twitter_username\": \"string\",\n      \"github_username\": \"string\",\n      \"user_id\": 6582,\n      \"website_url\": \"http://rQUZbltuRVpJvFdbSjdUiKyok.uawBd9Y1Urg6Ft8AloDy16Zeed6Y-XZ\",\n      \"location\": \"string\",\n      \"summary\": \"string\",\n      \"profile_image\": \"http://PlMPOBvCudndeaNteOPHE.jdkzOyZr75FxyYcRvePlxG6LIyqg.GWrFMF.,fLF5i6cJpziK.zkqv-xngp-iRgLXquoBuA5zRMeg2\",\n      \"profile_image_90\": \"http://hODPfwbAQMhRmqNvj.soakcdeYvEhp0C3Dn7PDuLCYZIoq3suFl,\",\n      \"joined_at\": \"1979-01-27T15:16:58.255Z\"\n    },\n    \"organization\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"slug\": \"string\",\n      \"profile_image\": \"https://vxrxrbFYbeBebrpriKJcFaT.chORwLZIRxNE\",\n      \"profile_image_90\": \"http://VFMFfGiwgFJKcTDPpuoXmbo.iveiaG4XOJ6N4rgtBJR+XVnygPyE8Cei0pMB,suI3.kBhZPtD,73N18r+iWJSJsJ+\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aeec430c-d100-4339-9faa-423a60b0ab2b",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "articles",
+                    "me",
+                    "all"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "30"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e4f84f01-5518-4dbb-aa46-de641e52f27d",
+          "name": "Unpublish an article",
+          "request": {
+            "name": "Unpublish an article",
+            "description": {
+              "content": "Unpublishes an article by its ID. Requires admin-level API key.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "articles",
+                ":id",
+                "unpublish"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "id",
+                  "description": "(Required) The numeric ID of the article."
+                }
+              ]
+            },
+            "method": "PUT",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a79f5c7e-ea78-4cb8-974c-4ae5d4f93c8f",
+              "name": "Article unpublished successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "articles",
+                    ":id",
+                    "unpublish"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The numeric ID of the article."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "315c955e-e19e-4a53-b897-33e16600f3dc",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "articles",
+                    ":id",
+                    "unpublish"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The numeric ID of the article."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "9154cb93-6576-4ac4-8d71-c53560c1b4d8",
+              "name": "Article not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "articles",
+                    ":id",
+                    "unpublish"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The numeric ID of the article."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "dbca9751-1aba-40ac-b5db-4a37d3ba08c1",
+          "name": "Organization's Articles",
+          "request": {
+            "name": "Organization's Articles",
+            "description": {
+              "content": "Retrieves a list of articles published under the specified organization.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "organizations",
+                ":username",
+                "articles"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Pagination page number."
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "30",
+                  "description": "Number of items per page (max 1000, default 30)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "username",
+                  "description": "(Required) The username (slug) of the organization."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "880f2f71-0a38-44ab-aab0-3912d3407aba",
+              "name": "A list of articles from the organization",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "organizations",
+                    ":username",
+                    "articles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "30"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "username",
+                      "description": "(Required) The username (slug) of the organization."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"type_of\": \"string\",\n    \"id\": 5822,\n    \"title\": \"string\",\n    \"description\": \"string\",\n    \"readable_publish_date\": \"string\",\n    \"slug\": \"string\",\n    \"path\": \"string\",\n    \"url\": \"http://JPTHUppTDujntfRO.ctvZwn1\",\n    \"comments_count\": 4817,\n    \"public_reactions_count\": 2478,\n    \"collection_id\": 235,\n    \"published_timestamp\": \"2006-12-24T14:42:32.960Z\",\n    \"positive_reactions_count\": 1290,\n    \"cover_image\": \"http://qXbhTONdZr.vulcjCkVsw7MGU8eq+9rQquLqAFwWuszgTmEdftpoTLNutx70Je8qwV\",\n    \"social_image\": \"https://lKywTgOvWSujhRGpmtztzGhDcIcO.qfuaVme2jKFVtw9EPj.gSo2TlPvww53CS3ZXsGwbZp\",\n    \"canonical_url\": \"https://NnbxxYoZkBMwafy.gzcmFF.D2AIrpPfhAFVJ8c5R+THu0\",\n    \"created_at\": \"2001-01-07T07:09:56.437Z\",\n    \"reading_time_minutes\": 4865,\n    \"tag_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tags\": \"string\",\n    \"user\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"twitter_username\": \"string\",\n      \"github_username\": \"string\",\n      \"user_id\": 2981,\n      \"website_url\": \"https://RuRPLMioS.cjdps.kFKswgiaXdCW.3jZQbr0b-7HqGDI+RzR03eExO\",\n      \"location\": \"string\",\n      \"summary\": \"string\",\n      \"profile_image\": \"https://yHCuWFoYfvKBJdcNciKOq.ldHQjlraj83YuX36pUEA6j99wbd80jhyloBjXF,ZPlXr2oC2,Lkj\",\n      \"profile_image_90\": \"http://SjVLgPreCVdzeTjbYHZWtQnlZLGkrLqH.vpxsLoEGhMn,seso.UaHTk3wC06HdKiO9L69zgUQtQkwR,A\",\n      \"joined_at\": \"1995-01-27T18:25:42.951Z\"\n    },\n    \"organization\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"slug\": \"string\",\n      \"profile_image\": \"https://MuxUsoklhauxQrhFBDy.dfoywvHHcLWWfTBZk5avh6xVntnnrfbfgQWKdg\",\n      \"profile_image_90\": \"https://vtyEuMrGhezlvoqrpDNb.vtipVDLN7ujvtpeOC2gawn9LkcQnJdaFrK1o9gZ4vl6NS53\"\n    }\n  },\n  {\n    \"type_of\": \"string\",\n    \"id\": 8821,\n    \"title\": \"string\",\n    \"description\": \"string\",\n    \"readable_publish_date\": \"string\",\n    \"slug\": \"string\",\n    \"path\": \"string\",\n    \"url\": \"http://dWSOhjuizPjyVxskm.wroqFppcT7-\",\n    \"comments_count\": 169,\n    \"public_reactions_count\": 6464,\n    \"collection_id\": 7976,\n    \"published_timestamp\": \"2005-03-04T17:15:03.316Z\",\n    \"positive_reactions_count\": 827,\n    \"cover_image\": \"http://syLcJkUdL.jjfgECXvqHzvQ-atgkwygoaIyuYKA7GGIlfDoLogYkVIXC,\",\n    \"social_image\": \"https://khXyRDlEbwtaeUMisacNmfhbLjC.zndm610ZyzkLbWa9Dadndi+8rGa4ByzrebVIe1hqfpf0\",\n    \"canonical_url\": \"https://b.uxediiOwFqJFJgGW7A1ZRXfrdtmrfHAm1THfv\",\n    \"created_at\": \"1963-05-22T22:12:38.701Z\",\n    \"reading_time_minutes\": 7353,\n    \"tag_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tags\": \"string\",\n    \"user\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"twitter_username\": \"string\",\n      \"github_username\": \"string\",\n      \"user_id\": 6582,\n      \"website_url\": \"http://rQUZbltuRVpJvFdbSjdUiKyok.uawBd9Y1Urg6Ft8AloDy16Zeed6Y-XZ\",\n      \"location\": \"string\",\n      \"summary\": \"string\",\n      \"profile_image\": \"http://PlMPOBvCudndeaNteOPHE.jdkzOyZr75FxyYcRvePlxG6LIyqg.GWrFMF.,fLF5i6cJpziK.zkqv-xngp-iRgLXquoBuA5zRMeg2\",\n      \"profile_image_90\": \"http://hODPfwbAQMhRmqNvj.soakcdeYvEhp0C3Dn7PDuLCYZIoq3suFl,\",\n      \"joined_at\": \"1979-01-27T15:16:58.255Z\"\n    },\n    \"organization\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"slug\": \"string\",\n      \"profile_image\": \"https://vxrxrbFYbeBebrpriKJcFaT.chORwLZIRxNE\",\n      \"profile_image_90\": \"http://VFMFfGiwgFJKcTDPpuoXmbo.iveiaG4XOJ6N4rgtBJR+XVnygPyE8Cei0pMB,suI3.kBhZPtD,73N18r+iWJSJsJ+\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "608c9aad-5225-4d28-b475-a58390f8562f",
+              "name": "Organization not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "organizations",
+                    ":username",
+                    "articles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "30"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "username",
+                      "description": "(Required) The username (slug) of the organization."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://dev.to/api",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "d430cca2-723e-4708-bc36-2bf6f3fcc999",
+    "name": "Dev.to Forem Articles API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Dev.to Forem API (v1) is a RESTful API that provides programmatic access to the Dev.to developer community platform, which is built on the open-source Forem framework. The API enables developers to create, read, update, and manage articles, comments, users, organizations, tags, followers, listings, podcast episodes, pages, display ads, reactions, reading lists, and webhooks. It uses API key authentication, requires an accept header of application/vnd.forem.api-v1+json, and returns JSON responses. Unauthenticated endpoints are CORS-enabled, making it possible to fetch public content directly from browser-based applications.\n\nContact Support:\n Name: Forem Support",
+      "type": "text/plain"
+    }
+  }
+}

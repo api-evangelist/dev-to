@@ -1,0 +1,70 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Dev.to Forem Articles Comments API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "api-key",
+      "value": "{{api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Comments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Comments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/comments",
+            "params": [
+              {
+                "name": "a_id",
+                "value": "",
+                "type": "query",
+                "description": "The article ID to retrieve comments for."
+              },
+              {
+                "name": "p_id",
+                "value": "",
+                "type": "query",
+                "description": "The podcast episode ID to retrieve comments for."
+              }
+            ]
+          },
+          "docs": "Retrieves all comments belonging to an article or podcast episode, returned as threaded conversations. Provide either a_id for articles or p_id for podcast episodes."
+        },
+        {
+          "info": {
+            "name": "Comment by id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/comments/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the comment."
+              }
+            ]
+          },
+          "docs": "Retrieves a single comment and its descendants by the comment ID."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

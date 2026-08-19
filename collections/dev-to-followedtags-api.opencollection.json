@@ -1,0 +1,37 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Dev.to Forem Articles FollowedTags API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "api-key",
+      "value": "{{api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "FollowedTags",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Followed Tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/follows/tags"
+          },
+          "docs": "Retrieves a list of tags followed by the authenticated user."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

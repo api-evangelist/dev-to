@@ -1,0 +1,45 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Dev.to Forem Articles ProfileImages API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "api-key",
+      "value": "{{api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "ProfileImages",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "A Users or organizations profile image",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://dev.to/api/profile_images/:username",
+            "params": [
+              {
+                "name": "username",
+                "value": "",
+                "type": "path",
+                "description": "The username of the user or organization."
+              }
+            ]
+          },
+          "docs": "Retrieves the profile image URL for a user or organization by username."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

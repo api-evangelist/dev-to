@@ -1,0 +1,214 @@
+{
+  "item": [
+    {
+      "id": "ef2f4c2f-aa7e-4bfe-b265-d28510bf7310",
+      "name": "Followers",
+      "description": {
+        "content": "Endpoints for retrieving followers of the authenticated user.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "18661d16-dead-4e61-b940-c458ba7788fc",
+          "name": "Followers",
+          "request": {
+            "name": "Followers",
+            "description": {
+              "content": "Retrieves a list of users who follow the authenticated user.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "followers",
+                "users"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Pagination page number."
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "30",
+                  "description": "Number of items per page (max 1000, default 30)."
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Sort order for followers."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7f5fb085-2fd9-4696-9866-26ee8ee62fc7",
+              "name": "A list of followers",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "followers",
+                    "users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "30"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"name\": \"string\",\n    \"username\": \"string\",\n    \"twitter_username\": \"string\",\n    \"github_username\": \"string\",\n    \"user_id\": 4676,\n    \"website_url\": \"http://DoDEPkfDaNBhYT.arq62D3FSsYrSsyqxvLH\",\n    \"location\": \"string\",\n    \"summary\": \"string\",\n    \"profile_image\": \"http://IXF.ryjdCgUOLXHE\",\n    \"profile_image_90\": \"http://sGpmcZeBgIPrAyNq.rnV89mCcrFLi5FznWFOk44VRW0q\",\n    \"joined_at\": \"1980-12-21T08:39:47.184Z\"\n  },\n  {\n    \"name\": \"string\",\n    \"username\": \"string\",\n    \"twitter_username\": \"string\",\n    \"github_username\": \"string\",\n    \"user_id\": 3187,\n    \"website_url\": \"https://RoCtokYQplwZtPU.gnhqpLlLGNUp93e\",\n    \"location\": \"string\",\n    \"summary\": \"string\",\n    \"profile_image\": \"https://tOMkwUCireLfbHIHpqEuGNnofICpkHKUK.xdegvofWMI-gcuTFejXhD.V+RBHZcOMth,6sPVEYtnBWx2KVvshAlVjb+LZGBHAqBNJD8kwA2qWqUe\",\n    \"profile_image_90\": \"http://IoZDrNNOYOELcm.fiinyC0qgeMwxiZxGMW2znccUsOujKcbnyOlQHMTDSUYlE6FwIEj,\",\n    \"joined_at\": \"2012-01-15T23:24:45.255Z\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c0d4181f-5047-4586-b883-b08a051e1ff0",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "followers",
+                    "users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "30"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://dev.to/api",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "228543a8-a9d9-443a-a7be-dc107207efb5",
+    "name": "Dev.to Forem Articles Followers API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Dev.to Forem API (v1) is a RESTful API that provides programmatic access to the Dev.to developer community platform, which is built on the open-source Forem framework. The API enables developers to create, read, update, and manage articles, comments, users, organizations, tags, followers, listings, podcast episodes, pages, display ads, reactions, reading lists, and webhooks. It uses API key authentication, requires an accept header of application/vnd.forem.api-v1+json, and returns JSON responses. Unauthenticated endpoints are CORS-enabled, making it possible to fetch public content directly from browser-based applications.\n\nContact Support:\n Name: Forem Support",
+      "type": "text/plain"
+    }
+  }
+}

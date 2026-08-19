@@ -1,0 +1,733 @@
+{
+  "item": [
+    {
+      "id": "67439efa-a67d-4216-98c4-e8f3123634e6",
+      "name": "Webhooks",
+      "description": {
+        "content": "Endpoints for creating, listing, retrieving, and deleting webhook subscriptions for real-time event notifications.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6d47324e-8965-4583-8c6b-52b0aecb1cdc",
+          "name": "Webhooks",
+          "request": {
+            "name": "Webhooks",
+            "description": {
+              "content": "Retrieves a list of webhook subscriptions for the authenticated user.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "webhooks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d282db29-b79c-4332-8512-0b55d7953b16",
+              "name": "A list of webhook subscriptions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"type_of\": \"string\",\n    \"id\": 6050,\n    \"source\": \"string\",\n    \"target_url\": \"https://bqMHPomBxIabCUFnALnTXWbyegLtH.bket03sixodXJr.ndpcmDzBaeG0rNz0CydioiOc-HQChXLh+Jz6y\",\n    \"events\": [\n      \"article_created\",\n      \"article_created\"\n    ],\n    \"created_at\": \"2010-03-04T10:22:13.091Z\",\n    \"user\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"twitter_username\": \"string\",\n      \"github_username\": \"string\",\n      \"user_id\": 4633,\n      \"website_url\": \"https://eMliTgArRDxWGIRuLjuLmdC.srin\",\n      \"location\": \"string\",\n      \"summary\": \"string\",\n      \"profile_image\": \"https://JDuXvFkEFaKvkS.qkrIuY1onskgFwuatr5+gARF8E7eLLKl1-a1.\",\n      \"profile_image_90\": \"https://YOlWaxPIlTOdbvrZwwMKf.cemthfsiio9djS3X6eYGUnnIs3LCoxLRpzwNbG8g\",\n      \"joined_at\": \"1969-12-17T11:14:26.872Z\"\n    }\n  },\n  {\n    \"type_of\": \"string\",\n    \"id\": 4083,\n    \"source\": \"string\",\n    \"target_url\": \"http://wsrOVKw.scjSKF0i.haIVhhGAqcoWbxpg1L0QnUhq\",\n    \"events\": [\n      \"article_created\",\n      \"article_updated\"\n    ],\n    \"created_at\": \"1998-06-07T14:55:38.889Z\",\n    \"user\": {\n      \"name\": \"string\",\n      \"username\": \"string\",\n      \"twitter_username\": \"string\",\n      \"github_username\": \"string\",\n      \"user_id\": 9473,\n      \"website_url\": \"http://MazzwhmXrASCyHljhVhredI.jzwP4IHeWeNgtFhw.vlQCGS\",\n      \"location\": \"string\",\n      \"summary\": \"string\",\n      \"profile_image\": \"https://WAsXQzlGEshEESmEEzwUqvFJiwL.urSfjlvNmbkBf\",\n      \"profile_image_90\": \"https://fQUFjTRPQekKJxcIZDOYdaSGq.zuhK2,pnzOw\",\n      \"joined_at\": \"1950-11-14T12:05:55.603Z\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "29bab361-d9c1-4ccc-909c-502a64fc214d",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d527a18d-8da5-4aab-8fe2-8b652ec0eb2e",
+          "name": "Create a webhook",
+          "request": {
+            "name": "Create a webhook",
+            "description": {
+              "content": "Creates a new webhook subscription. The webhook will receive HTTP POST callbacks at the specified target URL when subscribed events occur.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "webhooks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"webhook_endpoint\": {\n    \"target_url\": \"<uri>\",\n    \"source\": \"<string>\",\n    \"events\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "81b38318-61a8-4d60-bc3c-940ca58f8962",
+              "name": "Webhook created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"webhook_endpoint\": {\n    \"target_url\": \"<uri>\",\n    \"source\": \"<string>\",\n    \"events\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type_of\": \"string\",\n  \"id\": 6742,\n  \"source\": \"string\",\n  \"target_url\": \"https://zMkuplwlXKmZnpuaYeVzGThxJZ.huEnYV+18+oqhxAcsw++L7c2IYp832mKzPF1CXl7nxCsKgUcOK\",\n  \"events\": [\n    \"article_destroyed\",\n    \"article_updated\"\n  ],\n  \"created_at\": \"1970-11-27T07:36:11.790Z\",\n  \"user\": {\n    \"name\": \"string\",\n    \"username\": \"string\",\n    \"twitter_username\": \"string\",\n    \"github_username\": \"string\",\n    \"user_id\": 3927,\n    \"website_url\": \"http://DuoCSIXcnPcLDlIyoiVAMhIjsav.ateKYq9iMqEmO3U\",\n    \"location\": \"string\",\n    \"summary\": \"string\",\n    \"profile_image\": \"http://ibX.pxabYIW8SaKHthhidAyNdf01dbJpgZWIzCAFPPg2-vNScmuQksaoldM.ZtmEL-BBBVGAwZRw\",\n    \"profile_image_90\": \"https://bhTwmaiTiEtLYqKdXomVnbCTSdKqZTH.haDsfllvx2.zX\",\n    \"joined_at\": \"2013-09-18T20:11:54.925Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "557b2bc5-5f36-431b-ab52-04c7b17e16ea",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"webhook_endpoint\": {\n    \"target_url\": \"<uri>\",\n    \"source\": \"<string>\",\n    \"events\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "582f972d-6dc2-4048-b315-d420b8753e68",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"webhook_endpoint\": {\n    \"target_url\": \"<uri>\",\n    \"source\": \"<string>\",\n    \"events\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d5c9bb22-5e4e-4a3a-9e2c-8f10025d4060",
+          "name": "A webhook endpoint",
+          "request": {
+            "name": "A webhook endpoint",
+            "description": {
+              "content": "Retrieves a single webhook subscription by ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "webhooks",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "id",
+                  "description": "(Required) The ID of the webhook."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9200fd0f-db78-48f2-8e4a-0d9b2d0bca3e",
+              "name": "The requested webhook",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The ID of the webhook."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type_of\": \"string\",\n  \"id\": 6742,\n  \"source\": \"string\",\n  \"target_url\": \"https://zMkuplwlXKmZnpuaYeVzGThxJZ.huEnYV+18+oqhxAcsw++L7c2IYp832mKzPF1CXl7nxCsKgUcOK\",\n  \"events\": [\n    \"article_destroyed\",\n    \"article_updated\"\n  ],\n  \"created_at\": \"1970-11-27T07:36:11.790Z\",\n  \"user\": {\n    \"name\": \"string\",\n    \"username\": \"string\",\n    \"twitter_username\": \"string\",\n    \"github_username\": \"string\",\n    \"user_id\": 3927,\n    \"website_url\": \"http://DuoCSIXcnPcLDlIyoiVAMhIjsav.ateKYq9iMqEmO3U\",\n    \"location\": \"string\",\n    \"summary\": \"string\",\n    \"profile_image\": \"http://ibX.pxabYIW8SaKHthhidAyNdf01dbJpgZWIzCAFPPg2-vNScmuQksaoldM.ZtmEL-BBBVGAwZRw\",\n    \"profile_image_90\": \"https://bhTwmaiTiEtLYqKdXomVnbCTSdKqZTH.haDsfllvx2.zX\",\n    \"joined_at\": \"2013-09-18T20:11:54.925Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fd029838-9c8d-4f61-b92b-e28d4cf5fcd6",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The ID of the webhook."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "40e5ebd7-6055-4b80-a88e-807a0fefc60c",
+              "name": "Webhook not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The ID of the webhook."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "31e62775-8913-401f-b86b-e16fd041ce07",
+          "name": "Delete a webhook endpoint",
+          "request": {
+            "name": "Delete a webhook endpoint",
+            "description": {
+              "content": "Deletes a webhook subscription by ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "webhooks",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "id",
+                  "description": "(Required) The ID of the webhook."
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9e0f4f91-fe0a-4978-8a44-e887a53d3a29",
+              "name": "Webhook deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The ID of the webhook."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "d92b1396-1c56-4812-9810-09fe9a85eb23",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The ID of the webhook."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "61104062-1edc-4a8c-a875-f4e63559c0d1",
+              "name": "Webhook not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The ID of the webhook."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://dev.to/api",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "979bf6d2-e096-4808-b638-73735fb37a5d",
+    "name": "Dev.to Forem Articles Webhooks API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Dev.to Forem API (v1) is a RESTful API that provides programmatic access to the Dev.to developer community platform, which is built on the open-source Forem framework. The API enables developers to create, read, update, and manage articles, comments, users, organizations, tags, followers, listings, podcast episodes, pages, display ads, reactions, reading lists, and webhooks. It uses API key authentication, requires an accept header of application/vnd.forem.api-v1+json, and returns JSON responses. Unauthenticated endpoints are CORS-enabled, making it possible to fetch public content directly from browser-based applications.\n\nContact Support:\n Name: Forem Support",
+      "type": "text/plain"
+    }
+  }
+}
