@@ -5,9 +5,14 @@
       "source": "https://dev.to/feed/devteam",
       "feed_url": "https://dev.to/feed/devteam",
       "title": "DEV Community: The DEV Team",
-      "saved": 3
+      "saved": 3,
+      "nature": "undetermined",
+      "nature_basis": null
     }
   ],
   "fetched": "2026-08-30T22:05:13Z",
-  "post_count": 54
+  "post_count": 54,
+  "feed_nature": "undetermined",
+  "feed_nature_basis": null,
+  "feed_nature_note": "Whether these posts are the vendor publishing or its support community, decided on the URL path grammar of the saved posts -- not the hostname, which carries both on Khoros, and not author diversity, which flags large vendor blogs as forums. 'undetermined' means undetermined."
 }

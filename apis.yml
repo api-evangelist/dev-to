@@ -88,7 +88,7 @@ apis:
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
   tags:
-  - DisplayAds
+  - Display Ads
   tags_raw:
   - DisplayAds
   properties:
