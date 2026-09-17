@@ -83,33 +83,6 @@ apis:
     url: openapi/dev-to-comments-api-openapi.yml
   - type: Documentation
     url: https://developers.forem.com/api/v1
-- aid: dev-to:dev-to-displayads-api
-  name: dev-to DisplayAds API
-  description: >-
-    Endpoints for managing display advertisements on the platform. Requires admin-level API key.
-  humanURL: https://developers.forem.com/api/v1
-  baseURL: https://dev.to/api
-  tags:
-  - Display Ads
-  tags_raw:
-  - DisplayAds
-  properties:
-  - type: OpenAPI
-    url: openapi/dev-to-displayads-api-openapi.yml
-  - type: Documentation
-    url: https://developers.forem.com/api/v1
-- aid: dev-to:dev-to-followedtags-api
-  name: dev-to FollowedTags API
-  description: Endpoints for retrieving the tags followed by the authenticated user.
-  humanURL: https://developers.forem.com/api/v1
-  baseURL: https://dev.to/api
-  tags:
-  - FollowedTags
-  properties:
-  - type: OpenAPI
-    url: openapi/dev-to-followedtags-api-openapi.yml
-  - type: Documentation
-    url: https://developers.forem.com/api/v1
 - aid: dev-to:dev-to-followers-api
   name: dev-to Followers API
   description: Endpoints for retrieving followers of the authenticated user.
@@ -148,30 +121,6 @@ apis:
     url: openapi/dev-to-pages-api-openapi.yml
   - type: Documentation
     url: https://developers.forem.com/api/v1
-- aid: dev-to:dev-to-podcastepisodes-api
-  name: dev-to PodcastEpisodes API
-  description: Endpoints for retrieving published podcast episodes.
-  humanURL: https://developers.forem.com/api/v1
-  baseURL: https://dev.to/api
-  tags:
-  - PodcastEpisodes
-  properties:
-  - type: OpenAPI
-    url: openapi/dev-to-podcastepisodes-api-openapi.yml
-  - type: Documentation
-    url: https://developers.forem.com/api/v1
-- aid: dev-to:dev-to-profileimages-api
-  name: dev-to ProfileImages API
-  description: Endpoints for retrieving profile images of users and organizations.
-  humanURL: https://developers.forem.com/api/v1
-  baseURL: https://dev.to/api
-  tags:
-  - ProfileImages
-  properties:
-  - type: OpenAPI
-    url: openapi/dev-to-profileimages-api-openapi.yml
-  - type: Documentation
-    url: https://developers.forem.com/api/v1
 - aid: dev-to:dev-to-reactions-api
   name: dev-to Reactions API
   description: Endpoints for creating and toggling reactions on articles, comments, and users.
@@ -182,18 +131,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/dev-to-reactions-api-openapi.yml
-  - type: Documentation
-    url: https://developers.forem.com/api/v1
-- aid: dev-to:dev-to-readinglist-api
-  name: dev-to ReadingList API
-  description: Endpoints for retrieving the authenticated user's reading list.
-  humanURL: https://developers.forem.com/api/v1
-  baseURL: https://dev.to/api
-  tags:
-  - ReadingList
-  properties:
-  - type: OpenAPI
-    url: openapi/dev-to-readinglist-api-openapi.yml
   - type: Documentation
     url: https://developers.forem.com/api/v1
 - aid: dev-to:dev-to-tags-api
@@ -236,6 +173,67 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/dev-to-webhooks-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:dev-to-display-ads-api
+  name: Dev To Display Ads API
+  description: >-
+    Endpoints for managing display advertisements on the platform. Requires admin-level API key.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - Display Ads
+  properties:
+  - type: OpenAPI
+    url: openapi/dev-to-display-ads-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:dev-to-followed-tags-api
+  name: Dev To Followed Tags API
+  description: Endpoints for retrieving the tags followed by the authenticated user.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - Followed Tags
+  properties:
+  - type: OpenAPI
+    url: openapi/dev-to-followed-tags-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:dev-to-podcast-episodes-api
+  name: Dev To Podcast Episodes API
+  description: Endpoints for retrieving published podcast episodes.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - Podcast Episodes
+  properties:
+  - type: OpenAPI
+    url: openapi/dev-to-podcast-episodes-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:dev-to-profile-images-api
+  name: Dev To profile images API
+  description: Endpoints for retrieving profile images of users and organizations.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - profile images
+  properties:
+  - type: OpenAPI
+    url: openapi/dev-to-profile-images-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:dev-to-reading-list-api
+  name: Dev To Reading List API
+  description: Endpoints for retrieving the authenticated user's reading list.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - Reading List
+  properties:
+  - type: OpenAPI
+    url: openapi/dev-to-reading-list-api-openapi.yml
   - type: Documentation
     url: https://developers.forem.com/api/v1
 common:
