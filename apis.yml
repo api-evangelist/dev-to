@@ -49,6 +49,8 @@ apis:
     type: Documentation
   - url: asyncapi/dev-to-webhooks-asyncapi.yml
     type: AsyncAPI
+  - url: asyncapi/dev-to-webhooks-asyncapi.yml
+    type: Webhooks
   description: >-
     The Dev.to Webhooks API allows developers to subscribe to real-time notifications for events occurring
     on the Dev.to platform. By creating webhook subscriptions, applications can receive HTTP callbacks
@@ -67,6 +69,8 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/dev-to-articles-api-openapi.yml
+  - type: Overlay
+    url: overlays/dev-to-articles-api-overlay.yaml
   - type: Documentation
     url: https://developers.forem.com/api/v1
 - aid: dev-to:dev-to-comments-api
@@ -81,6 +85,8 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/dev-to-comments-api-openapi.yml
+  - type: Overlay
+    url: overlays/dev-to-comments-api-overlay.yaml
   - type: Documentation
     url: https://developers.forem.com/api/v1
 - aid: dev-to:dev-to-followers-api
@@ -93,6 +99,8 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/dev-to-followers-api-openapi.yml
+  - type: Overlay
+    url: overlays/dev-to-followers-api-overlay.yaml
   - type: Documentation
     url: https://developers.forem.com/api/v1
 - aid: dev-to:dev-to-organizations-api
@@ -107,6 +115,8 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/dev-to-organizations-api-openapi.yml
+  - type: Overlay
+    url: overlays/dev-to-organizations-api-overlay.yaml
   - type: Documentation
     url: https://developers.forem.com/api/v1
 - aid: dev-to:dev-to-pages-api
@@ -119,6 +129,8 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/dev-to-pages-api-openapi.yml
+  - type: Overlay
+    url: overlays/dev-to-pages-api-overlay.yaml
   - type: Documentation
     url: https://developers.forem.com/api/v1
 - aid: dev-to:dev-to-reactions-api
@@ -131,6 +143,8 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/dev-to-reactions-api-openapi.yml
+  - type: Overlay
+    url: overlays/dev-to-reactions-api-overlay.yaml
   - type: Documentation
     url: https://developers.forem.com/api/v1
 - aid: dev-to:dev-to-tags-api
@@ -143,6 +157,8 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/dev-to-tags-api-openapi.yml
+  - type: Overlay
+    url: overlays/dev-to-tags-api-overlay.yaml
   - type: Documentation
     url: https://developers.forem.com/api/v1
 - aid: dev-to:dev-to-users-api
@@ -157,6 +173,8 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/dev-to-users-api-openapi.yml
+  - type: Overlay
+    url: overlays/dev-to-users-api-overlay.yaml
   - type: Documentation
     url: https://developers.forem.com/api/v1
 - aid: dev-to:dev-to-webhooks-api
@@ -173,6 +191,8 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/dev-to-webhooks-api-openapi.yml
+  - type: Overlay
+    url: overlays/dev-to-webhooks-api-overlay.yaml
   - type: Documentation
     url: https://developers.forem.com/api/v1
 - aid: dev-to:dev-to-display-ads-api
@@ -186,6 +206,8 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/dev-to-display-ads-api-openapi.yml
+  - type: Overlay
+    url: overlays/dev-to-display-ads-api-overlay.yaml
   - type: Documentation
     url: https://developers.forem.com/api/v1
 - aid: dev-to:dev-to-followed-tags-api
@@ -198,6 +220,8 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/dev-to-followed-tags-api-openapi.yml
+  - type: Overlay
+    url: overlays/dev-to-followed-tags-api-overlay.yaml
   - type: Documentation
     url: https://developers.forem.com/api/v1
 - aid: dev-to:dev-to-podcast-episodes-api
@@ -210,6 +234,8 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/dev-to-podcast-episodes-api-openapi.yml
+  - type: Overlay
+    url: overlays/dev-to-podcast-episodes-api-overlay.yaml
   - type: Documentation
     url: https://developers.forem.com/api/v1
 - aid: dev-to:dev-to-profile-images-api
@@ -218,10 +244,14 @@ apis:
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
   tags:
+  - ProfileImages
+  tags_raw:
   - profile images
   properties:
   - type: OpenAPI
     url: openapi/dev-to-profile-images-api-openapi.yml
+  - type: Overlay
+    url: overlays/dev-to-profile-images-api-overlay.yaml
   - type: Documentation
     url: https://developers.forem.com/api/v1
 - aid: dev-to:dev-to-reading-list-api
@@ -230,10 +260,14 @@ apis:
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
   tags:
+  - ReadingList
+  tags_raw:
   - Reading List
   properties:
   - type: OpenAPI
     url: openapi/dev-to-reading-list-api-openapi.yml
+  - type: Overlay
+    url: overlays/dev-to-reading-list-api-overlay.yaml
   - type: Documentation
     url: https://developers.forem.com/api/v1
 common:
@@ -253,9 +287,86 @@ common:
     url: json-schema/dev-to-article-schema.json
   - type: Blog
     url: https://dev.to/feed/devteam
-modified: '2026-05-19'
+  - type: Website
+    url: https://dev.to
+  - type: DeveloperPortal
+    url: https://developers.forem.com
+  - type: Documentation
+    url: https://developers.forem.com/api
+  - type: APIReference
+    url: https://developers.forem.com/api/v1
+  - type: Support
+    url: https://dev.to/contact
+  - type: TermsOfService
+    url: https://dev.to/terms
+  - type: PrivacyPolicy
+    url: https://dev.to/privacy
+  - type: SignUp
+    url: https://dev.to/enter
+  - type: StatusPage
+    url: https://status.dev.to
+  - type: Deprecation
+    url: lifecycle/dev-to-lifecycle.yml
+  - type: Lifecycle
+    url: lifecycle/dev-to-lifecycle.yml
+  - type: Security
+    url: https://dev.to/security
+  - type: VulnerabilityDisclosure
+    url: security/dev-to-vulnerability-disclosure.yml
+  - type: LLMsTxt
+    url: llms/dev-to-llms.txt
+  - type: WellKnown
+    url: well-known/dev-to-well-known.yml
+  - type: Packages
+    url: packages/dev-to-packages.yml
+  - type: SDKs
+    url: packages/dev-to-packages.yml
+  - type: Conventions
+    url: conventions/dev-to-conventions.yml
+  - type: Idempotency
+    url: conventions/dev-to-conventions.yml
+  - type: ErrorCatalog
+    url: errors/dev-to-problem-types.yml
+  - type: Conformance
+    url: conformance/dev-to-conformance.yml
+  - type: DataModel
+    url: data-model/dev-to-data-model.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+  - type: RateLimits
+    url: rate-limits/dev-to-rate-limits.yml
+  - type: Plans
+    url: plans/dev-to-plans-pricing.yml
+tags:
+  - Developer Community
+  - Content
+  - Publishing
+  - Social
+  - Blogging
+  - Open-Source
+  - Articles
+  - Webhook
+tags_raw:
+  - Developer Community
+  - Content
+  - Publishing
+  - Social
+  - Blogging
+  - Open Source
+  - Articles
+  - Webhooks
+created: '2026-05-03'
+maintainers:
+  - FN: Kin Lane
+    email: info@apievangelist.com
+modified: '2026-09-17'
 description: >-
   Access Forem articles, users and other resources via API. For a real-world example of Forem in action, check out
   [DEV](https://www.dev.to). All endpoints can be accessed with the 'api-key' header and a accept header, but some of
   them are accessible publicly without authentication. Dates and date times, unless otherwise specified, must be in the
   [RFC 3339](https://tools.ietf.org/html/rfc3339) format.
+x-enrichment:
+  date: '2026-09-17'
+  status: enriched
+  artifacts_added: 30
+  pass: local-v3
