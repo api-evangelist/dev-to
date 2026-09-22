@@ -1,4 +1,4 @@
-name: Dev To
+name: DEV Community
 aid: dev-to
 deliveryModel:
   model: unknown
@@ -57,126 +57,6 @@ apis:
     when specific events happen, such as new articles being published. This enables event-driven integrations
     and automation workflows that respond immediately to activity on the platform without the need to
     continuously poll the REST API for changes.
-- aid: dev-to:dev-to-articles-api
-  name: dev-to Articles API
-  description: >-
-    Endpoints for creating, reading, updating, and managing articles (blog posts, discussions, help threads)
-    on the platform.
-  humanURL: https://developers.forem.com/api/v1
-  baseURL: https://dev.to/api
-  tags:
-  - Articles
-  properties:
-  - type: OpenAPI
-    url: openapi/dev-to-articles-api-openapi.yml
-  - type: Overlay
-    url: overlays/dev-to-articles-api-overlay.yaml
-  - type: Documentation
-    url: https://developers.forem.com/api/v1
-- aid: dev-to:dev-to-comments-api
-  name: dev-to Comments API
-  description: >-
-    Endpoints for retrieving comments on articles and podcast episodes, including threaded conversation
-    views.
-  humanURL: https://developers.forem.com/api/v1
-  baseURL: https://dev.to/api
-  tags:
-  - Comments
-  properties:
-  - type: OpenAPI
-    url: openapi/dev-to-comments-api-openapi.yml
-  - type: Overlay
-    url: overlays/dev-to-comments-api-overlay.yaml
-  - type: Documentation
-    url: https://developers.forem.com/api/v1
-- aid: dev-to:dev-to-followers-api
-  name: dev-to Followers API
-  description: Endpoints for retrieving followers of the authenticated user.
-  humanURL: https://developers.forem.com/api/v1
-  baseURL: https://dev.to/api
-  tags:
-  - Followers
-  properties:
-  - type: OpenAPI
-    url: openapi/dev-to-followers-api-openapi.yml
-  - type: Overlay
-    url: overlays/dev-to-followers-api-overlay.yaml
-  - type: Documentation
-    url: https://developers.forem.com/api/v1
-- aid: dev-to:dev-to-organizations-api
-  name: dev-to Organizations API
-  description: Endpoints for retrieving organization details, members, and articles.
-  humanURL: https://developers.forem.com/api/v1
-  baseURL: https://dev.to/api
-  tags:
-  - Organization
-  tags_raw:
-  - Organizations
-  properties:
-  - type: OpenAPI
-    url: openapi/dev-to-organizations-api-openapi.yml
-  - type: Overlay
-    url: overlays/dev-to-organizations-api-overlay.yaml
-  - type: Documentation
-    url: https://developers.forem.com/api/v1
-- aid: dev-to:dev-to-pages-api
-  name: dev-to Pages API
-  description: Endpoints for managing static pages on the platform. Requires admin-level API key.
-  humanURL: https://developers.forem.com/api/v1
-  baseURL: https://dev.to/api
-  tags:
-  - Pages
-  properties:
-  - type: OpenAPI
-    url: openapi/dev-to-pages-api-openapi.yml
-  - type: Overlay
-    url: overlays/dev-to-pages-api-overlay.yaml
-  - type: Documentation
-    url: https://developers.forem.com/api/v1
-- aid: dev-to:dev-to-reactions-api
-  name: dev-to Reactions API
-  description: Endpoints for creating and toggling reactions on articles, comments, and users.
-  humanURL: https://developers.forem.com/api/v1
-  baseURL: https://dev.to/api
-  tags:
-  - Reactions
-  properties:
-  - type: OpenAPI
-    url: openapi/dev-to-reactions-api-openapi.yml
-  - type: Overlay
-    url: overlays/dev-to-reactions-api-overlay.yaml
-  - type: Documentation
-    url: https://developers.forem.com/api/v1
-- aid: dev-to:dev-to-tags-api
-  name: dev-to Tags API
-  description: The Tags API from dev-to — 1 operation(s) for tags.
-  humanURL: https://developers.forem.com/api/v1
-  baseURL: https://dev.to/api
-  tags:
-  - Tags
-  properties:
-  - type: OpenAPI
-    url: openapi/dev-to-tags-api-openapi.yml
-  - type: Overlay
-    url: overlays/dev-to-tags-api-overlay.yaml
-  - type: Documentation
-    url: https://developers.forem.com/api/v1
-- aid: dev-to:dev-to-users-api
-  name: dev-to Users API
-  description: Endpoints for retrieving user profiles and managing user accounts.
-  humanURL: https://developers.forem.com/api/v1
-  baseURL: https://dev.to/api
-  tags:
-  - User
-  tags_raw:
-  - Users
-  properties:
-  - type: OpenAPI
-    url: openapi/dev-to-users-api-openapi.yml
-  - type: Overlay
-    url: overlays/dev-to-users-api-overlay.yaml
-  - type: Documentation
-    url: https://developers.forem.com/api/v1
 - aid: dev-to:dev-to-webhooks-api
   name: dev-to Webhooks API
   description: >-
@@ -196,7 +76,7 @@ apis:
   - type: Documentation
     url: https://developers.forem.com/api/v1
 - aid: dev-to:dev-to-display-ads-api
-  name: Dev To Display Ads API
+  name: DEV Community Display Ads API
   description: >-
     Endpoints for managing display advertisements on the platform. Requires admin-level API key.
   humanURL: https://developers.forem.com/api/v1
@@ -210,37 +90,135 @@ apis:
     url: overlays/dev-to-display-ads-api-overlay.yaml
   - type: Documentation
     url: https://developers.forem.com/api/v1
-- aid: dev-to:dev-to-followed-tags-api
-  name: Dev To Followed Tags API
-  description: Endpoints for retrieving the tags followed by the authenticated user.
+- aid: dev-to:devto-agent-sessions-api
+  name: DEV Community agent_sessions API
+  description: The agent_sessions API from DEV Community — 2 operation(s) for agent_sessions.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - Agent Sessions
+  tags_raw:
+  - agent_sessions
+  properties:
+  - type: OpenAPI
+    url: openapi/devto-agent-sessions-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:devto-articles-api
+  name: DEV Community articles API
+  description: The articles API from DEV Community — 22 operation(s) for articles.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - Articles
+  tags_raw:
+  - articles
+  properties:
+  - type: OpenAPI
+    url: openapi/devto-articles-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:devto-billboards-api
+  name: DEV Community billboards API
+  description: The billboards API from DEV Community — 3 operation(s) for billboards.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - Billboards
+  tags_raw:
+  - billboards
+  properties:
+  - type: OpenAPI
+    url: openapi/devto-billboards-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:devto-comments-api
+  name: DEV Community comments API
+  description: The comments API from DEV Community — 4 operation(s) for comments.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - Comments
+  tags_raw:
+  - comments
+  properties:
+  - type: OpenAPI
+    url: openapi/devto-comments-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:devto-followed-tags-api
+  name: DEV Community followed_tags API
+  description: The followed_tags API from DEV Community — 2 operation(s) for followed_tags.
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
   tags:
   - Followed Tags
+  tags_raw:
+  - followed_tags
   properties:
   - type: OpenAPI
-    url: openapi/dev-to-followed-tags-api-openapi.yml
-  - type: Overlay
-    url: overlays/dev-to-followed-tags-api-overlay.yaml
+    url: openapi/devto-followed-tags-api-openapi.yml
   - type: Documentation
     url: https://developers.forem.com/api/v1
-- aid: dev-to:dev-to-podcast-episodes-api
-  name: Dev To Podcast Episodes API
-  description: Endpoints for retrieving published podcast episodes.
+- aid: dev-to:devto-followers-api
+  name: DEV Community followers API
+  description: The followers API from DEV Community — 2 operation(s) for followers.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - Followers
+  tags_raw:
+  - followers
+  properties:
+  - type: OpenAPI
+    url: openapi/devto-followers-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:devto-organizations-api
+  name: DEV Community organizations API
+  description: The organizations API from DEV Community — 8 operation(s) for organizations.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - Organization
+  tags_raw:
+  - organizations
+  properties:
+  - type: OpenAPI
+    url: openapi/devto-organizations-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:devto-pages-api
+  name: DEV Community pages API
+  description: The pages API from DEV Community — 4 operation(s) for pages.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - Pages
+  tags_raw:
+  - pages
+  properties:
+  - type: OpenAPI
+    url: openapi/devto-pages-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:devto-podcast-episodes-api
+  name: DEV Community podcast_episodes API
+  description: The podcast_episodes API from DEV Community — 2 operation(s) for podcast_episodes.
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
   tags:
   - Podcast Episodes
+  tags_raw:
+  - podcast_episodes
   properties:
   - type: OpenAPI
-    url: openapi/dev-to-podcast-episodes-api-openapi.yml
-  - type: Overlay
-    url: overlays/dev-to-podcast-episodes-api-overlay.yaml
+    url: openapi/devto-podcast-episodes-api-openapi.yml
   - type: Documentation
     url: https://developers.forem.com/api/v1
-- aid: dev-to:dev-to-profile-images-api
-  name: Dev To profile images API
-  description: Endpoints for retrieving profile images of users and organizations.
+- aid: dev-to:devto-profile-images-api
+  name: DEV Community profile images API
+  description: The profile images API from DEV Community — 2 operation(s) for profile images.
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
   tags:
@@ -249,14 +227,110 @@ apis:
   - profile images
   properties:
   - type: OpenAPI
-    url: openapi/dev-to-profile-images-api-openapi.yml
-  - type: Overlay
-    url: overlays/dev-to-profile-images-api-overlay.yaml
+    url: openapi/devto-profile-images-api-openapi.yml
   - type: Documentation
     url: https://developers.forem.com/api/v1
-- aid: dev-to:dev-to-reading-list-api
-  name: Dev To Reading List API
-  description: Endpoints for retrieving the authenticated user's reading list.
+- aid: dev-to:devto-reactions-api
+  name: DEV Community reactions API
+  description: The reactions API from DEV Community — 4 operation(s) for reactions.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - Reactions
+  tags_raw:
+  - reactions
+  properties:
+  - type: OpenAPI
+    url: openapi/devto-reactions-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:devto-segments-api
+  name: DEV Community segments API
+  description: The segments API from DEV Community — 5 operation(s) for segments.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - Segments
+  tags_raw:
+  - segments
+  properties:
+  - type: OpenAPI
+    url: openapi/devto-segments-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:devto-surveys-api
+  name: DEV Community surveys API
+  description: The surveys API from DEV Community — 4 operation(s) for surveys.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - Surveys
+  tags_raw:
+  - surveys
+  properties:
+  - type: OpenAPI
+    url: openapi/devto-surveys-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:devto-tags-api
+  name: DEV Community tags API
+  description: The tags API from DEV Community — 4 operation(s) for tags.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - Tags
+  tags_raw:
+  - tags
+  properties:
+  - type: OpenAPI
+    url: openapi/devto-tags-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:devto-trends-api
+  name: DEV Community trends API
+  description: The trends API from DEV Community — 3 operation(s) for trends.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - Trends
+  tags_raw:
+  - trends
+  properties:
+  - type: OpenAPI
+    url: openapi/devto-trends-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:devto-users-api
+  name: DEV Community users API
+  description: The users API from DEV Community — 23 operation(s) for users.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - User
+  tags_raw:
+  - users
+  properties:
+  - type: OpenAPI
+    url: openapi/devto-users-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:devto-videos-api
+  name: DEV Community videos API
+  description: The videos API from DEV Community — 2 operation(s) for videos.
+  humanURL: https://developers.forem.com/api/v1
+  baseURL: https://dev.to/api
+  tags:
+  - Video
+  tags_raw:
+  - videos
+  properties:
+  - type: OpenAPI
+    url: openapi/devto-videos-api-openapi.yml
+  - type: Documentation
+    url: https://developers.forem.com/api/v1
+- aid: dev-to:devto-reading-list-api
+  name: DEV Community Reading List API
+  description: The Reading List API from DEV Community — 2 operation(s) for reading list.
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
   tags:
@@ -265,9 +339,7 @@ apis:
   - Reading List
   properties:
   - type: OpenAPI
-    url: openapi/dev-to-reading-list-api-openapi.yml
-  - type: Overlay
-    url: overlays/dev-to-reading-list-api-overlay.yaml
+    url: openapi/devto-reading-list-api-openapi.yml
   - type: Documentation
     url: https://developers.forem.com/api/v1
 common:
