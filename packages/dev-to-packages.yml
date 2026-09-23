@@ -1,0 +1,79 @@
+generated: '2026-09-17'
+method: searched
+source: https://github.com/orgs/forem/repositories + registry.npmjs.org, rubygems.org, pypi.org metadata endpoints
+summary:
+  official: 3
+  community: 2
+  registries:
+  - rubygems
+  - github-releases
+  - npm
+  - pypi
+packages:
+- name: forem-ruby
+  language: Ruby
+  registry: rubygems
+  official: true
+  url: https://rubygems.org/gems/forem-ruby
+  repository: https://github.com/forem/forem-ruby
+  version: 0.1.0.beta6
+  published: '2026-08-26'
+  note: First-party Ruby client, published by the Forem org and authored "Forem". Self-described as "modeled after
+    stripe-ruby patterns"; README labels it 0.1-alpha with breaking changes expected between minor versions. Actively
+    maintained — repo last pushed 2026-09-06.
+- name: ForemWebView-android
+  language: Kotlin
+  registry: github-releases
+  official: true
+  url: https://github.com/forem/ForemWebView-android
+  repository: https://github.com/forem/ForemWebView-android
+  version: 1.0.17
+  published: '2023-02-23'
+  note: First-party "Forem core interface SDK for Android" — an embeddable WebView wrapper, not a REST client. No
+    Maven Central coordinates published; releases are GitHub tags only. Last release 2023-02-23 and last repo push
+    2023-11-15, so it trails the API it fronts by roughly three years.
+- name: ForemWebView-ios
+  language: Swift
+  registry: github-releases
+  official: true
+  url: https://github.com/forem/ForemWebView-ios
+  repository: https://github.com/forem/ForemWebView-ios
+  version: null
+  published: null
+  note: First-party "Forem core interface SDK" for iOS. No CocoaPods/SPM registry entry was found and no tagged
+    release metadata was retrievable, so version is recorded null rather than guessed — checked, nothing to record.
+- name: dev-to-js
+  language: JavaScript
+  registry: npm
+  official: false
+  url: https://www.npmjs.com/package/dev-to-js
+  repository: https://github.com/ilyamkin/dev-to-js
+  version: 0.1.2
+  published: '2021-04-22'
+  note: Community client by ilyamkin, not Forem. Last published 2021-04-22 — five years stale against the current
+    V1 surface.
+- name: devto
+  language: Python
+  registry: pypi
+  official: false
+  url: https://pypi.org/project/devto/
+  version: 0.1.3
+  published: null
+  note: Community Python client for "the Forem API V1" by a third-party author (aahnik). PyPI metadata carries no
+    home_page or project_urls, so the release date could not be read from the registry record and is recorded null.
+not_found:
+- registry: npm
+  query: '@forem/* scoped packages'
+  result: none published
+- registry: npm
+  query: forem
+  result: name reserved, version 0.0.0, "Reserved [WIP]" — not a client library
+- registry: rubygems
+  query: forem
+  result: unrelated 2011 Rails forum engine, version 0.0.1 — not this company
+- registry: pypi
+  query: forem
+  result: third-party package by an unrelated author
+note: Forem ships exactly one real first-party REST client (forem-ruby) plus two mobile WebView interface SDKs.
+  There is no official JavaScript, Python, Go, Java or .NET client for an API with 139 operations; the JS and Python
+  options in the wild are community packages last touched in 2021.

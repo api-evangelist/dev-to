@@ -1,0 +1,909 @@
+openapi: 3.2.0
+info:
+  title: Devto Organizations API
+  version: 1.0.0
+  description: 'Operations tagged organizations across 2 of this provider''s published API definitions: openapi.json, openapi.yaml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://dev.to/api
+  description: Production server
+security:
+- api-key: []
+tags:
+- name: Organizations
+paths:
+  /api/organizations/{username}:
+    get:
+      summary: An organization (by username)
+      tags:
+      - Organizations
+      security: []
+      description: This endpoint allows the client to retrieve a single organization by their username
+      operationId: getOrganization
+      parameters:
+      - name: username
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An Organization
+          content:
+            application/json:
+              example:
+                type_of: organization
+                id: 568
+                username: org12
+                name: Bartoletti-Dicki
+                summary: Tattooed gastropub cleanse tofu small batch franzen farm-to-table retro. Flannel whatever mustache hella pug shabby chic master.
+                twitter_username: org4787
+                github_username: org1607
+                url: http://torp.test/zack_sauer
+                location: null
+                tech_stack: null
+                tag_line: null
+                story: null
+                joined_at: '2026-05-28T18:45:24Z'
+                profile_image: /uploads/organization/profile_image/568/37584a82-a0bf-41f8-9807-871b71df211c.png
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Organization'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/organizations/{organization_id_or_username}/users:
+    get:
+      summary: Organization's users
+      tags:
+      - Organizations
+      security: []
+      description: 'This endpoint allows the client to retrieve a list of users belonging to the organization
+
+
+        It supports pagination, each page will contain `30` users by default.'
+      operationId: getOrgUsers
+      parameters:
+      - name: organization_id_or_username
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '200':
+          description: An Organization's users (with ID)
+          content:
+            application/json:
+              example:
+              - type_of: user
+                id: 4199
+                username: username151
+                name: Maria "Mario" \:/ Pfeffer
+                twitter_username: twitter151
+                github_username: github151
+                summary: null
+                location: null
+                website_url: null
+                joined_at: May 28, 2026
+                profile_image: /uploads/user/profile_image/4199/a36085cc-b1c4-4228-a351-a650ba7f4d44.jpeg
+              - type_of: user
+                id: 4200
+                username: username152
+                name: Tiara "Ebony" \:/ Watsica
+                twitter_username: twitter152
+                github_username: github152
+                summary: null
+                location: null
+                website_url: null
+                joined_at: May 28, 2026
+                profile_image: /uploads/user/profile_image/4200/48796775-4796-4190-ae77-5eb3d3819e6d.jpeg
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/organizations/{organization_id_or_username}/articles:
+    get:
+      summary: Organization's Articles
+      tags:
+      - Organizations
+      security: []
+      description: 'This endpoint allows the client to retrieve a list of Articles belonging to the organization
+
+
+        It supports pagination, each page will contain `30` users by default.'
+      operationId: getOrgArticles
+      parameters:
+      - name: organization_id_or_username
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '200':
+          description: An Organization's Articles (with ID)
+          content:
+            application/json:
+              example:
+              - type_of: article
+                id: 2258
+                title: Whats Become of Waring26
+                description: Intelligentsia wes anderson pitchfork. Ramps single-origin coffee park kombucha vhs thundercats....
+                readable_publish_date: May 28
+                slug: whats-become-of-waring26-1010
+                path: /org18/whats-become-of-waring26-1010
+                url: http://forem.test/org18/whats-become-of-waring26-1010
+                comments_count: 0
+                public_reactions_count: 0
+                collection_id: null
+                published_timestamp: '2026-05-28T18:45:25Z'
+                language: en
+                subforem_id: null
+                positive_reactions_count: 0
+                cover_image: http://forem.test/assets/38-3b0c46cc0d5367229799d282c99b2c42f33501201cac1ceb5c643f9ee11f06c6.png
+                social_image: http://forem.test/assets/38-3b0c46cc0d5367229799d282c99b2c42f33501201cac1ceb5c643f9ee11f06c6.png
+                canonical_url: http://forem.test/org18/whats-become-of-waring26-1010
+                created_at: '2026-05-28T18:45:25Z'
+                edited_at: null
+                crossposted_at: null
+                published_at: '2026-05-28T18:45:25Z'
+                last_comment_at: '2026-05-28T18:45:25Z'
+                reading_time_minutes: 1
+                tag_list:
+                - javascript
+                - html
+                - discuss
+                tags: javascript, html, discuss
+                user:
+                  name: Jeremy "Arlena" \:/ Hintz
+                  username: username162
+                  twitter_username: twitter162
+                  github_username: github162
+                  user_id: 4210
+                  website_url: null
+                  profile_image: /uploads/user/profile_image/4210/cd03365d-5604-4d37-a2e1-62a537710192.jpeg
+                  profile_image_90: /uploads/user/profile_image/4210/cd03365d-5604-4d37-a2e1-62a537710192.jpeg
+                organization:
+                  name: Marquardt-Von
+                  username: org18
+                  slug: org18
+                  profile_image: /uploads/organization/profile_image/574/a6c694a7-f32f-45cc-974f-5aa18eca3eac.png
+                  profile_image_90: /uploads/organization/profile_image/574/a6c694a7-f32f-45cc-974f-5aa18eca3eac.png
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/organizations:
+    get:
+      summary: Organizations
+      tags:
+      - Organizations
+      security: []
+      description: 'This endpoint allows the client to retrieve a list of Dev organizations.
+
+
+        It supports pagination, each page will contain 10 tags by default.'
+      operationId: getOrganizations
+      parameters:
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam10to1000'
+      responses:
+        '200':
+          description: A list of all organizations
+          content:
+            application/json:
+              example:
+              - id: 576
+                name: Kuphal Inc
+                profile_image:
+                  url: /uploads/organization/profile_image/576/0c9dc328-e6c9-4dba-af45-700d5196da17.png
+                slug: org20
+                summary: Keffiyeh synth hashtag cold-pressed stumptown readymade. Microdosing drinking semiotics salvia gluten-free synth slow-carb tousled. Try-hard selvage ha
+                tag_line: null
+                url: http://sipes.test/janiece_greenholt
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Organization'
+    post:
+      summary: Create an Organization
+      tags:
+      - Organizations
+      description: 'This endpoint allows the client to create an organization with the provided parameters.
+
+        It requires a token from a user with `admin` privileges.'
+      operationId: createOrganization
+      parameters: []
+      responses:
+        '201':
+          description: Successful
+          content:
+            application/json:
+              example:
+                id: 579
+                name: New Test Org
+                profile_image: uploads/organization/profile_image/1/400x400.jpg
+                slug: org10001
+                summary: a newly created test org
+                tag_line: a test org's tagline
+                url: https://testorg.io
+        '401':
+          description: Unauthorized
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              example:
+                error: 'Validation failed: Name can''t be blank, Profile image can''t be blank, Slug can''t be blank'
+                status: 422
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Organization'
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/organizations/{id}:
+    get:
+      summary: An organization (by id)
+      tags:
+      - Organizations
+      security: []
+      description: This endpoint allows the client to retrieve a single organization by their id
+      operationId: getOrganizationById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: An Organization
+          content:
+            application/json:
+              example:
+                type_of: organization
+                id: 577
+                username: org21
+                name: Emmerich, Schamberger and Hand
+                summary: Keffiyeh tote bag craft beer. Park jean shorts helvetica butcher.
+                twitter_username: org8161
+                github_username: org5019
+                url: http://sanford-hintz.test/jose
+                location: null
+                tech_stack: null
+                tag_line: null
+                story: null
+                joined_at: '2026-05-28T18:45:26Z'
+                profile_image: /uploads/organization/profile_image/577/4516eda0-ba9a-43f5-80d0-bae770795069.png
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Organization'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    put:
+      summary: Update an organization by id
+      tags:
+      - Organizations
+      description: This endpoint allows the client to update an existing organization.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the organization to update.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 123
+      responses:
+        '200':
+          description: An Organization
+          content:
+            application/json:
+              example:
+                id: 580
+                name: Mosciski, Moore and Moen
+                profile_image: /uploads/organization/profile_image/580/7cb3619e-86f9-465a-b7af-588b0f007fd1.png
+                slug: org23
+                summary: An updated summary for the organization.
+                tag_line: null
+                url: http://will.example/lenita_gleason
+        '404':
+          description: organization Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              example:
+                error: 'param is missing or the value is empty: organization'
+                status: 422
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Organization'
+      operationId: putApiOrganizationsById
+      x-operation-id-source: derived
+    delete:
+      summary: Delete an Organization by id
+      tags:
+      - Organizations
+      description: This endpoint allows the client to delete a single organization, specified by id
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the organization.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              example:
+                message: deletion scheduled for organization with ID 584
+                status: 200
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+      operationId: deleteApiOrganizationsById
+      x-operation-id-source: derived
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /organizations/{username}:
+    get:
+      summary: An organization
+      tags:
+      - Organizations
+      security: []
+      description: This endpoint allows the client to retrieve a single organization by their username
+      operationId: getOrganization
+      parameters:
+      - name: username
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An Organization
+          content:
+            application/json:
+              example:
+                type_of: organization
+                id: 323
+                username: org77
+                name: Skiles-Frami
+                summary: Franzen seitan mustache cred. Gluten-free flannel gastropub hoodie vinegar wolf mixtape.
+                twitter_username: org26
+                github_username: org5524
+                url: http://jacobs.com/assunta.rau
+                location: null
+                tech_stack: null
+                tag_line: null
+                story: null
+                joined_at: '2023-04-14T14:45:37Z'
+                profile_image: /uploads/organization/profile_image/323/d1677329-759a-44e1-866e-c5be50e9593b.png
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Organization'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /organizations/{username}/users:
+    get:
+      summary: Organization's users
+      tags:
+      - Organizations
+      security: []
+      description: 'This endpoint allows the client to retrieve a list of users belonging to the organization
+
+
+        It supports pagination, each page will contain `30` users by default.'
+      operationId: getOrgUsers
+      parameters:
+      - name: username
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '200':
+          description: An Organization's users
+          content:
+            application/json:
+              example:
+              - type_of: user
+                id: 1390
+                username: username445
+                name: Ute "Doreen" \:/ Tillman
+                twitter_username: twitter445
+                github_username: github445
+                summary: null
+                location: null
+                website_url: null
+                joined_at: Apr 14, 2023
+                profile_image: /uploads/user/profile_image/1390/7b885cdf-c1c6-481a-a6d8-19f0404da87a.jpeg
+              - type_of: user
+                id: 1391
+                username: username446
+                name: Abraham "Colton" \:/ Ritchie
+                twitter_username: twitter446
+                github_username: github446
+                summary: null
+                location: null
+                website_url: null
+                joined_at: Apr 14, 2023
+                profile_image: /uploads/user/profile_image/1391/273ffa06-dc97-4b84-ba4c-43d24efb55e5.jpeg
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User_2'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /organizations/{username}/articles:
+    get:
+      summary: Organization's Articles
+      tags:
+      - Organizations
+      security: []
+      description: 'This endpoint allows the client to retrieve a list of Articles belonging to the organization
+
+
+        It supports pagination, each page will contain `30` users by default.'
+      operationId: getOrgArticles
+      parameters:
+      - name: username
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '200':
+          description: An Organization's Articles
+          content:
+            application/json:
+              example:
+              - type_of: article
+                id: 276
+                title: Down to a Sunless Sea195
+                description: Scenester occupy swag. Yr godard single-origin coffee biodiesel beard artisan. Wes anderson yolo...
+                readable_publish_date: Apr 14
+                slug: down-to-a-sunless-sea195-51d4
+                path: /org81/down-to-a-sunless-sea195-51d4
+                url: http://localhost:3000/org81/down-to-a-sunless-sea195-51d4
+                comments_count: 0
+                public_reactions_count: 0
+                collection_id: null
+                published_timestamp: '2023-04-14T14:45:38Z'
+                positive_reactions_count: 0
+                cover_image: http://localhost:3000/assets/38-3b0c46cc0d5367229799d282c99b2c42f33501201cac1ceb5c643f9ee11f06c6.png
+                social_image: http://localhost:3000/assets/38-3b0c46cc0d5367229799d282c99b2c42f33501201cac1ceb5c643f9ee11f06c6.png
+                canonical_url: http://localhost:3000/org81/down-to-a-sunless-sea195-51d4
+                created_at: '2023-04-14T14:45:38Z'
+                edited_at: null
+                crossposted_at: null
+                published_at: '2023-04-14T14:45:38Z'
+                last_comment_at: '2023-04-14T14:45:38Z'
+                reading_time_minutes: 1
+                tag_list:
+                - javascript
+                - html
+                - discuss
+                tags: javascript, html, discuss
+                user:
+                  name: Annabell "Tyron" \:/ West
+                  username: username453
+                  twitter_username: twitter453
+                  github_username: github453
+                  user_id: 1399
+                  website_url: null
+                  profile_image: /uploads/user/profile_image/1399/15f1c715-4e10-4f57-9cca-7a2071dfdf23.jpeg
+                  profile_image_90: /uploads/user/profile_image/1399/15f1c715-4e10-4f57-9cca-7a2071dfdf23.jpeg
+                organization:
+                  name: Schuster LLC
+                  username: org81
+                  slug: org81
+                  profile_image: /uploads/organization/profile_image/334/824e9ec6-b41c-4824-87e8-ae7721868787.png
+                  profile_image_90: /uploads/organization/profile_image/334/824e9ec6-b41c-4824-87e8-ae7721868787.png
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+components:
+  parameters:
+    perPageParam30to1000:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 30
+    pageParam:
+      in: query
+      name: page
+      required: false
+      description: Pagination page
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
+    perPageParam10to1000:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 10
+  schemas:
+    Organization:
+      description: Representation of an Organization
+      type: object
+      properties:
+        type_of:
+          type: string
+        username:
+          type: string
+        name:
+          type: string
+        summary:
+          type: string
+        twitter_username:
+          type: string
+        github_username:
+          type: string
+        url:
+          type: string
+        location:
+          type: string
+        joined_at:
+          type: string
+        tech_stack:
+          type: string
+        tag_line:
+          type:
+          - string
+          - 'null'
+        story:
+          type:
+          - string
+          - 'null'
+    User:
+      description: The representation of a user returned in a list
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        name:
+          type: string
+        summary:
+          type:
+          - string
+          - 'null'
+        twitter_username:
+          type: string
+        github_username:
+          type: string
+        website_url:
+          type:
+          - string
+          - 'null'
+        location:
+          type:
+          - string
+          - 'null'
+        joined_at:
+          type: string
+        profile_image:
+          type: string
+    ArticleFlareTag:
+      description: Flare tag of the article
+      type: object
+      properties:
+        name:
+          type: string
+        bg_color_hex:
+          description: Background color (hexadecimal)
+          type:
+          - string
+          - 'null'
+        text_color_hex:
+          description: Text color (hexadecimal)
+          type:
+          - string
+          - 'null'
+    SharedOrganization:
+      description: The organization the resource belongs to
+      type: object
+      properties:
+        name:
+          type: string
+        username:
+          type: string
+        slug:
+          type: string
+        profile_image:
+          description: Profile image (640x640)
+          type: string
+          format: url
+        profile_image_90:
+          description: Profile image (90x90)
+          type: string
+          format: url
+    SharedUser:
+      description: The resource creator
+      type: object
+      properties:
+        name:
+          type: string
+        username:
+          type: string
+        twitter_username:
+          type:
+          - string
+          - 'null'
+        github_username:
+          type:
+          - string
+          - 'null'
+        website_url:
+          type:
+          - string
+          - 'null'
+          format: url
+        profile_image:
+          description: Profile image (640x640)
+          type: string
+        profile_image_90:
+          description: Profile image (90x90)
+          type: string
+    ArticleIndex:
+      description: Representation of an article or post returned in a list
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int32
+        title:
+          type: string
+        description:
+          type: string
+        cover_image:
+          type:
+          - string
+          - 'null'
+          format: url
+        readable_publish_date:
+          type: string
+        social_image:
+          type: string
+          format: url
+        tag_list:
+          type: array
+          items:
+            type: string
+        tags:
+          type: string
+        slug:
+          type: string
+        path:
+          type: string
+          format: path
+        url:
+          type: string
+          format: url
+        canonical_url:
+          type: string
+          format: url
+        positive_reactions_count:
+          type: integer
+          format: int32
+        public_reactions_count:
+          type: integer
+          format: int32
+        created_at:
+          type: string
+          format: date-time
+        edited_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        crossposted_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        published_at:
+          type: string
+          format: date-time
+        last_comment_at:
+          type: string
+          format: date-time
+        published_timestamp:
+          description: Crossposting or published date time
+          type: string
+          format: date-time
+        reading_time_minutes:
+          description: Reading time, in minutes
+          type: integer
+          format: int32
+        user:
+          $ref: '#/components/schemas/SharedUser'
+        flare_tag:
+          $ref: '#/components/schemas/ArticleFlareTag'
+        organization:
+          $ref: '#/components/schemas/SharedOrganization'
+      required:
+      - type_of
+      - id
+      - title
+      - description
+      - cover_image
+      - readable_publish_date
+      - social_image
+      - tag_list
+      - tags
+      - slug
+      - path
+      - url
+      - canonical_url
+      - comments_count
+      - positive_reactions_count
+      - public_reactions_count
+      - created_at
+      - edited_at
+      - crossposted_at
+      - published_at
+      - last_comment_at
+      - published_timestamp
+      - user
+      - reading_time_minutes
+    User_2:
+      description: The representation of a user
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        name:
+          type: string
+        summary:
+          type:
+          - string
+          - 'null'
+        twitter_username:
+          type: string
+        github_username:
+          type: string
+        website_url:
+          type:
+          - string
+          - 'null'
+        location:
+          type:
+          - string
+          - 'null'
+        joined_at:
+          type: string
+        profile_image:
+          type: string
+  securitySchemes:
+    api-key:
+      type: apiKey
+      name: api-key
+      in: header
+      description: "API Key authentication.\n\nAuthentication for some endpoints, like write operations on the\nArticles API require a DEV API key.\n\nAll authenticated endpoints are CORS disabled, the API key is intended for non-browser scripts.\n\n### Getting an API key\n\nTo obtain one, please follow these steps:\n\n  - visit https://dev.to/settings/extensions\n  - in the \"DEV API Keys\" section create a new key by adding a\n    description and clicking on \"Generate API Key\"\n\n    ![obtain a DEV API Key](https://user-images.githubusercontent.com/37842/172718105-bd93664e-76e0-477d-99c4-265dda0b06c5.png)\n\n  - You'll see the newly generated key in the same view\n    ![generated DEV API Key](https://user-images.githubusercontent.com/37842/172718151-e7fe26a0-9937-42e8-96c6-333acdab9e49.png)"
+x-refined-from:
+- openapi.json
+- openapi.yaml

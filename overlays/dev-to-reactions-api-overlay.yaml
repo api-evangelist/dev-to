@@ -1,0 +1,43 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enrichment overlay — Dev.to Forem Reactions API
+  version: 1.0.0
+extends: dev-to-reactions-api-openapi.yml
+x-generated: '2026-09-17'
+x-method: derived
+x-source: conventions/, errors/, rate-limits/, lifecycle/ artifacts in this repo
+actions:
+- target: $.info
+  description: Record enrichment provenance and the version-selector header that this contract does not state.
+  update:
+    x-api-evangelist-enrichment:
+      generated: '2026-09-17'
+      provider: dev-to
+      artifacts:
+      - conventions/dev-to-conventions.yml
+      - errors/dev-to-problem-types.yml
+      - rate-limits/dev-to-rate-limits.yml
+      - lifecycle/dev-to-lifecycle.yml
+      - authentication/dev-to-authentication.yml
+    x-version-selector:
+      header: Accept
+      value: application/vnd.forem.api-v1+json
+      required: true
+      note: Omitting this header routes the request to the deprecated V0 API, which answers with a 299 Warning header.
+        The version is not in the path.
+    x-error-envelope:
+      media_type: application/json
+      rfc9457: false
+      shape: '{"status": <int>, "error": "<message>"}'
+- target: $.paths['/reactions/toggle'].post
+  description: Flag the non-idempotent twin so an agent does not retry it.
+  update:
+    x-idempotent: false
+    x-idempotency-note: 'Toggling is state-flipping: a retry after a timeout removes the reaction the first call
+      created.'
+- target: $.paths['/reactions'].post
+  description: Mark the one replay-safe mutation in this API.
+  update:
+    x-idempotent: true
+    x-idempotency-note: 'Provider-documented: repeated requests return the existing reaction rather than toggling
+      it off. The sibling /reactions/toggle operation is NOT replay-safe.'

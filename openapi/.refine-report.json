@@ -1,20 +1,7 @@
 {
   "provider": "dev-to",
   "sources": [
-    "dev-to-articles-api-openapi.yml",
-    "dev-to-comments-api-openapi.yml",
-    "dev-to-displayads-api-openapi.yml",
-    "dev-to-followedtags-api-openapi.yml",
-    "dev-to-followers-api-openapi.yml",
-    "dev-to-organizations-api-openapi.yml",
-    "dev-to-pages-api-openapi.yml",
-    "dev-to-podcastepisodes-api-openapi.yml",
-    "dev-to-profileimages-api-openapi.yml",
-    "dev-to-reactions-api-openapi.yml",
-    "dev-to-readinglist-api-openapi.yml",
-    "dev-to-tags-api-openapi.yml",
-    "dev-to-users-api-openapi.yml",
-    "dev-to-webhooks-api-openapi.yml"
+    "_original/dev-to-forem-api-openapi.yml"
   ],
   "outputs": [
     "dev-to-articles-api-openapi.yml",
@@ -32,9 +19,33 @@
     "dev-to-users-api-openapi.yml",
     "dev-to-webhooks-api-openapi.yml"
   ],
-  "archived": [],
+  "archived": [
+    "deleted 5 superseded output(s) from the previous generation"
+  ],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "dev-to-forem-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "dev-to-forem-api-openapi.yml: tagged paths GET /tags -> Tags",
+    "dev-to-forem-api-openapi.yml: declared missing tag: Tags",
+    "superseded outputs removed: dev-to-display-ads-api-openapi.yml, dev-to-followed-tags-api-openapi.yml, dev-to-podcast-episodes-api-openapi.yml, dev-to-profile-images-api-openapi.yml, dev-to-reading-list-api-openapi.yml",
+    "apis.yml register: written (+5 apis, 15 total)"
+  ],
+  "skipped": [
+    "dev-to-articles-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "dev-to-comments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "dev-to-display-ads-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "dev-to-followed-tags-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "dev-to-followers-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "dev-to-organizations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "dev-to-pages-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "dev-to-podcast-episodes-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "dev-to-profile-images-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "dev-to-reactions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "dev-to-reading-list-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "dev-to-tags-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "dev-to-users-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "dev-to-webhooks-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

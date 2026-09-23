@@ -1,7 +1,7 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Dev.to Forem Articles Comments API
-  description: The Dev.to Forem API (v1) is a RESTful API that provides programmatic access to the Dev.to developer community platform, which is built on the open-source Forem framework. The API enables developers to create, read, update, and manage articles, comments, users, organizations, tags, followers, listings, podcast episodes, pages, display ads, reactions, reading lists, and webhooks. It uses API key authentication, requires an accept header of application/vnd.forem.api-v1+json, and returns JSON responses. Unauthenticated endpoints are CORS-enabled, making it possible to fetch public content directly from browser-based applications.
+  title: Dev.to Forem Comments API
+  description: The Dev.to Forem API (v1) is a RESTful API that provides programmatic access to the Dev.to developer community platform, which is built on the open-source Forem framework.
   version: 1.0.0
   contact:
     name: Forem Support
@@ -70,6 +70,30 @@ paths:
           description: Comment not found
 components:
   schemas:
+    Comment:
+      type: object
+      description: A comment on an article or podcast episode, with nested children for threaded conversations.
+      properties:
+        type_of:
+          type: string
+          description: The type of resource, always "comment".
+        id_code:
+          type: string
+          description: The unique identifier code of the comment.
+        created_at:
+          type: string
+          format: date-time
+          description: The ISO 8601 timestamp when the comment was created.
+        body_html:
+          type: string
+          description: The comment body rendered as HTML.
+        user:
+          $ref: '#/components/schemas/User'
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+          description: Nested child comments in the thread.
     User:
       type: object
       description: A user account on the DEV platform.
@@ -116,30 +140,6 @@ components:
           type: string
           format: date-time
           description: The ISO 8601 timestamp when the user joined.
-    Comment:
-      type: object
-      description: A comment on an article or podcast episode, with nested children for threaded conversations.
-      properties:
-        type_of:
-          type: string
-          description: The type of resource, always "comment".
-        id_code:
-          type: string
-          description: The unique identifier code of the comment.
-        created_at:
-          type: string
-          format: date-time
-          description: The ISO 8601 timestamp when the comment was created.
-        body_html:
-          type: string
-          description: The comment body rendered as HTML.
-        user:
-          $ref: '#/components/schemas/User'
-        children:
-          type: array
-          items:
-            $ref: '#/components/schemas/Comment'
-          description: Nested child comments in the thread.
   securitySchemes:
     apiKey:
       type: apiKey

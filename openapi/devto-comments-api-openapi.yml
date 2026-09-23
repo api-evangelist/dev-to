@@ -1,0 +1,312 @@
+openapi: 3.2.0
+info:
+  title: Devto Comments API
+  version: 1.0.0
+  description: 'Operations tagged comments across 2 of this provider''s published API definitions: openapi.json, openapi.yaml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://dev.to/api
+  description: Production server
+security:
+- api-key: []
+tags:
+- name: Comments
+paths:
+  /api/comments:
+    get:
+      summary: Comments
+      security: []
+      tags:
+      - Comments
+      description: 'This endpoint allows the client to retrieve all comments belonging to an article or podcast episode as threaded conversations.
+
+
+        It will return the all top level comments with their nested comments as threads. See the format specification for further details.
+
+
+        It supports pagination, each page will contain `50` top level comments (and as many child comments they have) by default.
+
+
+        If the page parameter is not passed, all comments of an article or podcast will be returned.'
+      operationId: getCommentsByArticleId
+      parameters:
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      - name: a_id
+        in: query
+        required: false
+        description: Article identifier.
+        schema:
+          type: string
+        example: '321'
+      - name: p_id
+        in: query
+        required: false
+        description: Podcast Episode identifier.
+        schema:
+          type: string
+        example: '321'
+      - name: page
+        in: query
+        required: false
+        description: Page
+        schema:
+          type: string
+        example: '321'
+      responses:
+        '200':
+          description: A List of Comments
+          content:
+            application/json:
+              example:
+              - type_of: comment
+                id_code: 9e
+                created_at: '2026-05-28T18:45:23Z'
+                body_html: '<p>Cronut direct trade thundercats. Sustainable ethical asymmetrical +1 pop-up flexitarian scenester. Pitchfork yuccie cronut kale chips austin health.</p>
+
+
+                  '
+                user:
+                  name: Kayleen "Silvana" \:/ Hoppe
+                  username: username127
+                  twitter_username: twitter127
+                  github_username: github127
+                  user_id: 4175
+                  website_url: null
+                  profile_image: /uploads/user/profile_image/4175/3f3a1ddd-ab70-45f5-8600-f4e42a293990.jpeg
+                  profile_image_90: /uploads/user/profile_image/4175/3f3a1ddd-ab70-45f5-8600-f4e42a293990.jpeg
+                children: []
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+        '404':
+          description: Resource Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/comments/{id}:
+    get:
+      summary: Comment by id
+      security: []
+      tags:
+      - Comments
+      description: 'This endpoint allows the client to retrieve a comment as well as his descendants comments.
+
+
+        It will return the required comment (the root) with its nested descendants as a thread.
+
+
+        See the format specification for further details.'
+      operationId: getCommentById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Comment identifier.
+        schema:
+          type: integer
+        example: '321'
+      responses:
+        '200':
+          description: A List of the Comments
+          content:
+            application/json:
+              example:
+                type_of: comment
+                id_code: 9g
+                created_at: '2026-05-28T18:45:24Z'
+                body_html: '<p>Single-origin coffee tofu schlitz typewriter hashtag ennui pork belly. Roof literally gluten-free retro paleo dreamcatcher skateboard twee.</p>
+
+
+                  '
+                user:
+                  name: Melodie "Darla" \:/ Rice
+                  username: username131
+                  twitter_username: twitter131
+                  github_username: github131
+                  user_id: 4179
+                  website_url: null
+                  profile_image: /uploads/user/profile_image/4179/3971613f-4374-4827-981c-82d413278b46.jpeg
+                  profile_image_90: /uploads/user/profile_image/4179/3971613f-4374-4827-981c-82d413278b46.jpeg
+                children: []
+        '404':
+          description: Comment Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /comments:
+    get:
+      summary: Comments
+      security: []
+      tags:
+      - Comments
+      description: 'This endpoint allows the client to retrieve all comments belonging to an article or podcast episode as threaded conversations.
+
+
+        It will return the all top level comments with their nested comments as threads. See the format specification for further details.'
+      operationId: getCommentsByArticleId
+      parameters:
+      - name: a_id
+        in: query
+        required: false
+        description: Article identifier.
+        schema:
+          type: string
+        example: '321'
+      - name: p_id
+        in: query
+        required: false
+        description: Podcast Episode identifier.
+        schema:
+          type: string
+        example: '321'
+      responses:
+        '200':
+          description: A List of Comments
+          content:
+            application/json:
+              example:
+              - type_of: comment
+                id_code: '52'
+                created_at: '2023-04-14T14:45:34Z'
+                body_html: '<p>Pop-up salvia vhs gluten-free tilde cleanse. Gastropub offal next level. Gluten-free health stumptown kale chips wolf.</p>
+
+
+                  '
+                user:
+                  name: Luigi "Ryann" \:/ Wuckert
+                  username: username410
+                  twitter_username: twitter410
+                  github_username: github410
+                  user_id: 1332
+                  website_url: null
+                  profile_image: /uploads/user/profile_image/1332/241b2d6f-ec6d-4590-b57f-3a2ce673f9de.jpeg
+                  profile_image_90: /uploads/user/profile_image/1332/241b2d6f-ec6d-4590-b57f-3a2ce673f9de.jpeg
+                children: []
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+        '404':
+          description: Resource Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /comments/{id}:
+    get:
+      summary: Comment by id
+      security: []
+      tags:
+      - Comments
+      description: 'This endpoint allows the client to retrieve a comment as well as his descendants comments.
+
+
+        It will return the required comment (the root) with its nested descendants as a thread.
+
+
+        See the format specification for further details.'
+      operationId: getCommentById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Comment identifier.
+        schema:
+          type: integer
+        example: '321'
+      responses:
+        '200':
+          description: A List of the Comments
+          content:
+            application/json:
+              example:
+                type_of: comment
+                id_code: '54'
+                created_at: '2023-04-14T14:45:35Z'
+                body_html: '<p>Ramps tacos jean shorts humblebrag street bicycle rights paleo. Actually green juice chartreuse tattooed cliche. 8-bit bushwick diy aesthetic.</p>
+
+
+                  '
+                user:
+                  name: Santos "Broderick" \:/ Lemke
+                  username: username414
+                  twitter_username: twitter414
+                  github_username: github414
+                  user_id: 1339
+                  website_url: null
+                  profile_image: /uploads/user/profile_image/1339/08f5cd26-743e-4957-af23-540b7ded60d6.jpeg
+                  profile_image_90: /uploads/user/profile_image/1339/08f5cd26-743e-4957-af23-540b7ded60d6.jpeg
+                children: []
+        '404':
+          description: Comment Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+components:
+  parameters:
+    perPageParam30to1000:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 30
+    pageParam:
+      in: query
+      name: page
+      required: false
+      description: Pagination page
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
+  schemas:
+    Comment:
+      description: A Comment on an Article or Podcast Episode
+      type: object
+      properties:
+        type_of:
+          type: string
+        id_code:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        image_url:
+          description: Podcast image url
+          type: string
+          format: url
+  securitySchemes:
+    api-key:
+      type: apiKey
+      name: api-key
+      in: header
+      description: "API Key authentication.\n\nAuthentication for some endpoints, like write operations on the\nArticles API require a DEV API key.\n\nAll authenticated endpoints are CORS disabled, the API key is intended for non-browser scripts.\n\n### Getting an API key\n\nTo obtain one, please follow these steps:\n\n  - visit https://dev.to/settings/extensions\n  - in the \"DEV API Keys\" section create a new key by adding a\n    description and clicking on \"Generate API Key\"\n\n    ![obtain a DEV API Key](https://user-images.githubusercontent.com/37842/172718105-bd93664e-76e0-477d-99c4-265dda0b06c5.png)\n\n  - You'll see the newly generated key in the same view\n    ![generated DEV API Key](https://user-images.githubusercontent.com/37842/172718151-e7fe26a0-9937-42e8-96c6-333acdab9e49.png)"
+x-refined-from:
+- openapi.json
+- openapi.yaml

@@ -1,0 +1,756 @@
+openapi: 3.2.0
+info:
+  title: Devto Pages API
+  version: 1.0.0
+  description: 'Operations tagged pages across 2 of this provider''s published API definitions: openapi.json, openapi.yaml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://dev.to/api
+  description: Production server
+security:
+- api-key: []
+tags:
+- name: Pages
+paths:
+  /api/pages:
+    get:
+      summary: show details for all pages
+      security: []
+      tags:
+      - Pages
+      description: This endpoint allows the client to retrieve details for all Page objects.
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              example:
+              - id: 47
+                title: Death Be Not Proud
+                slug: satisfaction-design
+                description: Quasi nesciunt dicta molestiae.
+                is_top_level_path: false
+                landing_page: false
+                body_html: null
+                body_json: null
+                body_markdown: Quaerat dolorem velit qui.
+                processed_html: '<p>Quaerat dolorem velit qui.</p>
+
+
+                  '
+                social_image:
+                  url: null
+                template: contained
+                subforem_id: null
+                page_template_id: null
+                template_data: {}
+                redirect_to_url: null
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Page'
+      operationId: getApiPages
+      x-operation-id-source: derived
+    post:
+      summary: pages
+      tags:
+      - Pages
+      description: This endpoint allows the client to create a new page.
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              example:
+                id: 49
+                title: Example Page
+                slug: example1
+                description: a new page
+                is_top_level_path: false
+                landing_page: false
+                body_html: null
+                body_json: null
+                body_markdown: '# Hi, this is a New Page
+
+                  Yep, it''s an a new page'
+                processed_html: "<h1>\n  <a name=\"hi-this-is-a-new-page\" href=\"#hi-this-is-a-new-page\">\n  </a>\n  Hi, this is a New Page\n</h1>\n\n<p>Yep, it's an a new page</p>\n\n"
+                social_image:
+                  url: null
+                template: contained
+                subforem_id: null
+                page_template_id: null
+                template_data: {}
+                redirect_to_url: null
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '422':
+          description: unprocessable
+          content:
+            application/json:
+              example:
+                id: null
+                title: Example Page
+                slug: example1
+                description: a new page
+                is_top_level_path: false
+                landing_page: false
+                body_html: null
+                body_json: null
+                body_markdown: '# Hi, this is a New Page
+
+                  Yep, it''s an a new page'
+                processed_html: null
+                social_image:
+                  url: null
+                template: moon
+                subforem_id: null
+                page_template_id: null
+                template_data: {}
+                redirect_to_url: null
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: Title of the page
+                slug:
+                  type: string
+                  description: Used to link to this page in URLs, must be unique and URL-safe
+                description:
+                  type: string
+                  description: For internal use, helps similar pages from one another
+                body_markdown:
+                  type: string
+                  description: The text (in markdown) of the ad (required)
+                body_json:
+                  type: string
+                  description: For JSON pages, the JSON body
+                is_top_level_path:
+                  type: boolean
+                  description: If true, the page is available at '/{slug}' instead of '/page/{slug}', use with caution
+                template:
+                  type: string
+                  enum:
+                  - contained
+                  - full_within_layout
+                  - nav_bar_included
+                  - json
+                  - css
+                  - txt
+                  default: contained
+                  description: Controls what kind of layout the page is rendered in
+      operationId: postApiPages
+      x-operation-id-source: derived
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/pages/{id}:
+    get:
+      summary: show details for a page
+      security: []
+      tags:
+      - Pages
+      description: This endpoint allows the client to retrieve details for a single Page object, specified by ID.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the page.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              example:
+                id: 52
+                title: I Will Fear No Evil
+                slug: agree_strict
+                description: At qui et illum.
+                is_top_level_path: false
+                landing_page: false
+                body_html: null
+                body_json: null
+                body_markdown: Aut quia eaque sapiente.
+                processed_html: '<p>Aut quia eaque sapiente.</p>
+
+
+                  '
+                social_image:
+                  url: null
+                template: contained
+                subforem_id: null
+                page_template_id: null
+                template_data: {}
+                redirect_to_url: null
+              schema:
+                $ref: '#/components/schemas/Page'
+      operationId: getApiPagesById
+      x-operation-id-source: derived
+    put:
+      summary: update details for a page
+      tags:
+      - Pages
+      description: This endpoint allows the client to retrieve details for a single Page object, specified by ID.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the page.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              example:
+                id: 53
+                title: New Title
+                slug: rung-cutting
+                description: Accusantium harum beatae quia.
+                is_top_level_path: false
+                landing_page: false
+                body_html: null
+                body_json: null
+                body_markdown: Nostrum et modi explicabo.
+                processed_html: '<p>Nostrum et modi explicabo.</p>
+
+
+                  '
+                social_image:
+                  url: null
+                template: contained
+                subforem_id: null
+                page_template_id: null
+                template_data: {}
+                redirect_to_url: null
+              schema:
+                $ref: '#/components/schemas/Page'
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '422':
+          description: unprocessable
+          content:
+            application/json:
+              example:
+                id: 55
+                title: Eyeless in Gaza
+                slug: confuse-thirsty
+                description: Dolore iure magnam ea.
+                is_top_level_path: false
+                landing_page: false
+                body_html: null
+                body_json: null
+                body_markdown: Corporis magnam enim dolorem.
+                processed_html: '<p>Consequuntur pariatur delectus similique.</p>
+
+
+                  '
+                social_image:
+                  url: null
+                template: moon
+                subforem_id: null
+                page_template_id: null
+                template_data: {}
+                redirect_to_url: null
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Page'
+      operationId: putApiPagesById
+      x-operation-id-source: derived
+    delete:
+      summary: remove a page
+      tags:
+      - Pages
+      description: This endpoint allows the client to delete a single Page object, specified by ID.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the page.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              example:
+                id: 56
+                title: No Country for Old Men
+                slug: message_judge
+                description: Et et dolorum mollitia.
+                is_top_level_path: false
+                landing_page: false
+                body_html: null
+                body_json: null
+                body_markdown: Libero iste blanditiis et.
+                processed_html: '<p>Libero iste blanditiis et.</p>
+
+
+                  '
+                social_image:
+                  url: null
+                template: contained
+                subforem_id: null
+                page_template_id: null
+                template_data: {}
+                redirect_to_url: null
+              schema:
+                $ref: '#/components/schemas/Page'
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '422':
+          description: unprocessable
+          content:
+            application/json:
+              example:
+                doubled_module:
+                  const_name: Page
+                  object: Page
+                __expired: false
+                name: null
+                __sending_message: null
+      operationId: deleteApiPagesById
+      x-operation-id-source: derived
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /pages:
+    get:
+      summary: show details for all pages
+      security: []
+      tags:
+      - Pages
+      description: This endpoint allows the client to retrieve details for all Page objects.
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              example:
+              - id: 5
+                title: An Instant In The Wind
+                slug: trivial_exaggerate
+                description: Excepturi illum tenetur nisi.
+                is_top_level_path: false
+                landing_page: false
+                body_html: null
+                body_json: null
+                body_markdown: Et voluptas cupiditate voluptatibus.
+                processed_html: '<p>Et voluptas cupiditate voluptatibus.</p>
+
+
+                  '
+                social_image:
+                  url: null
+                template: contained
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Page_2'
+      operationId: getPages
+      x-operation-id-source: derived
+    post:
+      summary: pages
+      tags:
+      - Pages
+      description: This endpoint allows the client to create a new page.
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              example:
+                id: 7
+                title: Example Page
+                slug: example1
+                description: a new page
+                is_top_level_path: false
+                landing_page: false
+                body_html: null
+                body_json: null
+                body_markdown: '# Hi, this is a New Page
+
+                  Yep, it''s an a new page'
+                processed_html: "<h1>\n  <a name=\"hi-this-is-a-new-page\" href=\"#hi-this-is-a-new-page\">\n  </a>\n  Hi, this is a New Page\n</h1>\n\n<p>Yep, it's an a new page</p>\n\n"
+                social_image:
+                  url: null
+                template: contained
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '422':
+          description: unprocessable
+          content:
+            application/json:
+              example:
+                id: null
+                title: Example Page
+                slug: example1
+                description: a new page
+                is_top_level_path: false
+                landing_page: false
+                body_html: null
+                body_json: null
+                body_markdown: '# Hi, this is a New Page
+
+                  Yep, it''s an a new page'
+                processed_html: null
+                social_image:
+                  url: null
+                template: moon
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: Title of the page
+                slug:
+                  type: string
+                  description: Used to link to this page in URLs, must be unique and URL-safe
+                description:
+                  type: string
+                  description: For internal use, helps similar pages from one another
+                body_markdown:
+                  type: string
+                  description: The text (in markdown) of the ad (required)
+                body_json:
+                  type: string
+                  description: For JSON pages, the JSON body
+                is_top_level_path:
+                  type: boolean
+                  description: If true, the page is available at '/{slug}' instead of '/page/{slug}', use with caution
+                template:
+                  type: string
+                  enum:
+                  - contained
+                  - full_within_layout
+                  - nav_bar_included
+                  - json
+                  default: contained
+                  description: Controls what kind of layout the page is rendered in
+      operationId: postPages
+      x-operation-id-source: derived
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /pages/{id}:
+    get:
+      summary: show details for a page
+      security: []
+      tags:
+      - Pages
+      description: This endpoint allows the client to retrieve details for a single Page object, specified by ID.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the page.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              example:
+                id: 10
+                title: A Swiftly Tilting Planet
+                slug: corn-laser
+                description: Inventore ad qui dolore.
+                is_top_level_path: false
+                landing_page: false
+                body_html: null
+                body_json: null
+                body_markdown: In sit sit voluptas.
+                processed_html: '<p>In sit sit voluptas.</p>
+
+
+                  '
+                social_image:
+                  url: null
+                template: contained
+              schema:
+                $ref: '#/components/schemas/Page_2'
+      operationId: getPagesById
+      x-operation-id-source: derived
+    put:
+      summary: update details for a page
+      tags:
+      - Pages
+      description: This endpoint allows the client to retrieve details for a single Page object, specified by ID.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the page.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              example:
+                id: 11
+                title: New Title
+                slug: authority-figure
+                description: Et odio nostrum dolorem.
+                is_top_level_path: false
+                landing_page: false
+                body_html: null
+                body_json: null
+                body_markdown: Consequatur ex soluta libero.
+                processed_html: '<p>Consequatur ex soluta libero.</p>
+
+
+                  '
+                social_image:
+                  url: null
+                template: contained
+              schema:
+                $ref: '#/components/schemas/Page_2'
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '422':
+          description: unprocessable
+          content:
+            application/json:
+              example:
+                id: 13
+                title: Little Hands Clapping
+                slug: horizon_nursery
+                description: Vel tenetur aspernatur mollitia.
+                is_top_level_path: false
+                landing_page: false
+                body_html: null
+                body_json: null
+                body_markdown: Omnis quia eaque aliquam.
+                processed_html: '<p>Consequatur sit illum voluptas.</p>
+
+
+                  '
+                social_image:
+                  url: null
+                template: moon
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Page_2'
+      operationId: putPagesById
+      x-operation-id-source: derived
+    delete:
+      summary: remove a page
+      tags:
+      - Pages
+      description: This endpoint allows the client to delete a single Page object, specified by ID.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the page.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              example:
+                id: 14
+                title: The Skull Beneath the Skin
+                slug: appointment-provision
+                description: Et error fuga natus.
+                is_top_level_path: false
+                landing_page: false
+                body_html: null
+                body_json: null
+                body_markdown: Quo quibusdam nisi numquam.
+                processed_html: '<p>Quo quibusdam nisi numquam.</p>
+
+
+                  '
+                social_image:
+                  url: null
+                template: contained
+              schema:
+                $ref: '#/components/schemas/Page_2'
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '422':
+          description: unprocessable
+          content:
+            application/json:
+              example:
+                doubled_module:
+                  const_name: Page
+                  object: Page
+                __expired: false
+                name: null
+                __sending_message: null
+      operationId: deletePagesById
+      x-operation-id-source: derived
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+components:
+  schemas:
+    Page:
+      description: Representation of a page object
+      type: object
+      properties:
+        title:
+          type: string
+          description: Title of the page
+        slug:
+          type: string
+          description: Used to link to this page in URLs, must be unique and URL-safe
+        description:
+          type: string
+          description: For internal use, helps similar pages from one another
+        body_markdown:
+          type:
+          - string
+          - 'null'
+          description: The text (in markdown) of the ad (required)
+        body_json:
+          type:
+          - string
+          - 'null'
+          description: For JSON pages, the JSON body
+        is_top_level_path:
+          type: boolean
+          description: If true, the page is available at '/{slug}' instead of '/page/{slug}', use with caution
+        social_image:
+          type:
+          - object
+          - 'null'
+        template:
+          type: string
+          enum:
+          - contained
+          - full_within_layout
+          - nav_bar_included
+          - json
+          - css
+          - txt
+          default: contained
+          description: Controls what kind of layout the page is rendered in
+      required:
+      - title
+      - slug
+      - description
+      - template
+    Page_2:
+      description: Representation of a page object
+      type: object
+      properties:
+        title:
+          type: string
+          description: Title of the page
+        slug:
+          type: string
+          description: Used to link to this page in URLs, must be unique and URL-safe
+        description:
+          type: string
+          description: For internal use, helps similar pages from one another
+        body_markdown:
+          type:
+          - string
+          - 'null'
+          description: The text (in markdown) of the ad (required)
+        body_json:
+          type:
+          - string
+          - 'null'
+          description: For JSON pages, the JSON body
+        is_top_level_path:
+          type: boolean
+          description: If true, the page is available at '/{slug}' instead of '/page/{slug}', use with caution
+        social_image:
+          type:
+          - object
+          - 'null'
+        template:
+          type: string
+          enum:
+          - contained
+          - full_within_layout
+          - nav_bar_included
+          - json
+          default: contained
+          description: Controls what kind of layout the page is rendered in
+      required:
+      - title
+      - slug
+      - description
+      - template
+  securitySchemes:
+    api-key:
+      type: apiKey
+      name: api-key
+      in: header
+      description: "API Key authentication.\n\nAuthentication for some endpoints, like write operations on the\nArticles API require a DEV API key.\n\nAll authenticated endpoints are CORS disabled, the API key is intended for non-browser scripts.\n\n### Getting an API key\n\nTo obtain one, please follow these steps:\n\n  - visit https://dev.to/settings/extensions\n  - in the \"DEV API Keys\" section create a new key by adding a\n    description and clicking on \"Generate API Key\"\n\n    ![obtain a DEV API Key](https://user-images.githubusercontent.com/37842/172718105-bd93664e-76e0-477d-99c4-265dda0b06c5.png)\n\n  - You'll see the newly generated key in the same view\n    ![generated DEV API Key](https://user-images.githubusercontent.com/37842/172718151-e7fe26a0-9937-42e8-96c6-333acdab9e49.png)"
+x-refined-from:
+- openapi.json
+- openapi.yaml

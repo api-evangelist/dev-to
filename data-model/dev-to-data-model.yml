@@ -1,0 +1,517 @@
+generated: '2026-09-17'
+method: derived
+source: openapi/_original/dev-to-forem-api-v1-openapi.json (components.schemas $ref graph + *_id reference fields)
+summary:
+  entities: 40
+  relationships: 17
+  identifier_scheme: Integer primary keys (`id`), with a parallel `type_of` discriminator string on almost every
+    response object ("article", "user", "comment", "podcast_episodes"…). There are no prefixed string ids — an agent
+    cannot tell entity type from an id alone and must read `type_of` or the endpoint it came from.
+  core_entities:
+  - Article
+  - User
+  - Organization
+  - Comment
+  - Tag
+  - Badge
+  - Survey
+  - Concept
+  - Subforem
+  - Event
+entities:
+- name: ArticleIndex
+  properties: 27
+  identifier: id
+  key_fields:
+  - type_of
+  - id
+  - title
+  - description
+  - cover_image
+  - readable_publish_date
+  - social_image
+  - tag_list
+  - tags
+  - slug
+- name: Event
+  properties: 22
+  identifier: id
+  key_fields:
+  - id
+  - title
+  - event_name_slug
+  - event_variation_slug
+  - description
+  - full_details
+  - type_of
+  - start_time
+  - end_time
+  - published
+- name: Billboard
+  properties: 16
+  identifier: id
+  key_fields:
+  - id
+  - name
+  - body_markdown
+  - approved
+  - published
+  - expires_at
+  - organization_id
+  - creator_id
+  - placement_area
+  - tag_list
+- name: MyUser
+  properties: 14
+  identifier: id
+  key_fields:
+  - type_of
+  - id
+  - username
+  - name
+  - summary
+  - twitter_username
+  - github_username
+  - email
+  - website_url
+  - location
+- name: Poll
+  properties: 14
+  identifier: id
+  key_fields:
+  - type_of
+  - id
+  - prompt_markdown
+  - prompt_html
+  - poll_type_of
+  - position
+  - poll_votes_count
+  - poll_skips_count
+  - poll_options_count
+  - scale_min
+- name: Survey
+  properties: 14
+  identifier: id
+  key_fields:
+  - type_of
+  - id
+  - title
+  - slug
+  - survey_type_of
+  - active
+  - display_title
+  - allow_resubmission
+  - daily_email_distributions
+  - extra_email_context_paragraph
+- name: ExtendedUser
+  properties: 13
+  identifier: id
+  key_fields:
+  - type_of
+  - id
+  - username
+  - name
+  - summary
+  - twitter_username
+  - github_username
+  - email
+  - website_url
+  - location
+- name: AgentSessionShow
+  properties: 13
+  identifier: id
+  key_fields:
+  - id
+  - slug
+  - title
+  - tool_name
+  - total_messages
+  - curated_count
+  - published
+  - metadata
+  - messages
+  - slices
+- name: Trend
+  properties: 13
+  identifier: id
+  key_fields:
+  - type_of
+  - id
+  - name
+  - slug
+  - description
+  - key_questions
+  - score
+  - articles_count
+  - cover_image
+  - first_observed_at
+- name: Organization
+  properties: 12
+  identifier: type_of
+  key_fields:
+  - type_of
+  - username
+  - name
+  - summary
+  - twitter_username
+  - github_username
+  - url
+  - location
+  - joined_at
+  - tech_stack
+- name: User
+  properties: 11
+  identifier: id
+  key_fields:
+  - type_of
+  - id
+  - username
+  - name
+  - summary
+  - twitter_username
+  - github_username
+  - website_url
+  - location
+  - joined_at
+- name: Concept
+  properties: 11
+  identifier: id
+  key_fields:
+  - id
+  - name
+  - slug
+  - description
+  - parent_id
+  - score
+  - similarity_threshold
+  - created_at
+  - updated_at
+  - daily_metrics
+- name: VideoArticle
+  properties: 9
+  identifier: id
+  key_fields:
+  - type_of
+  - id
+  - path
+  - cloudinary_video_url
+  - title
+  - user_id
+  - video_duration_in_minutes
+  - video_source_url
+  - user
+- name: AgentSessionIndex
+  properties: 9
+  identifier: id
+  key_fields:
+  - id
+  - slug
+  - title
+  - tool_name
+  - total_messages
+  - published
+  - created_at
+  - updated_at
+  - url
+- name: Badge
+  properties: 9
+  identifier: id
+  key_fields:
+  - id
+  - title
+  - slug
+  - description
+  - badge_image
+  - credits_awarded
+  - allow_multiple_awards
+  - created_at
+  - updated_at
+- name: Page
+  properties: 8
+  identifier: null
+  key_fields:
+  - title
+  - slug
+  - description
+  - body_markdown
+  - body_json
+  - is_top_level_path
+  - social_image
+  - template
+- name: PollVote
+  properties: 8
+  identifier: id
+  key_fields:
+  - type_of
+  - id
+  - poll_id
+  - poll_option_id
+  - user_id
+  - user_email
+  - session_start
+  - created_at
+- name: PollTextResponse
+  properties: 8
+  identifier: id
+  key_fields:
+  - type_of
+  - id
+  - poll_id
+  - user_id
+  - user_email
+  - text_content
+  - session_start
+  - created_at
+- name: BadgeAchievement
+  properties: 8
+  identifier: id
+  key_fields:
+  - id
+  - user_id
+  - badge_id
+  - rewarding_context_message_markdown
+  - include_default_description
+  - metadata
+  - created_at
+  - updated_at
+- name: RecommendedArticlesList
+  properties: 8
+  identifier: id
+  key_fields:
+  - id
+  - name
+  - placement_area
+  - expires_at
+  - user_id
+  - article_ids
+  - created_at
+  - updated_at
+- name: PodcastEpisodeIndex
+  properties: 7
+  identifier: id
+  key_fields:
+  - type_of
+  - id
+  - class_name
+  - path
+  - title
+  - image_url
+  - podcast
+- name: SharedUser
+  properties: 7
+  identifier: null
+  key_fields:
+  - name
+  - username
+  - twitter_username
+  - github_username
+  - website_url
+  - profile_image
+  - profile_image_90
+- name: PollOption
+  properties: 7
+  identifier: id
+  key_fields:
+  - type_of
+  - id
+  - markdown
+  - processed_html
+  - position
+  - poll_votes_count
+  - supplementary_text
+- name: Subforem
+  properties: 7
+  identifier: id
+  key_fields:
+  - id
+  - domain
+  - root
+  - name
+  - description
+  - logo_image_url
+  - cover_image_url
+- name: Comment
+  properties: 6
+  identifier: type_of
+  key_fields:
+  - type_of
+  - id_code
+  - created_at
+  - image_url
+  - ai_disclosure_level
+  - ai_disclosure_label
+- name: ConceptDailyMetric
+  properties: 6
+  identifier: null
+  key_fields:
+  - date
+  - articles_count
+  - comments_count
+  - page_views
+  - reactions_count
+  - popularity_score
+- name: RequestRedirect
+  properties: 6
+  identifier: id
+  key_fields:
+  - id
+  - original_url
+  - destination_url
+  - request_domain
+  - created_at
+  - updated_at
+- name: SharedOrganization
+  properties: 5
+  identifier: null
+  key_fields:
+  - name
+  - username
+  - slug
+  - profile_image
+  - profile_image_90
+- name: Tag
+  properties: 4
+  identifier: id
+  key_fields:
+  - id
+  - name
+  - bg_color_hex
+  - text_color_hex
+- name: ProfileImage
+  properties: 4
+  identifier: type_of
+  key_fields:
+  - type_of
+  - image_of
+  - profile_image
+  - profile_image_90
+- name: ArticleFlareTag
+  properties: 3
+  identifier: null
+  key_fields:
+  - name
+  - bg_color_hex
+  - text_color_hex
+- name: FollowedTag
+  properties: 3
+  identifier: id
+  key_fields:
+  - id
+  - name
+  - points
+- name: SharedPodcast
+  properties: 3
+  identifier: null
+  key_fields:
+  - title
+  - slug
+  - image_url
+- name: Segment
+  properties: 3
+  identifier: id
+  key_fields:
+  - id
+  - type_of
+  - user_count
+- name: UserInviteParam
+  properties: 2
+  identifier: null
+  key_fields:
+  - email
+  - name
+- name: Article
+  properties: 1
+  identifier: null
+  key_fields:
+  - article
+- name: SegmentUserIds
+  properties: 1
+  identifier: null
+  key_fields:
+  - user_ids
+- name: SurveyInput
+  properties: 1
+  identifier: null
+  key_fields:
+  - survey
+- name: EventInput
+  properties: 1
+  identifier: null
+  key_fields:
+  - event
+- name: SurveyWithPolls
+  properties: 0
+  identifier: null
+  key_fields: []
+relationships:
+- from: ArticleIndex
+  to: SharedUser
+  type: has_one
+  via: user
+- from: ArticleIndex
+  to: ArticleFlareTag
+  type: has_one
+  via: flare_tag
+- from: ArticleIndex
+  to: SharedOrganization
+  type: has_one
+  via: organization
+- from: VideoArticle
+  to: User
+  type: belongs_to
+  via: user_id
+- from: PodcastEpisodeIndex
+  to: SharedPodcast
+  type: has_one
+  via: podcast
+- from: Billboard
+  to: Organization
+  type: belongs_to
+  via: organization_id
+- from: Poll
+  to: PollOption
+  type: has_many
+  via: poll_options
+- from: PollVote
+  to: Poll
+  type: belongs_to
+  via: poll_id
+- from: PollVote
+  to: User
+  type: belongs_to
+  via: user_id
+- from: PollTextResponse
+  to: Poll
+  type: belongs_to
+  via: poll_id
+- from: PollTextResponse
+  to: User
+  type: belongs_to
+  via: user_id
+- from: Concept
+  to: ConceptDailyMetric
+  type: has_many
+  via: daily_metrics
+- from: BadgeAchievement
+  to: User
+  type: belongs_to
+  via: user_id
+- from: BadgeAchievement
+  to: Badge
+  type: belongs_to
+  via: badge_id
+- from: RecommendedArticlesList
+  to: User
+  type: belongs_to
+  via: user_id
+- from: Event
+  to: User
+  type: belongs_to
+  via: user_id
+- from: Event
+  to: Organization
+  type: belongs_to
+  via: organization_id
+note: 'Derived from the live Forem API V1 contract, which defines 40 component schemas — roughly three times the
+  entity coverage of the refined per-tag specs currently in openapi/. Article is the hub: it carries the user, organization
+  and flare-tag references and is the target of reactions, comments and reading list entries.'

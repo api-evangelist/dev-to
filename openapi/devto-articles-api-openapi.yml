@@ -1,0 +1,2255 @@
+openapi: 3.2.0
+info:
+  title: Devto Articles API
+  version: 1.0.0
+  description: 'Operations tagged articles across 2 of this provider''s published API definitions: openapi.json, openapi.yaml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://dev.to/api
+  description: Production server
+security:
+- api-key: []
+tags:
+- name: Articles
+paths:
+  /api/articles:
+    post:
+      summary: Publish article
+      tags:
+      - Articles
+      description: 'This endpoint allows the client to create a new article.
+
+
+        "Articles" are all the posts that users create on DEV that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but is referred to as article within the code.'
+      operationId: createArticle
+      parameters: []
+      responses:
+        '201':
+          description: An Article
+          content:
+            application/json:
+              example:
+                type_of: article
+                id: 2233
+                title: New article
+                description: New post example
+                readable_publish_date: May 28
+                slug: new-article-2gaj
+                path: /username8/new-article-2gaj
+                url: http://forem.test/username8/new-article-2gaj
+                comments_count: 0
+                public_reactions_count: 0
+                collection_id: 13
+                published_timestamp: '2026-05-28T18:45:16Z'
+                language: en
+                subforem_id: null
+                positive_reactions_count: 0
+                cover_image: https://thepracticaldev.s3.amazonaws.com/i/5wfo25724gzgk5e5j50g.jpg
+                social_image: https://thepracticaldev.s3.amazonaws.com/i/5wfo25724gzgk5e5j50g.jpg
+                canonical_url: https://dev.to/fdocr/headless-chrome-dual-mode-tests-for-ruby-on-rails-4p6g
+                created_at: '2026-05-28T18:45:16Z'
+                edited_at: null
+                crossposted_at: null
+                published_at: '2026-05-28T18:45:16Z'
+                last_comment_at: '2026-05-28T18:45:16Z'
+                reading_time_minutes: 1
+                tag_list: ''
+                tags: []
+                body_html: '<p><strong>New</strong> body for the article</p>
+
+
+                  '
+                body_markdown: '**New** body for the article'
+                user:
+                  name: Delorse "Duncan" \:/ Kerluke
+                  username: username8
+                  twitter_username: twitter8
+                  github_username: github8
+                  user_id: 4056
+                  website_url: null
+                  profile_image: /uploads/user/profile_image/4056/149b80c3-1a8e-4e1f-ac70-9da821c6eb8a.jpeg
+                  profile_image_90: /uploads/user/profile_image/4056/149b80c3-1a8e-4e1f-ac70-9da821c6eb8a.jpeg
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              example:
+                error: 'param is missing or the value is empty: article'
+                status: 422
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Article'
+    get:
+      summary: Published articles
+      security: []
+      tags:
+      - Articles
+      description: 'This endpoint allows the client to retrieve a list of articles.
+
+
+        "Articles" are all the posts that users create on DEV that typically
+
+        show up in the feed. They can be a blog post, a discussion question,
+
+        a help thread etc. but is referred to as article within the code.
+
+
+        By default it will return featured, published articles ordered
+
+        by descending popularity.
+
+
+        It supports pagination, each page will contain `30` articles by default.'
+      operationId: getArticles
+      parameters:
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      - name: tag
+        in: query
+        required: false
+        description: 'Using this parameter will retrieve articles that contain the requested tag. Articles
+
+          will be ordered by descending popularity.This parameter can be used in conjuction with `top`.'
+        schema:
+          type: string
+        example: discuss
+      - name: tags
+        in: query
+        required: false
+        description: 'Using this parameter will retrieve articles with any of the comma-separated tags.
+
+          Articles will be ordered by descending popularity.'
+        schema:
+          type: string
+        example: javascript, css
+      - name: tags_exclude
+        in: query
+        required: false
+        description: 'Using this parameter will retrieve articles that do _not_ contain _any_
+
+          of comma-separated tags. Articles will be ordered by descending popularity.'
+        schema:
+          type: string
+        example: node, java
+      - name: username
+        in: query
+        required: false
+        description: "Using this parameter will retrieve articles belonging\n            to a User or Organization ordered by descending publication date.\n            If `state=all` the number of items returned will be `1000` instead of the default `30`.\n            This parameter can be used in conjuction with `state`."
+        schema:
+          type: string
+        example: ben
+      - name: state
+        in: query
+        required: false
+        description: "Using this parameter will allow the client to check which articles are fresh or rising.\n            If `state=fresh` the server will return fresh articles.\n            If `state=rising` the server will return rising articles.\n            This param can be used in conjuction with `username`, only if set to `all`."
+        schema:
+          type: string
+          enum:
+          - fresh
+          - rising
+          - all
+        example: fresh
+      - name: top
+        in: query
+        required: false
+        description: 'Using this parameter will allow the client to return the most popular articles
+
+          in the last `N` days.
+
+          `top` indicates the number of days since publication of the articles returned.
+
+          This param can be used in conjuction with `tag`.'
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 2
+      - name: collection_id
+        in: query
+        required: false
+        description: 'Adding this will allow the client to return the list of articles
+
+          belonging to the requested collection, ordered by ascending publication date.'
+        schema:
+          type: integer
+          format: int32
+        example: 99
+      responses:
+        '200':
+          description: A List of Articles
+          content:
+            application/json:
+              example:
+              - type_of: article
+                id: 2236
+                title: The Golden Apples of the Sun4
+                description: Banh mi vegan fingerstache. Craft beer wes anderson portland you probably havent heard of them swag....
+                readable_publish_date: May 28
+                slug: the-golden-apples-of-the-sun4-453o
+                path: /username12/the-golden-apples-of-the-sun4-453o
+                url: http://forem.test/username12/the-golden-apples-of-the-sun4-453o
+                comments_count: 0
+                public_reactions_count: 0
+                collection_id: null
+                published_timestamp: '2026-05-28T18:45:16Z'
+                language: en
+                subforem_id: null
+                positive_reactions_count: 0
+                cover_image: http://forem.test/assets/30-08b2d52669e0680784f50291966e33f77cbee815907e6abbacf74018fa3f3567.png
+                social_image: http://forem.test/assets/30-08b2d52669e0680784f50291966e33f77cbee815907e6abbacf74018fa3f3567.png
+                canonical_url: http://forem.test/username12/the-golden-apples-of-the-sun4-453o
+                created_at: '2026-05-28T18:45:16Z'
+                edited_at: null
+                crossposted_at: null
+                published_at: '2026-05-28T18:45:16Z'
+                last_comment_at: '2026-05-28T18:45:16Z'
+                reading_time_minutes: 1
+                tag_list:
+                - discuss
+                tags: discuss
+                user:
+                  name: Joan "Stormy" \:/ Nienow
+                  username: username12
+                  twitter_username: twitter12
+                  github_username: github12
+                  user_id: 4060
+                  website_url: null
+                  profile_image: /uploads/user/profile_image/4060/aaa06fa2-d0f3-40cf-9578-bc53c1ca69e3.jpeg
+                  profile_image_90: /uploads/user/profile_image/4060/aaa06fa2-d0f3-40cf-9578-bc53c1ca69e3.jpeg
+                organization:
+                  name: Bergnaum Inc
+                  username: org4
+                  slug: org4
+                  profile_image: /uploads/organization/profile_image/560/319c0831-b2a0-4bc1-a40b-bd5fdae4ce68.png
+                  profile_image_90: /uploads/organization/profile_image/560/319c0831-b2a0-4bc1-a40b-bd5fdae4ce68.png
+                flare_tag:
+                  name: discuss
+                  bg_color_hex: '#000000'
+                  text_color_hex: '#ffffff'
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/articles/latest:
+    get:
+      summary: Published articles sorted by published date
+      security: []
+      tags:
+      - Articles
+      description: 'This endpoint allows the client to retrieve a list of articles. ordered by descending publish date.
+
+
+        It supports pagination, each page will contain 30 articles by default.'
+      operationId: getLatestArticles
+      parameters:
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '200':
+          description: A List of Articles
+          content:
+            application/json:
+              example:
+              - type_of: article
+                id: 2239
+                title: The Mirror Crackd from Side to Side7
+                description: Vhs aesthetic park freegan microdosing polaroid keytar squid. Hammock hella cardigan shoreditch...
+                readable_publish_date: May 28
+                slug: the-mirror-crackd-from-side-to-side7-98n
+                path: /username15/the-mirror-crackd-from-side-to-side7-98n
+                url: http://forem.test/username15/the-mirror-crackd-from-side-to-side7-98n
+                comments_count: 0
+                public_reactions_count: 0
+                collection_id: null
+                published_timestamp: '2026-05-28T18:45:17Z'
+                language: en
+                subforem_id: null
+                positive_reactions_count: 0
+                cover_image: http://forem.test/assets/34-d27f3a4a9f6f1f373003c74b31749764691f510b2a18b55039478583864a067e.png
+                social_image: http://forem.test/assets/34-d27f3a4a9f6f1f373003c74b31749764691f510b2a18b55039478583864a067e.png
+                canonical_url: http://forem.test/username15/the-mirror-crackd-from-side-to-side7-98n
+                created_at: '2026-05-28T18:45:17Z'
+                edited_at: null
+                crossposted_at: null
+                published_at: '2026-05-28T18:45:17Z'
+                last_comment_at: '2026-05-28T18:45:17Z'
+                reading_time_minutes: 1
+                tag_list:
+                - javascript
+                - html
+                - discuss
+                tags: javascript, html, discuss
+                user:
+                  name: Evelina "Norman" \:/ Moen
+                  username: username15
+                  twitter_username: twitter15
+                  github_username: github15
+                  user_id: 4063
+                  website_url: null
+                  profile_image: /uploads/user/profile_image/4063/194ffea0-3e45-440a-a97c-7b37da7fbf75.jpeg
+                  profile_image_90: /uploads/user/profile_image/4063/194ffea0-3e45-440a-a97c-7b37da7fbf75.jpeg
+                flare_tag:
+                  name: discuss
+                  bg_color_hex: '#000000'
+                  text_color_hex: '#ffffff'
+              - type_of: article
+                id: 2238
+                title: The Green Bay Tree6
+                description: Helvetica yr venmo xoxo direct trade meh. Forage polaroid etsy.  Forage vhs fanny pack. Put a bird on...
+                readable_publish_date: May 28
+                slug: the-green-bay-tree6-4cif
+                path: /username14/the-green-bay-tree6-4cif
+                url: http://forem.test/username14/the-green-bay-tree6-4cif
+                comments_count: 0
+                public_reactions_count: 0
+                collection_id: null
+                published_timestamp: '2026-05-28T18:45:16Z'
+                language: null
+                subforem_id: null
+                positive_reactions_count: 0
+                cover_image: http://forem.test/assets/22-837b6c737e37b6d229b36d73e95ead7f26e0a346e0aa7dfbca74630ae161fb0d.png
+                social_image: http://forem.test/assets/22-837b6c737e37b6d229b36d73e95ead7f26e0a346e0aa7dfbca74630ae161fb0d.png
+                canonical_url: http://forem.test/username14/the-green-bay-tree6-4cif
+                created_at: '2026-05-28T18:45:16Z'
+                edited_at: null
+                crossposted_at: null
+                published_at: '2026-05-28T18:45:16Z'
+                last_comment_at: '2026-05-28T18:45:16Z'
+                reading_time_minutes: 1
+                tag_list:
+                - javascript
+                - html
+                - discuss
+                tags: javascript, html, discuss
+                user:
+                  name: Aletha "Jordon" \:/ Lubowitz
+                  username: username14
+                  twitter_username: twitter14
+                  github_username: github14
+                  user_id: 4062
+                  website_url: null
+                  profile_image: /uploads/user/profile_image/4062/b1e0cad0-d46f-4386-9e32-28318fc4e6e9.jpeg
+                  profile_image_90: /uploads/user/profile_image/4062/b1e0cad0-d46f-4386-9e32-28318fc4e6e9.jpeg
+                flare_tag:
+                  name: discuss
+                  bg_color_hex: '#000000'
+                  text_color_hex: '#ffffff'
+              - type_of: article
+                id: 2237
+                title: His Dark Materials5
+                description: Kitsch pitchfork schlitz 90s. Everyday wes anderson flannel offal muggle magic biodiesel try-hard...
+                readable_publish_date: May 28
+                slug: his-dark-materials5-52pe
+                path: /username13/his-dark-materials5-52pe
+                url: http://forem.test/username13/his-dark-materials5-52pe
+                comments_count: 0
+                public_reactions_count: 0
+                collection_id: null
+                published_timestamp: '2026-05-28T18:45:16Z'
+                language: null
+                subforem_id: null
+                positive_reactions_count: 0
+                cover_image: http://forem.test/assets/40-57aabe055a9fc60491e0fca9a4dade362141764e7ad214956bbfc9c9e69763b0.png
+                social_image: http://forem.test/assets/40-57aabe055a9fc60491e0fca9a4dade362141764e7ad214956bbfc9c9e69763b0.png
+                canonical_url: http://forem.test/username13/his-dark-materials5-52pe
+                created_at: '2026-05-28T18:45:16Z'
+                edited_at: null
+                crossposted_at: null
+                published_at: '2026-05-28T18:45:16Z'
+                last_comment_at: '2026-05-28T18:45:16Z'
+                reading_time_minutes: 1
+                tag_list:
+                - javascript
+                - html
+                - discuss
+                tags: javascript, html, discuss
+                user:
+                  name: Clinton "Timika" \:/ Konopelski
+                  username: username13
+                  twitter_username: twitter13
+                  github_username: github13
+                  user_id: 4061
+                  website_url: null
+                  profile_image: /uploads/user/profile_image/4061/b1948bf9-f870-463c-a72d-649a017353b4.jpeg
+                  profile_image_90: /uploads/user/profile_image/4061/b1948bf9-f870-463c-a72d-649a017353b4.jpeg
+                flare_tag:
+                  name: discuss
+                  bg_color_hex: '#000000'
+                  text_color_hex: '#ffffff'
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/articles/{id}:
+    get:
+      summary: Published article by id
+      security: []
+      tags:
+      - Articles
+      description: This endpoint allows the client to retrieve a single published article given its `id`.
+      operationId: getArticleById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: An Article
+          content:
+            application/json:
+              example:
+                type_of: article
+                id: 2240
+                title: Blue Remembered Earth8
+                description: Yolo next level green juice banjo flexitarian photo booth. Chillwave ennui kogi. Thundercats...
+                readable_publish_date: May 28
+                slug: blue-remembered-earth8-3dmj
+                path: /username16/blue-remembered-earth8-3dmj
+                url: http://forem.test/username16/blue-remembered-earth8-3dmj
+                comments_count: 0
+                public_reactions_count: 0
+                collection_id: null
+                published_timestamp: '2026-05-28T18:45:17Z'
+                language: en
+                subforem_id: null
+                positive_reactions_count: 0
+                cover_image: http://forem.test/assets/12-f9d673ae4ff98002f782ab82c641f2f26673be728e8f5409bea83f2d1de15323.png
+                social_image: http://forem.test/assets/12-f9d673ae4ff98002f782ab82c641f2f26673be728e8f5409bea83f2d1de15323.png
+                canonical_url: http://forem.test/username16/blue-remembered-earth8-3dmj
+                created_at: '2026-05-28T18:45:17Z'
+                edited_at: null
+                crossposted_at: null
+                published_at: '2026-05-28T18:45:17Z'
+                last_comment_at: '2026-05-28T18:45:17Z'
+                reading_time_minutes: 1
+                tag_list: discuss
+                tags:
+                - discuss
+                body_html: '<p>Yolo next level green juice banjo flexitarian photo booth. Chillwave ennui kogi. Thundercats intelligentsia tousled typewriter flexitarian.</p>
+
+
+                  <p>Before they sold out squid pbrb waistcoat.</p>
+
+
+                  '
+                body_markdown: "---\ntitle: Blue Remembered Earth8\npublished: true\ntags: discuss\ndate: \nseries: \ncanonical_url: \n\n---\n\nYolo next level green juice banjo flexitarian photo booth. Chillwave ennui kogi. Thundercats intelligentsia tousled typewriter flexitarian.\n\n\nBefore they sold out squid pbrb waistcoat.\n\n"
+                user:
+                  name: Vance "Larry" \:/ Nikolaus
+                  username: username16
+                  twitter_username: twitter16
+                  github_username: github16
+                  user_id: 4064
+                  website_url: null
+                  profile_image: /uploads/user/profile_image/4064/17fa7924-534e-4da2-8dc3-5de871a9e38e.jpeg
+                  profile_image_90: /uploads/user/profile_image/4064/17fa7924-534e-4da2-8dc3-5de871a9e38e.jpeg
+                flare_tag:
+                  name: discuss
+                  bg_color_hex: '#000000'
+                  text_color_hex: '#ffffff'
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+        '404':
+          description: Article Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    put:
+      summary: Update an article by id
+      tags:
+      - Articles
+      description: 'This endpoint allows the client to update an existing article.
+
+
+        "Articles" are all the posts that users create on DEV that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but is referred to as article within the code.'
+      operationId: updateArticle
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the user to unpublish.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 123
+      responses:
+        '200':
+          description: An Article
+          content:
+            application/json:
+              example:
+                type_of: article
+                id: 2241
+                title: The Heart Is a Lonely Hunter9
+                description: Scenester banh mi truffaut. Helvetica keytar chillwave tote bag mixtape forage intelligentsia carry....
+                readable_publish_date: May 28
+                slug: the-heart-is-a-lonely-hunter9-2ip2
+                path: /username17/the-heart-is-a-lonely-hunter9-2ip2
+                url: http://forem.test/username17/the-heart-is-a-lonely-hunter9-2ip2
+                comments_count: 0
+                public_reactions_count: 0
+                collection_id: null
+                published_timestamp: '2026-05-28T18:45:17Z'
+                language: en
+                subforem_id: null
+                positive_reactions_count: 0
+                cover_image: http://forem.test/assets/23-33ea5a2b5af3dc15b9ed90de0b850f67e2390eaec3361d6687d3b9750c699f84.png
+                social_image: http://forem.test/assets/23-33ea5a2b5af3dc15b9ed90de0b850f67e2390eaec3361d6687d3b9750c699f84.png
+                canonical_url: http://forem.test/username17/the-heart-is-a-lonely-hunter9-2ip2
+                created_at: '2026-05-28T18:45:17Z'
+                edited_at: '2026-05-28T18:45:17Z'
+                crossposted_at: null
+                published_at: '2026-05-28T18:45:17Z'
+                last_comment_at: '2026-05-28T18:45:17Z'
+                reading_time_minutes: 1
+                tag_list: discuss
+                tags:
+                - discuss
+                body_html: '<p><strong>New</strong> body for the article</p>
+
+
+                  '
+                body_markdown: '**New** body for the article'
+                user:
+                  name: Celsa "Edwardo" \:/ Kirlin
+                  username: username17
+                  twitter_username: twitter17
+                  github_username: github17
+                  user_id: 4065
+                  website_url: null
+                  profile_image: /uploads/user/profile_image/4065/36a7e5c8-ce49-410d-8fc0-7c2b776c8d4f.jpeg
+                  profile_image_90: /uploads/user/profile_image/4065/36a7e5c8-ce49-410d-8fc0-7c2b776c8d4f.jpeg
+                flare_tag:
+                  name: discuss
+                  bg_color_hex: '#000000'
+                  text_color_hex: '#ffffff'
+        '404':
+          description: Article Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              example:
+                error: 'param is missing or the value is empty: article'
+                status: 422
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Article'
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/articles/{username}/{slug}:
+    get:
+      summary: Published article by path
+      security: []
+      tags:
+      - Articles
+      description: This endpoint allows the client to retrieve a single published article given its `path`.
+      operationId: getArticleByPath
+      parameters:
+      - name: username
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An Article
+          content:
+            application/json:
+              example:
+                type_of: article
+                id: 2244
+                title: Of Human Bondage12
+                description: Vinegar bespoke mumblecore polaroid. Portland 3 wolf moon yolo austin scenester meditation artisan...
+                readable_publish_date: May 28
+                slug: of-human-bondage12-4bfh
+                path: /username21/of-human-bondage12-4bfh
+                url: http://forem.test/username21/of-human-bondage12-4bfh
+                comments_count: 0
+                public_reactions_count: 0
+                collection_id: null
+                published_timestamp: '2026-05-28T18:45:17Z'
+                language: null
+                subforem_id: null
+                positive_reactions_count: 0
+                cover_image: http://forem.test/assets/20-92231c1d2ddb3b707b8c1b5cb711ef17632ff2a64495970a58518ce33c3a4f76.png
+                social_image: http://forem.test/assets/20-92231c1d2ddb3b707b8c1b5cb711ef17632ff2a64495970a58518ce33c3a4f76.png
+                canonical_url: http://forem.test/username21/of-human-bondage12-4bfh
+                created_at: '2026-05-28T18:45:17Z'
+                edited_at: null
+                crossposted_at: null
+                published_at: '2026-05-28T18:45:17Z'
+                last_comment_at: '2026-05-28T18:45:17Z'
+                reading_time_minutes: 1
+                tag_list: discuss
+                tags:
+                - discuss
+                body_html: '<p>Vinegar bespoke mumblecore polaroid. Portland 3 wolf moon yolo austin scenester meditation artisan pbrb.</p>
+
+
+                  <p>Meggings master yolo cliche. Pop-up put a bird on it poutine single-origin coffee brunch.</p>
+
+
+                  '
+                body_markdown: "---\ntitle: Of Human Bondage12\npublished: true\ntags: discuss\ndate: \nseries: \ncanonical_url: \n\n---\n\nVinegar bespoke mumblecore polaroid. Portland 3 wolf moon yolo austin scenester meditation artisan pbrb.\n\n\nMeggings master yolo cliche. Pop-up put a bird on it poutine single-origin coffee brunch.\n\n"
+                user:
+                  name: Joaquin "Tayna" \:/ Veum
+                  username: username21
+                  twitter_username: twitter21
+                  github_username: github21
+                  user_id: 4069
+                  website_url: null
+                  profile_image: /uploads/user/profile_image/4069/cd9be7fb-4277-4e90-9351-de7a241d1856.jpeg
+                  profile_image_90: /uploads/user/profile_image/4069/cd9be7fb-4277-4e90-9351-de7a241d1856.jpeg
+                flare_tag:
+                  name: discuss
+                  bg_color_hex: '#000000'
+                  text_color_hex: '#ffffff'
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+        '404':
+          description: Article Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/articles/me:
+    get:
+      summary: User's articles
+      tags:
+      - Articles
+      description: 'This endpoint allows the client to retrieve a list of published articles on behalf of an authenticated user.
+
+
+        "Articles" are all the posts that users create on DEV that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but is referred to as article within the code.
+
+
+        Published articles will be in reverse chronological publication order.
+
+
+        It will return published articles with pagination. By default a page will contain 30 articles.'
+      operationId: getUserArticles
+      parameters:
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '200':
+          description: A List of the authenticated user's Articles
+          content:
+            application/json:
+              example: []
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/articles/me/published:
+    get:
+      summary: User's published articles
+      tags:
+      - Articles
+      description: 'This endpoint allows the client to retrieve a list of published articles on behalf of an authenticated user.
+
+
+        "Articles" are all the posts that users create on DEV that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but is referred to as article within the code.
+
+
+        Published articles will be in reverse chronological publication order.
+
+
+        It will return published articles with pagination. By default a page will contain 30 articles.'
+      operationId: getUserPublishedArticles
+      parameters:
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '200':
+          description: A List of the authenticated user's Articles
+          content:
+            application/json:
+              example: []
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/articles/me/unpublished:
+    get:
+      summary: User's unpublished articles
+      tags:
+      - Articles
+      description: 'This endpoint allows the client to retrieve a list of unpublished articles on behalf of an authenticated user.
+
+
+        "Articles" are all the posts that users create on DEV that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but is referred to as article within the code.
+
+
+        Unpublished articles will be in reverse chronological creation order.
+
+
+        It will return unpublished articles with pagination. By default a page will contain 30 articles.'
+      operationId: getUserUnpublishedArticles
+      parameters:
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '200':
+          description: A List of the authenticated user's Articles
+          content:
+            application/json:
+              example: []
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/articles/me/all:
+    get:
+      summary: User's all articles
+      tags:
+      - Articles
+      description: 'This endpoint allows the client to retrieve a list of all articles on behalf of an authenticated user.
+
+
+        "Articles" are all the posts that users create on DEV that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but is referred to as article within the code.
+
+
+        It will return both published and unpublished articles with pagination.
+
+
+        Unpublished articles will be at the top of the list in reverse chronological creation order. Published articles will follow in reverse chronological publication order.
+
+
+        By default a page will contain 30 articles.'
+      operationId: getUserAllArticles
+      parameters:
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '200':
+          description: A List of the authenticated user's Articles
+          content:
+            application/json:
+              example: []
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/articles/{id}/unpublish:
+    put:
+      summary: Unpublish an article
+      tags:
+      - Articles
+      description: 'This endpoint allows the client to unpublish an article.
+
+
+        The user associated with the API key must have any ''admin'' or ''moderator'' role.
+
+
+        The article will be unpublished and will no longer be visible to the public. It will remain
+
+        in the database and will set back to draft status on the author''s posts dashboard. Any
+
+        notifications associated with the article will be deleted. Any comments on the article
+
+        will remain.'
+      operationId: unpublishArticle
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the article to unpublish.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      - name: note
+        in: query
+        required: false
+        description: Content for the note that's created along with unpublishing
+        schema:
+          type: string
+        example: Admin requested unpublishing all articles via API
+      responses:
+        '204':
+          description: Article successfully unpublished
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '404':
+          description: Article Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/organizations/{organization_id_or_username}/articles:
+    get:
+      summary: Organization's Articles
+      tags:
+      - Articles
+      security: []
+      description: 'This endpoint allows the client to retrieve a list of Articles belonging to the organization
+
+
+        It supports pagination, each page will contain `30` users by default.'
+      operationId: getOrgArticles
+      parameters:
+      - name: organization_id_or_username
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '200':
+          description: An Organization's Articles (with ID)
+          content:
+            application/json:
+              example:
+              - type_of: article
+                id: 2258
+                title: Whats Become of Waring26
+                description: Intelligentsia wes anderson pitchfork. Ramps single-origin coffee park kombucha vhs thundercats....
+                readable_publish_date: May 28
+                slug: whats-become-of-waring26-1010
+                path: /org18/whats-become-of-waring26-1010
+                url: http://forem.test/org18/whats-become-of-waring26-1010
+                comments_count: 0
+                public_reactions_count: 0
+                collection_id: null
+                published_timestamp: '2026-05-28T18:45:25Z'
+                language: en
+                subforem_id: null
+                positive_reactions_count: 0
+                cover_image: http://forem.test/assets/38-3b0c46cc0d5367229799d282c99b2c42f33501201cac1ceb5c643f9ee11f06c6.png
+                social_image: http://forem.test/assets/38-3b0c46cc0d5367229799d282c99b2c42f33501201cac1ceb5c643f9ee11f06c6.png
+                canonical_url: http://forem.test/org18/whats-become-of-waring26-1010
+                created_at: '2026-05-28T18:45:25Z'
+                edited_at: null
+                crossposted_at: null
+                published_at: '2026-05-28T18:45:25Z'
+                last_comment_at: '2026-05-28T18:45:25Z'
+                reading_time_minutes: 1
+                tag_list:
+                - javascript
+                - html
+                - discuss
+                tags: javascript, html, discuss
+                user:
+                  name: Jeremy "Arlena" \:/ Hintz
+                  username: username162
+                  twitter_username: twitter162
+                  github_username: github162
+                  user_id: 4210
+                  website_url: null
+                  profile_image: /uploads/user/profile_image/4210/cd03365d-5604-4d37-a2e1-62a537710192.jpeg
+                  profile_image_90: /uploads/user/profile_image/4210/cd03365d-5604-4d37-a2e1-62a537710192.jpeg
+                organization:
+                  name: Marquardt-Von
+                  username: org18
+                  slug: org18
+                  profile_image: /uploads/organization/profile_image/574/a6c694a7-f32f-45cc-974f-5aa18eca3eac.png
+                  profile_image_90: /uploads/organization/profile_image/574/a6c694a7-f32f-45cc-974f-5aa18eca3eac.png
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/videos:
+    get:
+      summary: Articles with a video
+      tags:
+      - Articles
+      security: []
+      description: 'This endpoint allows the client to retrieve a list of articles that are uploaded with a video.
+
+
+        It will only return published video articles ordered by descending popularity.
+
+
+        It supports pagination, each page will contain 24 articles by default.'
+      operationId: videos
+      parameters:
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam24to1000'
+      responses:
+        '200':
+          description: A List of all articles with videos
+          content:
+            application/json:
+              example:
+              - type_of: video_article
+                id: 2269
+                path: /username271/dulce-et-decorum-est32-1c75
+                cloudinary_video_url: https://dw71fyauz7yz9.cloudfront.net/video-upload__1e42eb0bab4abb3c63baeb5e8bdfe69f/thumbs-video-upload__1e42eb0bab4abb3c63baeb5e8bdfe69f-00001.png
+                video: https://s3.amazonaws.com/dev-to-input-v0/video-upload__2d7dc29e39a40c7059572bca75bb646b
+                title: Dulce et Decorum Est32
+                user_id: 4320
+                video_duration_in_minutes: 00:00
+                video_source_url: https://dw71fyauz7yz9.cloudfront.net/video-upload__1e42eb0bab4abb3c63baeb5e8bdfe69f/video-upload__1e42eb0bab4abb3c63baeb5e8bdfe69f.m3u8
+                user:
+                  name: Layne "Eldon" \:/ Satterfield
+              - type_of: video_article
+                id: 2270
+                path: /username272/an-evil-cradling33-n2e
+                cloudinary_video_url: https://dw71fyauz7yz9.cloudfront.net/video-upload__1e42eb0bab4abb3c63baeb5e8bdfe69f/thumbs-video-upload__1e42eb0bab4abb3c63baeb5e8bdfe69f-00001.png
+                video: https://s3.amazonaws.com/dev-to-input-v0/video-upload__2d7dc29e39a40c7059572bca75bb646b
+                title: An Evil Cradling33
+                user_id: 4321
+                video_duration_in_minutes: 00:00
+                video_source_url: https://dw71fyauz7yz9.cloudfront.net/video-upload__1e42eb0bab4abb3c63baeb5e8bdfe69f/video-upload__1e42eb0bab4abb3c63baeb5e8bdfe69f.m3u8
+                user:
+                  name: Foster "Augustine" \:/ Cruickshank
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VideoArticle'
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /articles:
+    post:
+      summary: Publish article
+      tags:
+      - Articles
+      description: 'This endpoint allows the client to create a new article.
+
+
+        "Articles" are all the posts that users create on DEV that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but is referred to as article within the code.'
+      operationId: createArticle
+      parameters: []
+      responses:
+        '201':
+          description: An Article
+          content:
+            application/json:
+              example:
+                type_of: article
+                id: 251
+                title: New article
+                description: New post example
+                readable_publish_date: Apr 14
+                slug: new-article-4aca
+                path: /username383/new-article-4aca
+                url: http://localhost:3000/username383/new-article-4aca
+                comments_count: 0
+                public_reactions_count: 0
+                collection_id: 11
+                published_timestamp: '2023-04-14T14:45:32Z'
+                positive_reactions_count: 0
+                cover_image: https://thepracticaldev.s3.amazonaws.com/i/5wfo25724gzgk5e5j50g.jpg
+                social_image: https://thepracticaldev.s3.amazonaws.com/i/5wfo25724gzgk5e5j50g.jpg
+                canonical_url: https://dev.to/fdocr/headless-chrome-dual-mode-tests-for-ruby-on-rails-4p6g
+                created_at: '2023-04-14T14:45:32Z'
+                edited_at: null
+                crossposted_at: null
+                published_at: '2023-04-14T14:45:32Z'
+                last_comment_at: '2023-04-14T14:45:32Z'
+                reading_time_minutes: 1
+                tag_list: ''
+                tags: []
+                body_html: '<p><strong>New</strong> body for the article</p>
+
+
+                  '
+                body_markdown: '**New** body for the article'
+                user:
+                  name: Nu "Otis" \:/ Stehr
+                  username: username383
+                  twitter_username: twitter383
+                  github_username: github383
+                  user_id: 1304
+                  website_url: null
+                  profile_image: /uploads/user/profile_image/1304/ceaf627b-1551-4771-8d35-a93b40989584.jpeg
+                  profile_image_90: /uploads/user/profile_image/1304/ceaf627b-1551-4771-8d35-a93b40989584.jpeg
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              example:
+                error: 'param is missing or the value is empty: article'
+                status: 422
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Article'
+    get:
+      summary: Published articles
+      security: []
+      tags:
+      - Articles
+      description: 'This endpoint allows the client to retrieve a list of articles.
+
+
+        "Articles" are all the posts that users create on DEV that typically
+
+        show up in the feed. They can be a blog post, a discussion question,
+
+        a help thread etc. but is referred to as article within the code.
+
+
+        By default it will return featured, published articles ordered
+
+        by descending popularity.
+
+
+        It supports pagination, each page will contain `30` articles by default.'
+      operationId: getArticles
+      parameters:
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      - name: tag
+        in: query
+        required: false
+        description: 'Using this parameter will retrieve articles that contain the requested tag. Articles
+
+          will be ordered by descending popularity.This parameter can be used in conjuction with `top`.'
+        schema:
+          type: string
+        example: discuss
+      - name: tags
+        in: query
+        required: false
+        description: 'Using this parameter will retrieve articles with any of the comma-separated tags.
+
+          Articles will be ordered by descending popularity.'
+        schema:
+          type: string
+        example: javascript, css
+      - name: tags_exclude
+        in: query
+        required: false
+        description: 'Using this parameter will retrieve articles that do _not_ contain _any_
+
+          of comma-separated tags. Articles will be ordered by descending popularity.'
+        schema:
+          type: string
+        example: node, java
+      - name: username
+        in: query
+        required: false
+        description: "Using this parameter will retrieve articles belonging\n            to a User or Organization ordered by descending publication date.\n            If `state=all` the number of items returned will be `1000` instead of the default `30`.\n            This parameter can be used in conjuction with `state`."
+        schema:
+          type: string
+        example: ben
+      - name: state
+        in: query
+        required: false
+        description: "Using this parameter will allow the client to check which articles are fresh or rising.\n            If `state=fresh` the server will return fresh articles.\n            If `state=rising` the server will return rising articles.\n            This param can be used in conjuction with `username`, only if set to `all`."
+        schema:
+          type: string
+          enum:
+          - fresh
+          - rising
+          - all
+        example: fresh
+      - name: top
+        in: query
+        required: false
+        description: 'Using this parameter will allow the client to return the most popular articles
+
+          in the last `N` days.
+
+          `top` indicates the number of days since publication of the articles returned.
+
+          This param can be used in conjuction with `tag`.'
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 2
+      - name: collection_id
+        in: query
+        required: false
+        description: 'Adding this will allow the client to return the list of articles
+
+          belonging to the requested collection, ordered by ascending publication date.'
+        schema:
+          type: integer
+          format: int32
+        example: 99
+      responses:
+        '200':
+          description: A List of Articles
+          content:
+            application/json:
+              example:
+              - type_of: article
+                id: 254
+                title: All the King's Men175
+                description: Typewriter crucifix forage. Pug put a bird on it art party taxidermy asymmetrical xoxo. Sustainable...
+                readable_publish_date: Apr 14
+                slug: all-the-kings-men175-794
+                path: /username387/all-the-kings-men175-794
+                url: http://localhost:3000/username387/all-the-kings-men175-794
+                comments_count: 0
+                public_reactions_count: 0
+                collection_id: null
+                published_timestamp: '2023-04-14T14:45:32Z'
+                positive_reactions_count: 0
+                cover_image: http://localhost:3000/assets/36-83d24fbff858b9dd4035d1e7d2df14090946ae4fed631055fc1d5862e7018348.png
+                social_image: http://localhost:3000/assets/36-83d24fbff858b9dd4035d1e7d2df14090946ae4fed631055fc1d5862e7018348.png
+                canonical_url: http://localhost:3000/username387/all-the-kings-men175-794
+                created_at: '2023-04-14T14:45:32Z'
+                edited_at: null
+                crossposted_at: null
+                published_at: '2023-04-14T14:45:32Z'
+                last_comment_at: '2023-04-14T14:45:32Z'
+                reading_time_minutes: 1
+                tag_list:
+                - discuss
+                tags: discuss
+                user:
+                  name: Versie "Luana" \:/ Runolfsson
+                  username: username387
+                  twitter_username: twitter387
+                  github_username: github387
+                  user_id: 1308
+                  website_url: null
+                  profile_image: /uploads/user/profile_image/1308/dfa25219-dfea-4d9a-93ec-403a5f51a29e.jpeg
+                  profile_image_90: /uploads/user/profile_image/1308/dfa25219-dfea-4d9a-93ec-403a5f51a29e.jpeg
+                organization:
+                  name: Ledner, Jaskolski and Bednar
+                  username: org70
+                  slug: org70
+                  profile_image: /uploads/organization/profile_image/295/216d3fb5-bd3c-459a-a9d8-572e8332fd88.png
+                  profile_image_90: /uploads/organization/profile_image/295/216d3fb5-bd3c-459a-a9d8-572e8332fd88.png
+                flare_tag:
+                  name: discuss
+                  bg_color_hex: '#000000'
+                  text_color_hex: '#ffffff'
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /articles/latest:
+    get:
+      summary: Published articles sorted by published date
+      security: []
+      tags:
+      - Articles
+      description: 'This endpoint allows the client to retrieve a list of articles. ordered by descending publish date.
+
+
+        It supports pagination, each page will contain 30 articles by default.'
+      operationId: getLatestArticles
+      parameters:
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '200':
+          description: A List of Articles
+          content:
+            application/json:
+              example:
+              - type_of: article
+                id: 257
+                title: East of Eden178
+                description: Readymade diy ennui humblebrag 8-bit. Brooklyn hoodie pickled art party vinyl small batch roof. 8-bit...
+                readable_publish_date: Apr 14
+                slug: east-of-eden178-3on4
+                path: /username390/east-of-eden178-3on4
+                url: http://localhost:3000/username390/east-of-eden178-3on4
+                comments_count: 0
+                public_reactions_count: 0
+                collection_id: null
+                published_timestamp: '2023-04-14T14:45:32Z'
+                positive_reactions_count: 0
+                cover_image: http://localhost:3000/assets/16-77521848e7b5fcc073ac3e0bb004826e97f737238194e4c79330f662cc946ab2.png
+                social_image: http://localhost:3000/assets/16-77521848e7b5fcc073ac3e0bb004826e97f737238194e4c79330f662cc946ab2.png
+                canonical_url: http://localhost:3000/username390/east-of-eden178-3on4
+                created_at: '2023-04-14T14:45:32Z'
+                edited_at: null
+                crossposted_at: null
+                published_at: '2023-04-14T14:45:32Z'
+                last_comment_at: '2023-04-14T14:45:32Z'
+                reading_time_minutes: 1
+                tag_list:
+                - javascript
+                - html
+                - discuss
+                tags: javascript, html, discuss
+                user:
+                  name: Starla "Eric" \:/ Kunde
+                  username: username390
+                  twitter_username: twitter390
+                  github_username: github390
+                  user_id: 1311
+                  website_url: null
+                  profile_image: /uploads/user/profile_image/1311/11a4ee42-e02e-4b2f-87c1-6123579350b7.jpeg
+                  profile_image_90: /uploads/user/profile_image/1311/11a4ee42-e02e-4b2f-87c1-6123579350b7.jpeg
+                flare_tag:
+                  name: discuss
+                  bg_color_hex: '#000000'
+                  text_color_hex: '#ffffff'
+              - type_of: article
+                id: 256
+                title: A Many-Splendoured Thing177
+                description: Letterpress neutra vice raw denim mumblecore organic small batch. Bushwick viral freegan photo booth...
+                readable_publish_date: Apr 14
+                slug: a-many-splendoured-thing177-314b
+                path: /username389/a-many-splendoured-thing177-314b
+                url: http://localhost:3000/username389/a-many-splendoured-thing177-314b
+                comments_count: 0
+                public_reactions_count: 0
+                collection_id: null
+                published_timestamp: '2023-04-14T14:45:32Z'
+                positive_reactions_count: 0
+                cover_image: http://localhost:3000/assets/27-441873f471d98b5358beff7d47a211e58b9979c6453794f9a7abfd5709c33322.png
+                social_image: http://localhost:3000/assets/27-441873f471d98b5358beff7d47a211e58b9979c6453794f9a7abfd5709c33322.png
+                canonical_url: http://localhost:3000/username389/a-many-splendoured-thing177-314b
+                created_at: '2023-04-14T14:45:32Z'
+                edited_at: null
+                crossposted_at: null
+                published_at: '2023-04-14T14:45:32Z'
+                last_comment_at: '2023-04-14T14:45:32Z'
+                reading_time_minutes: 1
+                tag_list:
+                - javascript
+                - html
+                - discuss
+                tags: javascript, html, discuss
+                user:
+                  name: Jeanne "Donnette" \:/ Waelchi
+                  username: username389
+                  twitter_username: twitter389
+                  github_username: github389
+                  user_id: 1310
+                  website_url: null
+                  profile_image: /uploads/user/profile_image/1310/67d345a8-f64b-407f-a802-6f5286b5c4a2.jpeg
+                  profile_image_90: /uploads/user/profile_image/1310/67d345a8-f64b-407f-a802-6f5286b5c4a2.jpeg
+                flare_tag:
+                  name: discuss
+                  bg_color_hex: '#000000'
+                  text_color_hex: '#ffffff'
+              - type_of: article
+                id: 255
+                title: What's Become of Waring176
+                description: Whatever church-key irony next level tacos banh mi. Brooklyn wayfarers occupy tacos austin marfa...
+                readable_publish_date: Apr 14
+                slug: whats-become-of-waring176-2lgk
+                path: /username388/whats-become-of-waring176-2lgk
+                url: http://localhost:3000/username388/whats-become-of-waring176-2lgk
+                comments_count: 0
+                public_reactions_count: 0
+                collection_id: null
+                published_timestamp: '2023-04-14T14:45:32Z'
+                positive_reactions_count: 0
+                cover_image: http://localhost:3000/assets/31-2a89a91581ce9080fed8d62dd9c70a3fd5f92472da8c023e7b29256e04811b2e.png
+                social_image: http://localhost:3000/assets/31-2a89a91581ce9080fed8d62dd9c70a3fd5f92472da8c023e7b29256e04811b2e.png
+                canonical_url: http://localhost:3000/username388/whats-become-of-waring176-2lgk
+                created_at: '2023-04-14T14:45:32Z'
+                edited_at: null
+                crossposted_at: null
+                published_at: '2023-04-14T14:45:32Z'
+                last_comment_at: '2023-04-14T14:45:32Z'
+                reading_time_minutes: 1
+                tag_list:
+                - javascript
+                - html
+                - discuss
+                tags: javascript, html, discuss
+                user:
+                  name: Jerrell "Essie" \:/ Runolfsdottir
+                  username: username388
+                  twitter_username: twitter388
+                  github_username: github388
+                  user_id: 1309
+                  website_url: null
+                  profile_image: /uploads/user/profile_image/1309/eaae0231-0ff6-49da-960c-cd30e2486bed.jpeg
+                  profile_image_90: /uploads/user/profile_image/1309/eaae0231-0ff6-49da-960c-cd30e2486bed.jpeg
+                flare_tag:
+                  name: discuss
+                  bg_color_hex: '#000000'
+                  text_color_hex: '#ffffff'
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /articles/{id}:
+    get:
+      summary: Published article by id
+      security: []
+      tags:
+      - Articles
+      description: This endpoint allows the client to retrieve a single published article given its `id`.
+      operationId: getArticleById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: An Article
+          content:
+            application/json:
+              example:
+                type_of: article
+                id: 258
+                title: Pale Kings and Princes179
+                description: Etsy you probably haven't heard of them carry humblebrag 90's try-hard. Distillery asymmetrical...
+                readable_publish_date: Apr 14
+                slug: pale-kings-and-princes179-381c
+                path: /username391/pale-kings-and-princes179-381c
+                url: http://localhost:3000/username391/pale-kings-and-princes179-381c
+                comments_count: 0
+                public_reactions_count: 0
+                collection_id: null
+                published_timestamp: '2023-04-14T14:45:32Z'
+                positive_reactions_count: 0
+                cover_image: http://localhost:3000/assets/19-ed58d3e8defcefc445020631589697a05e725243e834b5192aee4e6b91a3e927.png
+                social_image: http://localhost:3000/assets/19-ed58d3e8defcefc445020631589697a05e725243e834b5192aee4e6b91a3e927.png
+                canonical_url: http://localhost:3000/username391/pale-kings-and-princes179-381c
+                created_at: '2023-04-14T14:45:32Z'
+                edited_at: null
+                crossposted_at: null
+                published_at: '2023-04-14T14:45:32Z'
+                last_comment_at: '2023-04-14T14:45:32Z'
+                reading_time_minutes: 1
+                tag_list: discuss
+                tags:
+                - discuss
+                body_html: '<p>Etsy you probably haven''t heard of them carry humblebrag 90''s try-hard. Distillery asymmetrical godard trust fund quinoa pug paleo. Letterpress green juice plaid.</p>
+
+
+                  <p>Organic +1 pour-over banh mi disrupt listicle. Cronut offal flexitarian twee health poutine cred. Hashtag godard church-key etsy put a bird on it.</p>
+
+
+                  '
+                body_markdown: "---\ntitle: Pale Kings and Princes179\npublished: true\ntags: discuss\ndate: \nseries: \ncanonical_url: \n\n---\n\nEtsy you probably haven't heard of them carry humblebrag 90's try-hard. Distillery asymmetrical godard trust fund quinoa pug paleo. Letterpress green juice plaid.\n\n\nOrganic +1 pour-over banh mi disrupt listicle. Cronut offal flexitarian twee health poutine cred. Hashtag godard church-key etsy put a bird on it.\n\n"
+                user:
+                  name: Val "Antonina" \:/ Gleichner
+                  username: username391
+                  twitter_username: twitter391
+                  github_username: github391
+                  user_id: 1312
+                  website_url: null
+                  profile_image: /uploads/user/profile_image/1312/2eec3cd5-e7fe-42ac-bbfa-27c84d847596.jpeg
+                  profile_image_90: /uploads/user/profile_image/1312/2eec3cd5-e7fe-42ac-bbfa-27c84d847596.jpeg
+                flare_tag:
+                  name: discuss
+                  bg_color_hex: '#000000'
+                  text_color_hex: '#ffffff'
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+        '404':
+          description: Article Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    put:
+      summary: Update an article by id
+      tags:
+      - Articles
+      description: 'This endpoint allows the client to update an existing article.
+
+
+        "Articles" are all the posts that users create on DEV that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but is referred to as article within the code.'
+      operationId: updateArticle
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the user to unpublish.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 123
+      responses:
+        '200':
+          description: An Article
+          content:
+            application/json:
+              example:
+                type_of: article
+                id: 259
+                title: Noli Me Tangere180
+                description: Hoodie meh knausgaard bespoke actually shabby chic polaroid. Tumblr ennui semiotics freegan diy...
+                readable_publish_date: Apr 14
+                slug: noli-me-tangere180-55bp
+                path: /username392/noli-me-tangere180-55bp
+                url: http://localhost:3000/username392/noli-me-tangere180-55bp
+                comments_count: 0
+                public_reactions_count: 0
+                collection_id: null
+                published_timestamp: '2023-04-14T14:45:33Z'
+                positive_reactions_count: 0
+                cover_image: http://localhost:3000/assets/3-93b6b57b5a6115cffe5d63d29a22825eb9e65f647bfef57a88244bc2b98186f0.png
+                social_image: http://localhost:3000/assets/3-93b6b57b5a6115cffe5d63d29a22825eb9e65f647bfef57a88244bc2b98186f0.png
+                canonical_url: http://localhost:3000/username392/noli-me-tangere180-55bp
+                created_at: '2023-04-14T14:45:33Z'
+                edited_at: '2023-04-14T14:45:33Z'
+                crossposted_at: null
+                published_at: '2023-04-14T14:45:33Z'
+                last_comment_at: '2023-04-14T14:45:33Z'
+                reading_time_minutes: 1
+                tag_list: ''
+                tags: []
+                body_html: '<p><strong>New</strong> body for the article</p>
+
+
+                  '
+                body_markdown: '**New** body for the article'
+                user:
+                  name: Lai "Aide" \:/ Will
+                  username: username392
+                  twitter_username: twitter392
+                  github_username: github392
+                  user_id: 1313
+                  website_url: null
+                  profile_image: /uploads/user/profile_image/1313/731805e8-95f2-4260-89f1-489df0c9e945.jpeg
+                  profile_image_90: /uploads/user/profile_image/1313/731805e8-95f2-4260-89f1-489df0c9e945.jpeg
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '404':
+          description: Article Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              example:
+                error: 'param is missing or the value is empty: article'
+                status: 422
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Article'
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /articles/{username}/{slug}:
+    get:
+      summary: Published article by path
+      security: []
+      tags:
+      - Articles
+      description: This endpoint allows the client to retrieve a single published article given its `path`.
+      operationId: getArticleByPath
+      parameters:
+      - name: username
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An Article
+          content:
+            application/json:
+              example:
+                type_of: article
+                id: 262
+                title: Noli Me Tangere183
+                description: Normcore williamsburg try-hard artisan. Vinyl park shoreditch gastropub vegan knausgaard.  Ethical...
+                readable_publish_date: Apr 14
+                slug: noli-me-tangere183-1lj5
+                path: /username396/noli-me-tangere183-1lj5
+                url: http://localhost:3000/username396/noli-me-tangere183-1lj5
+                comments_count: 0
+                public_reactions_count: 0
+                collection_id: null
+                published_timestamp: '2023-04-14T14:45:33Z'
+                positive_reactions_count: 0
+                cover_image: http://localhost:3000/assets/37-94b286825ffd9f2b47c9842cf4f262b7c89e789797eba40196bc14b5c2359e75.png
+                social_image: http://localhost:3000/assets/37-94b286825ffd9f2b47c9842cf4f262b7c89e789797eba40196bc14b5c2359e75.png
+                canonical_url: http://localhost:3000/username396/noli-me-tangere183-1lj5
+                created_at: '2023-04-14T14:45:33Z'
+                edited_at: null
+                crossposted_at: null
+                published_at: '2023-04-14T14:45:33Z'
+                last_comment_at: '2023-04-14T14:45:33Z'
+                reading_time_minutes: 1
+                tag_list: discuss
+                tags:
+                - discuss
+                body_html: '<p>Normcore williamsburg try-hard artisan. Vinyl park shoreditch gastropub vegan knausgaard.</p>
+
+
+                  <p>Ethical trust fund intelligentsia pbr&amp;b. Brunch seitan pug waistcoat farm-to-table flexitarian health. Tumblr banh mi goth retro diy.</p>
+
+
+                  '
+                body_markdown: "---\ntitle: Noli Me Tangere183\npublished: true\ntags: discuss\ndate: \nseries: \ncanonical_url: \n\n---\n\nNormcore williamsburg try-hard artisan. Vinyl park shoreditch gastropub vegan knausgaard.\n\n\nEthical trust fund intelligentsia pbr&b. Brunch seitan pug waistcoat farm-to-table flexitarian health. Tumblr banh mi goth retro diy.\n\n"
+                user:
+                  name: Ashely "Erich" \:/ Waters
+                  username: username396
+                  twitter_username: twitter396
+                  github_username: github396
+                  user_id: 1317
+                  website_url: null
+                  profile_image: /uploads/user/profile_image/1317/e7282d93-954d-4b13-805e-9e5636ad9d63.jpeg
+                  profile_image_90: /uploads/user/profile_image/1317/e7282d93-954d-4b13-805e-9e5636ad9d63.jpeg
+                flare_tag:
+                  name: discuss
+                  bg_color_hex: '#000000'
+                  text_color_hex: '#ffffff'
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+        '404':
+          description: Article Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /articles/me:
+    get:
+      summary: User's articles
+      tags:
+      - Articles
+      description: 'This endpoint allows the client to retrieve a list of published articles on behalf of an authenticated user.
+
+
+        "Articles" are all the posts that users create on DEV that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but is referred to as article within the code.
+
+
+        Published articles will be in reverse chronological publication order.
+
+
+        It will return published articles with pagination. By default a page will contain 30 articles.'
+      operationId: getUserArticles
+      parameters:
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '200':
+          description: A List of the authenticated user's Articles
+          content:
+            application/json:
+              example: []
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /articles/me/published:
+    get:
+      summary: User's published articles
+      tags:
+      - Articles
+      description: 'This endpoint allows the client to retrieve a list of published articles on behalf of an authenticated user.
+
+
+        "Articles" are all the posts that users create on DEV that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but is referred to as article within the code.
+
+
+        Published articles will be in reverse chronological publication order.
+
+
+        It will return published articles with pagination. By default a page will contain 30 articles.'
+      operationId: getUserPublishedArticles
+      parameters:
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '200':
+          description: A List of the authenticated user's Articles
+          content:
+            application/json:
+              example: []
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /articles/me/unpublished:
+    get:
+      summary: User's unpublished articles
+      tags:
+      - Articles
+      description: 'This endpoint allows the client to retrieve a list of unpublished articles on behalf of an authenticated user.
+
+
+        "Articles" are all the posts that users create on DEV that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but is referred to as article within the code.
+
+
+        Unpublished articles will be in reverse chronological creation order.
+
+
+        It will return unpublished articles with pagination. By default a page will contain 30 articles.'
+      operationId: getUserUnpublishedArticles
+      parameters:
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '200':
+          description: A List of the authenticated user's Articles
+          content:
+            application/json:
+              example: []
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /articles/me/all:
+    get:
+      summary: User's all articles
+      tags:
+      - Articles
+      description: 'This endpoint allows the client to retrieve a list of all articles on behalf of an authenticated user.
+
+
+        "Articles" are all the posts that users create on DEV that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but is referred to as article within the code.
+
+
+        It will return both published and unpublished articles with pagination.
+
+
+        Unpublished articles will be at the top of the list in reverse chronological creation order. Published articles will follow in reverse chronological publication order.
+
+
+        By default a page will contain 30 articles.'
+      operationId: getUserAllArticles
+      parameters:
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '200':
+          description: A List of the authenticated user's Articles
+          content:
+            application/json:
+              example: []
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /articles/{id}/unpublish:
+    put:
+      summary: Unpublish an article
+      tags:
+      - Articles
+      description: 'This endpoint allows the client to unpublish an article.
+
+
+        The user associated with the API key must have any ''admin'' or ''moderator'' role.
+
+
+        The article will be unpublished and will no longer be visible to the public. It will remain
+
+        in the database and will set back to draft status on the author''s posts dashboard. Any
+
+        notifications associated with the article will be deleted. Any comments on the article
+
+        will remain.'
+      operationId: unpublishArticle
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the article to unpublish.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      - name: note
+        in: query
+        required: false
+        description: Content for the note that's created along with unpublishing
+        schema:
+          type: string
+        example: Admin requested unpublishing all articles via API
+      responses:
+        '204':
+          description: Article successfully unpublished
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '404':
+          description: Article Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /organizations/{username}/articles:
+    get:
+      summary: Organization's Articles
+      tags:
+      - Articles
+      security: []
+      description: 'This endpoint allows the client to retrieve a list of Articles belonging to the organization
+
+
+        It supports pagination, each page will contain `30` users by default.'
+      operationId: getOrgArticles
+      parameters:
+      - name: username
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '200':
+          description: An Organization's Articles
+          content:
+            application/json:
+              example:
+              - type_of: article
+                id: 276
+                title: Down to a Sunless Sea195
+                description: Scenester occupy swag. Yr godard single-origin coffee biodiesel beard artisan. Wes anderson yolo...
+                readable_publish_date: Apr 14
+                slug: down-to-a-sunless-sea195-51d4
+                path: /org81/down-to-a-sunless-sea195-51d4
+                url: http://localhost:3000/org81/down-to-a-sunless-sea195-51d4
+                comments_count: 0
+                public_reactions_count: 0
+                collection_id: null
+                published_timestamp: '2023-04-14T14:45:38Z'
+                positive_reactions_count: 0
+                cover_image: http://localhost:3000/assets/38-3b0c46cc0d5367229799d282c99b2c42f33501201cac1ceb5c643f9ee11f06c6.png
+                social_image: http://localhost:3000/assets/38-3b0c46cc0d5367229799d282c99b2c42f33501201cac1ceb5c643f9ee11f06c6.png
+                canonical_url: http://localhost:3000/org81/down-to-a-sunless-sea195-51d4
+                created_at: '2023-04-14T14:45:38Z'
+                edited_at: null
+                crossposted_at: null
+                published_at: '2023-04-14T14:45:38Z'
+                last_comment_at: '2023-04-14T14:45:38Z'
+                reading_time_minutes: 1
+                tag_list:
+                - javascript
+                - html
+                - discuss
+                tags: javascript, html, discuss
+                user:
+                  name: Annabell "Tyron" \:/ West
+                  username: username453
+                  twitter_username: twitter453
+                  github_username: github453
+                  user_id: 1399
+                  website_url: null
+                  profile_image: /uploads/user/profile_image/1399/15f1c715-4e10-4f57-9cca-7a2071dfdf23.jpeg
+                  profile_image_90: /uploads/user/profile_image/1399/15f1c715-4e10-4f57-9cca-7a2071dfdf23.jpeg
+                organization:
+                  name: Schuster LLC
+                  username: org81
+                  slug: org81
+                  profile_image: /uploads/organization/profile_image/334/824e9ec6-b41c-4824-87e8-ae7721868787.png
+                  profile_image_90: /uploads/organization/profile_image/334/824e9ec6-b41c-4824-87e8-ae7721868787.png
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /videos:
+    get:
+      summary: Articles with a video
+      tags:
+      - Articles
+      security: []
+      description: 'This endpoint allows the client to retrieve a list of articles that are uploaded with a video.
+
+
+        It will only return published video articles ordered by descending popularity.
+
+
+        It supports pagination, each page will contain 24 articles by default.'
+      operationId: videos
+      parameters:
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam24to1000'
+      responses:
+        '200':
+          description: A List of all articles with videos
+          content:
+            application/json:
+              example:
+              - type_of: video_article
+                id: 287
+                path: /username499/the-millstone201-1kgb
+                cloudinary_video_url: https://dw71fyauz7yz9.cloudfront.net/video-upload__1e42eb0bab4abb3c63baeb5e8bdfe69f/thumbs-video-upload__1e42eb0bab4abb3c63baeb5e8bdfe69f-00001.png
+                title: The Millstone201
+                user_id: 1452
+                video_duration_in_minutes: 00:00
+                video_source_url: https://dw71fyauz7yz9.cloudfront.net/video-upload__1e42eb0bab4abb3c63baeb5e8bdfe69f/video-upload__1e42eb0bab4abb3c63baeb5e8bdfe69f.m3u8
+                user:
+                  name: Edgardo "Monroe" \:/ Gusikowski
+              - type_of: video_article
+                id: 288
+                path: /username500/a-many-splendoured-thing202-4gnk
+                cloudinary_video_url: https://dw71fyauz7yz9.cloudfront.net/video-upload__1e42eb0bab4abb3c63baeb5e8bdfe69f/thumbs-video-upload__1e42eb0bab4abb3c63baeb5e8bdfe69f-00001.png
+                title: A Many-Splendoured Thing202
+                user_id: 1453
+                video_duration_in_minutes: 00:00
+                video_source_url: https://dw71fyauz7yz9.cloudfront.net/video-upload__1e42eb0bab4abb3c63baeb5e8bdfe69f/video-upload__1e42eb0bab4abb3c63baeb5e8bdfe69f.m3u8
+                user:
+                  name: Arlena "Catarina" \:/ Zulauf
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VideoArticle'
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+components:
+  parameters:
+    perPageParam30to1000:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 30
+    perPageParam24to1000:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 24
+    pageParam:
+      in: query
+      name: page
+      required: false
+      description: Pagination page
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
+  schemas:
+    Article:
+      description: Representation of an Article to be created/updated
+      type: object
+      properties:
+        article:
+          type: object
+          properties:
+            title:
+              type: string
+            body_markdown:
+              type: string
+            published:
+              type: boolean
+              default: false
+            series:
+              type:
+              - string
+              - 'null'
+            main_image:
+              type:
+              - string
+              - 'null'
+            canonical_url:
+              type:
+              - string
+              - 'null'
+            description:
+              type: string
+            tags:
+              type: string
+            organization_id:
+              type:
+              - integer
+              - 'null'
+    ArticleFlareTag:
+      description: Flare tag of the article
+      type: object
+      properties:
+        name:
+          type: string
+        bg_color_hex:
+          description: Background color (hexadecimal)
+          type:
+          - string
+          - 'null'
+        text_color_hex:
+          description: Text color (hexadecimal)
+          type:
+          - string
+          - 'null'
+    SharedOrganization:
+      description: The organization the resource belongs to
+      type: object
+      properties:
+        name:
+          type: string
+        username:
+          type: string
+        slug:
+          type: string
+        profile_image:
+          description: Profile image (640x640)
+          type: string
+          format: url
+        profile_image_90:
+          description: Profile image (90x90)
+          type: string
+          format: url
+    SharedUser:
+      description: The resource creator
+      type: object
+      properties:
+        name:
+          type: string
+        username:
+          type: string
+        twitter_username:
+          type:
+          - string
+          - 'null'
+        github_username:
+          type:
+          - string
+          - 'null'
+        website_url:
+          type:
+          - string
+          - 'null'
+          format: url
+        profile_image:
+          description: Profile image (640x640)
+          type: string
+        profile_image_90:
+          description: Profile image (90x90)
+          type: string
+    ArticleIndex:
+      description: Representation of an article or post returned in a list
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int32
+        title:
+          type: string
+        description:
+          type: string
+        cover_image:
+          type:
+          - string
+          - 'null'
+          format: url
+        readable_publish_date:
+          type: string
+        social_image:
+          type: string
+          format: url
+        tag_list:
+          type: array
+          items:
+            type: string
+        tags:
+          type: string
+        slug:
+          type: string
+        path:
+          type: string
+          format: path
+        url:
+          type: string
+          format: url
+        canonical_url:
+          type: string
+          format: url
+        positive_reactions_count:
+          type: integer
+          format: int32
+        public_reactions_count:
+          type: integer
+          format: int32
+        created_at:
+          type: string
+          format: date-time
+        edited_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        crossposted_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        published_at:
+          type: string
+          format: date-time
+        last_comment_at:
+          type: string
+          format: date-time
+        published_timestamp:
+          description: Crossposting or published date time
+          type: string
+          format: date-time
+        reading_time_minutes:
+          description: Reading time, in minutes
+          type: integer
+          format: int32
+        user:
+          $ref: '#/components/schemas/SharedUser'
+        flare_tag:
+          $ref: '#/components/schemas/ArticleFlareTag'
+        organization:
+          $ref: '#/components/schemas/SharedOrganization'
+      required:
+      - type_of
+      - id
+      - title
+      - description
+      - cover_image
+      - readable_publish_date
+      - social_image
+      - tag_list
+      - tags
+      - slug
+      - path
+      - url
+      - canonical_url
+      - comments_count
+      - positive_reactions_count
+      - public_reactions_count
+      - created_at
+      - edited_at
+      - crossposted_at
+      - published_at
+      - last_comment_at
+      - published_timestamp
+      - user
+      - reading_time_minutes
+    VideoArticle:
+      description: Representation of an Article with video
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int64
+        path:
+          type: string
+        cloudinary_video_url:
+          type: string
+        title:
+          type: string
+        user_id:
+          type: integer
+          format: int64
+        video_duration_in_minutes:
+          type: string
+        video_source_url:
+          type: string
+        user:
+          description: Author of the article
+          type: object
+          properties:
+            name:
+              type: string
+  securitySchemes:
+    api-key:
+      type: apiKey
+      name: api-key
+      in: header
+      description: "API Key authentication.\n\nAuthentication for some endpoints, like write operations on the\nArticles API require a DEV API key.\n\nAll authenticated endpoints are CORS disabled, the API key is intended for non-browser scripts.\n\n### Getting an API key\n\nTo obtain one, please follow these steps:\n\n  - visit https://dev.to/settings/extensions\n  - in the \"DEV API Keys\" section create a new key by adding a\n    description and clicking on \"Generate API Key\"\n\n    ![obtain a DEV API Key](https://user-images.githubusercontent.com/37842/172718105-bd93664e-76e0-477d-99c4-265dda0b06c5.png)\n\n  - You'll see the newly generated key in the same view\n    ![generated DEV API Key](https://user-images.githubusercontent.com/37842/172718151-e7fe26a0-9937-42e8-96c6-333acdab9e49.png)"
+x-refined-from:
+- openapi.json
+- openapi.yaml

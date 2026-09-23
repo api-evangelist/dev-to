@@ -1,0 +1,121 @@
+generated: '2026-09-17'
+method: searched
+source: https://developers.forem.com/api + https://dev.to/openapi.json + live response headers on https://dev.to/api/articles
+auth:
+  style: API key header (`api-key`), plus optional RFC 9068 delegated Bearer JWT
+  browser_usable: false
+  note: All authenticated endpoints are CORS-disabled; the key is explicitly intended for non-browser scripts.
+  see: authentication/dev-to-authentication.yml
+versioning:
+  style: media-type (Accept header)
+  current: v1
+  previous: v0
+  selector: 'Accept: application/vnd.forem.api-v1+json'
+  note: 'Version is negotiated by Accept header, not by URL path — both versions live under the same /api prefix.
+    A request without the header silently falls through to the deprecated V0 API and the server answers with a 299
+    Warning header naming V1. This is the single most consequential convention on this API for an agent: the same
+    URL returns a different contract depending on a header.'
+  see: lifecycle/dev-to-lifecycle.yml
+pagination:
+  style: page-number
+  params:
+    page: 1-based page index, default 1
+    per_page: page size; per-endpoint defaults of 10/24/30/80 with a maximum of 1000, configurable per instance
+      via API_PER_PAGE_MAX
+  response_fields: null
+  note: No total count, no next/prev links and no cursor are returned — the response is a bare JSON array. A client
+    learns it has reached the end only by receiving a short or empty page.
+field_expansion:
+  supported: false
+  note: No expand/fields/include parameters. Endpoints return fixed representations; index endpoints return a leaner
+    shape (ArticleIndex) than show endpoints (Article).
+metadata:
+  supported: false
+  note: No customer-defined metadata bag on any resource.
+request_tracing:
+  header: x-request-id
+  observed: true
+  evidence: live response from https://dev.to/api/articles carried x-request-id and x-runtime (2026-09-17)
+  note: Returned on every response but not documented; quote it when contacting yo@forem.com or security@dev.to.
+error_envelope:
+  media_type: application/json
+  rfc9457: false
+  shape: '{"status": <int>, "error": "<message>"}'
+  see: errors/dev-to-problem-types.yml
+rate_limit_signaling:
+  headers_returned: false
+  status_on_exhaustion: 429
+  note: No RateLimit-*/Retry-After headers observed. See rate-limits/dev-to-rate-limits.yml.
+  see: rate-limits/dev-to-rate-limits.yml
+idempotency:
+  coverage: partial
+  mechanism: operation-level semantics, not a client-supplied key
+  header: null
+  retention: null
+  scope:
+  - POST /api/reactions (createReaction)
+  evidence: 'https://dev.to/openapi.json, POST /api/reactions description: "Unlike the toggle endpoint, this endpoint
+    is idempotent: multiple requests to react with the same category to the same target will return the existing
+    reaction without deleting it."'
+  note: Exactly one of roughly 60 mutating operations in the Forem API V1 surface documents replay safety, and it
+    does so by resource semantics rather than a key. There is no Idempotency-Key header anywhere in the contract
+    or the docs, so a retried article create, badge award, follow, webhook create or survey submission can duplicate.
+    POST /api/reactions/toggle is explicitly the NON-idempotent twin of the same action and will flip the reaction
+    off on a retry — the most dangerous replay in this API.
+reversibility:
+  grade: documented
+  note: 'Every destructive or state-changing write in the Forem API V1 has a named reversal operation, and not one
+    of them states a window. No document on dev.to or developers.forem.com attaches a time limit, grace period or
+    retention horizon to an unpublish, a delete or a role removal, so nothing is graded verified. Note also what
+    is missing: there is no DELETE for an article at all — publish is reversed by unpublish, never by removal, so
+    the article record persists.'
+  write_surfaces:
+  - action: publish an article
+    operation: 'createArticle / updateArticle (published: true)'
+    reversal: unpublishArticle
+    reversal_operation: PUT /api/articles/{id}/unpublish
+    window: null
+    window_source: null
+    note: Unpublish hides the article; it does not delete it. No API operation deletes an article.
+  - action: publish a billboard
+    operation: POST/PUT /api/billboards
+    reversal: unpublish billboard
+    reversal_operation: PUT /api/billboards/{id}/unpublish
+    window: null
+    window_source: null
+  - action: create a reaction
+    operation: POST /api/reactions
+    reversal: toggle reaction
+    reversal_operation: POST /api/reactions/toggle
+    window: null
+    window_source: null
+    note: Toggle is also the create path for the non-idempotent flow, so it both creates and removes depending on
+      current state.
+  - action: limit / flag / trust a user
+    operation: PUT /api/users/{id}/limited | /spam | /trusted
+    reversal: unLimitUser / unSpamUser / unTrustUser
+    reversal_operation: DELETE /api/users/{id}/limited | /spam | /trusted
+    window: null
+    window_source: null
+  - action: unpublish a user’s content
+    operation: PUT /api/users/{id}/unpublish
+    reversal: none published
+    reversal_operation: null
+    window: null
+    window_source: null
+    note: A bulk unpublish of every article and comment a user owns, with no documented republish counterpart. The
+      highest-consequence irreversible-looking write in this API.
+  - action: create a webhook / badge / badge achievement / organization / page / event / segment / survey / concept
+      / redirect
+    operation: POST on the matching collection
+    reversal: delete
+    reversal_operation: DELETE on the matching resource
+    window: null
+    window_source: null
+    note: Hard delete with no documented restore path or retention window.
+see_also:
+- errors/dev-to-problem-types.yml
+- lifecycle/dev-to-lifecycle.yml
+- authentication/dev-to-authentication.yml
+- rate-limits/dev-to-rate-limits.yml
+- data-model/dev-to-data-model.yml

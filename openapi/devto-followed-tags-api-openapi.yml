@@ -1,0 +1,107 @@
+openapi: 3.2.0
+info:
+  title: Devto Followed Tags API
+  version: 1.0.0
+  description: 'Operations tagged followed_tags across 2 of this provider''s published API definitions: openapi.json, openapi.yaml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://dev.to/api
+  description: Production server
+security:
+- api-key: []
+tags:
+- name: Followed Tags
+paths:
+  /api/follows/tags:
+    get:
+      summary: Followed Tags
+      tags:
+      - Followed Tags
+      description: This endpoint allows the client to retrieve a list of the tags they follow.
+      operationId: getFollowedTags
+      responses:
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '200':
+          description: A List of followed tags
+          content:
+            application/json:
+              example:
+              - id: 2315
+                name: tag3
+                points: 1.0
+              - id: 2316
+                name: tag4
+                points: 1.0
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FollowedTag'
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /follows/tags:
+    get:
+      summary: Followed Tags
+      tags:
+      - Followed Tags
+      description: This endpoint allows the client to retrieve a list of the tags they follow.
+      operationId: getFollowedTags
+      responses:
+        '200':
+          description: A List of followed tags
+          content:
+            application/json:
+              example:
+              - id: 701
+                name: tag3
+                points: 1
+              - id: 702
+                name: tag4
+                points: 1
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FollowedTag'
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+components:
+  schemas:
+    FollowedTag:
+      description: Representation of a followed tag
+      type: object
+      properties:
+        id:
+          description: Tag id
+          type: integer
+          format: int64
+        name:
+          type: string
+        points:
+          type: number
+          format: float
+      required:
+      - id
+      - name
+      - points
+  securitySchemes:
+    api-key:
+      type: apiKey
+      name: api-key
+      in: header
+      description: "API Key authentication.\n\nAuthentication for some endpoints, like write operations on the\nArticles API require a DEV API key.\n\nAll authenticated endpoints are CORS disabled, the API key is intended for non-browser scripts.\n\n### Getting an API key\n\nTo obtain one, please follow these steps:\n\n  - visit https://dev.to/settings/extensions\n  - in the \"DEV API Keys\" section create a new key by adding a\n    description and clicking on \"Generate API Key\"\n\n    ![obtain a DEV API Key](https://user-images.githubusercontent.com/37842/172718105-bd93664e-76e0-477d-99c4-265dda0b06c5.png)\n\n  - You'll see the newly generated key in the same view\n    ![generated DEV API Key](https://user-images.githubusercontent.com/37842/172718151-e7fe26a0-9937-42e8-96c6-333acdab9e49.png)"
+x-refined-from:
+- openapi.json
+- openapi.yaml

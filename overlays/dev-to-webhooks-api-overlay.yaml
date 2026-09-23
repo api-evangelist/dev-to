@@ -1,0 +1,38 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enrichment overlay — Dev.to Forem Webhooks API
+  version: 1.0.0
+extends: dev-to-webhooks-api-openapi.yml
+x-generated: '2026-09-17'
+x-method: derived
+x-source: conventions/, errors/, rate-limits/, lifecycle/ artifacts in this repo
+actions:
+- target: $.info
+  description: Record enrichment provenance and the version-selector header that this contract does not state.
+  update:
+    x-api-evangelist-enrichment:
+      generated: '2026-09-17'
+      provider: dev-to
+      artifacts:
+      - conventions/dev-to-conventions.yml
+      - errors/dev-to-problem-types.yml
+      - rate-limits/dev-to-rate-limits.yml
+      - lifecycle/dev-to-lifecycle.yml
+      - authentication/dev-to-authentication.yml
+    x-version-selector:
+      header: Accept
+      value: application/vnd.forem.api-v1+json
+      required: true
+      note: Omitting this header routes the request to the deprecated V0 API, which answers with a 299 Warning header.
+        The version is not in the path.
+    x-error-envelope:
+      media_type: application/json
+      rfc9457: false
+      shape: '{"status": <int>, "error": "<message>"}'
+- target: $.paths['/webhooks/{id}'].delete
+  description: Record reversibility, which the contract does not express.
+  update:
+    x-reversibility:
+      grade: documented
+      window: null
+      note: Hard delete. No restore path and no retention window published.

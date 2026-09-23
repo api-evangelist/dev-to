@@ -1,0 +1,33 @@
+# Front Door AI Index — dev-to — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: dev-to
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: dev.to
+  final_host: dev.to
+  ownership: unresolved
+  owner: null
+  shares_host_with:
+  - devto
+  inherited_from: null
+  verdict: scored
+  score: null
+  host_score: 21
+  density: null
+  words: 1368
+  tiers:
+    agentic: 3
+    core: 13
+    model: 5
+  ambiguous: 4
+  top_terms:
+    AI: 13
+    GPT: 3
+    agent: 3
+    MCP: 2
+    Claude: 1
+    Gemini: 1
+    automation: 1
+    copilot: 1

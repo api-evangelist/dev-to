@@ -1,0 +1,101 @@
+generated: '2026-09-17'
+method: derived
+source: openapi/_original/dev-to-forem-api-v1-openapi.json (4xx/5xx responses across 139 operations)
+format: ad-hoc
+rfc9457: false
+envelope:
+  media_type: application/json
+  shape: 'Forem returns a plain JSON object, typically {"error": "<message>", "status": <code>} — the shape observed
+    live on https://dev.to/api/openapi.json 404. It is NOT RFC 9457 application/problem+json: no type, title, detail
+    or instance members, and no problem media type.'
+  evidence: 'live 404 body from https://dev.to/api/openapi.json: {"status":404,"error":"Not Found"}'
+summary:
+  error_responses_declared: 112
+  distinct_status_codes: 6
+  documented_with_schema: 1
+  gap: Only one of the 112 declared 4xx/5xx responses (a 409) attaches a content schema. The other 111 carry a one-word
+    description and no body definition, so an agent cannot parse a Forem error programmatically from the contract
+    alone. 429 is not declared on any operation even though the docs publish two rate limits that produce it.
+problem_types:
+- status: 400
+  title: Bad request
+  occurrences: 2
+  spec_descriptions:
+  - bad request
+  example_operations:
+  - GET /api/articles/semantic_search
+  - GET /api/concepts/search
+  remediation: Correct the malformed query or body parameter named in the response and retry.
+- status: 401
+  title: Unauthorized
+  occurrences: 54
+  spec_descriptions:
+  - Unauthorized
+  - unauthorized
+  example_operations:
+  - getAgentSessions
+  - createAgentSession
+  - getAgentSessionById
+  - presignAgentSession
+  - getAgentSessionRawUrl
+  - createArticle
+  remediation: 'Send a valid `api-key` header (or delegated Bearer token) plus `Accept: application/vnd.forem.api-v1+json`.
+    A missing Accept header routes the call to V0 and can surface as 401 on a V1-only endpoint.'
+- status: 404
+  title: Not found
+  occurrences: 37
+  spec_descriptions:
+  - Unknown User ID
+  - Not Found
+  - Audience Segment Not Found
+  example_operations:
+  - getAgentSessionById
+  - getAgentSessionRawUrl
+  - getArticleById
+  - updateArticle
+  - getArticleByPath
+  - unpublishArticle
+  remediation: The resource does not exist or is not visible to this key. Do not retry — re-resolve the id or path.
+- status: 409
+  title: Conflict
+  occurrences: 2
+  spec_descriptions:
+  - Audience segment could not be deleted
+  - conflict
+  example_operations:
+  - deleteSegment
+  - POST /api/badge_achievements
+  remediation: The resource already exists or conflicts with current state (e.g. a duplicate follow or reaction).
+    Treat as terminal and read the existing resource instead.
+- status: 422
+  title: Unprocessable entity
+  occurrences: 15
+  spec_descriptions:
+  - Unprocessable Entity
+  - unprocessable
+  example_operations:
+  - createAgentSession
+  - createArticle
+  - updateArticle
+  - addUsersToSegment
+  - removeUsersFromSegment
+  - POST /api/badge_achievements
+  remediation: Validation failed. Read the returned error body, fix the field, and retry. Do not retry unchanged.
+- status: 503
+  title: Service unavailable
+  occurrences: 2
+  spec_descriptions:
+  - service unavailable
+  - Delegated access unavailable
+  example_operations:
+  - presignAgentSession
+  - getUserMe
+  remediation: A trust dependency (the delegation service JWKS) is unavailable with no usable cached key. Retry
+    with backoff.
+undeclared_but_real:
+- status: 429
+  title: Too Many Requests
+  note: Documented in the V0 API reference for article create/update but declared on zero operations in the V1 OpenAPI.
+- status: 403
+  title: Forbidden
+  note: Listed in the V0 reference response set for article create; absent from the V1 OpenAPI.

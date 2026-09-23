@@ -1,0 +1,475 @@
+openapi: 3.2.0
+info:
+  title: Forem API V1 Billboards API
+  version: 1.0.0
+  description: 'Access Forem articles, users and other resources via API.
+
+    For a real-world example of Forem in action, check out DEV.
+
+    All endpoints can be accessed with the ''api-key'' header and a accept header, but
+
+    some of them are accessible publicly without authentication.
+
+
+    Dates and date times, unless otherwise specified, must be in
+
+    the RFC 3339 format.'
+servers:
+- url: https://dev.to/api
+  description: Production server
+security:
+- api-key: []
+tags:
+- name: billboards
+paths:
+  /api/billboards:
+    get:
+      summary: Billboards
+      tags:
+      - billboards
+      description: This endpoint allows the client to retrieve a list of all billboards.
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              example: []
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Billboard'
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+      operationId: getApiBillboards
+      x-operation-id-source: derived
+    post:
+      summary: Create a billboard
+      tags:
+      - billboards
+      description: This endpoint allows the client to create a new billboard.
+      parameters: []
+      responses:
+        '201':
+          description: A billboard
+          content:
+            application/json:
+              example:
+                id: 100
+                approved: true
+                audience_segment_id: null
+                body_markdown: '# Hi, this is ad
+
+                  Yep, it''s an ad'
+                browser_context: all_browsers
+                cached_tag_list: ''
+                clicks_count: 0
+                color: null
+                content_updated_at: '2026-05-28T12:45:22.793-06:00'
+                counts_tabulated_at: null
+                created_at: '2026-05-28T12:45:22.793-06:00'
+                creator_id: null
+                custom_display_label: null
+                dismissal_sku: null
+                display_to: all
+                event_id: null
+                exclude_article_ids: ''
+                exclude_role_names: []
+                exclude_survey_completions: false
+                exclude_survey_ids: ''
+                expires_at: null
+                impressions_count: 0
+                include_subforem_ids: []
+                name: Example Billboard
+                organization_id: null
+                page_id: null
+                placement_area: post_comments
+                prefer_paired_with_billboard_id: null
+                preferred_article_ids: []
+                priority: false
+                processed_html: '<h1>  <a name="hi-this-is-ad" href="#hi-this-is-ad">  </a>  Hi, this is ad</h1>
+
+                  <p>Yep, it''s an ad</p>'
+                published: true
+                render_mode: forem_markdown
+                requires_cookies: false
+                special_behavior: nothing
+                success_rate: 0.0
+                tags_array: []
+                target_role_names: []
+                template: authorship_box
+                type_of: in_house
+                updated_at: '2026-05-28T12:45:22.793-06:00'
+                weight: 1.0
+                audience_segment_type: null
+                tag_list: ''
+                target_geolocations:
+                - US-WA
+                - CA-BC
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Billboard'
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '422':
+          description: unprocessable
+          content:
+            application/json:
+              example:
+                error: 'Validation failed: Placement area is not included in the list'
+                status: 422
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              items:
+                $ref: '#/components/schemas/Billboard'
+      operationId: postApiBillboards
+      x-operation-id-source: derived
+  /api/billboards/{id}:
+    get:
+      summary: A billboard (by id)
+      tags:
+      - billboards
+      description: This endpoint allows the client to retrieve a single billboard, via its id.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the billboard.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 123
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              example:
+                id: 101
+                approved: false
+                audience_segment_id: null
+                body_markdown: Hello _hey_ Hey hey 2
+                browser_context: all_browsers
+                cached_tag_list: ''
+                clicks_count: 0
+                color: null
+                content_updated_at: '2026-05-28T12:45:22.996-06:00'
+                counts_tabulated_at: null
+                created_at: '2026-05-28T12:45:22.992-06:00'
+                creator_id: null
+                custom_display_label: null
+                dismissal_sku: null
+                display_to: all
+                event_id: null
+                exclude_article_ids: ''
+                exclude_role_names: []
+                exclude_survey_completions: false
+                exclude_survey_ids: ''
+                expires_at: null
+                impressions_count: 0
+                include_subforem_ids: []
+                name: Billboard 101
+                organization_id: 562
+                page_id: null
+                placement_area: sidebar_left
+                prefer_paired_with_billboard_id: null
+                preferred_article_ids: []
+                priority: false
+                processed_html: <p>Hello <em>hey</em> Hey hey 2</p>
+                published: false
+                render_mode: forem_markdown
+                requires_cookies: false
+                special_behavior: nothing
+                success_rate: 0.0
+                tags_array: []
+                target_role_names: []
+                template: authorship_box
+                type_of: in_house
+                updated_at: '2026-05-28T12:45:22.996-06:00'
+                weight: 1.0
+                audience_segment_type: null
+                tag_list: ''
+                target_geolocations: []
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '404':
+          description: Unknown Billboard ID
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+      operationId: getApiBillboardsById
+      x-operation-id-source: derived
+    put:
+      summary: Update a billboard by ID
+      tags:
+      - billboards
+      description: This endpoint allows the client to update the attributes of a single billboard, via its id.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the billboard.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 123
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              example:
+                approved: false
+                body_markdown: Hello _hey_ Hey hey 3
+                creator_id: null
+                display_to: all
+                page_id: null
+                browser_context: all_browsers
+                name: Billboard 102
+                organization_id: 563
+                placement_area: sidebar_left
+                published: false
+                dismissal_sku: null
+                type_of: in_house
+                exclude_article_ids: ''
+                weight: 1.0
+                requires_cookies: false
+                color: null
+                audience_segment_id: null
+                priority: false
+                special_behavior: nothing
+                custom_display_label: null
+                template: authorship_box
+                render_mode: forem_markdown
+                prefer_paired_with_billboard_id: null
+                expires_at: null
+                exclude_survey_completions: false
+                exclude_survey_ids: ''
+                cached_tag_list: ''
+                id: 102
+                clicks_count: 0
+                content_updated_at: '2026-05-28T12:45:23.227-06:00'
+                counts_tabulated_at: null
+                created_at: '2026-05-28T12:45:23.224-06:00'
+                event_id: null
+                exclude_role_names: []
+                impressions_count: 0
+                include_subforem_ids: []
+                preferred_article_ids: []
+                processed_html: <p>Hello <em>hey</em> Hey hey 3</p>
+                success_rate: 0.0
+                tags_array: []
+                target_role_names: []
+                updated_at: '2026-05-28T12:45:23.227-06:00'
+                audience_segment_type: null
+                tag_list: ''
+                target_geolocations: []
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Billboard'
+        '404':
+          description: not found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              items:
+                $ref: '#/components/schemas/Billboard'
+      operationId: putApiBillboardsById
+      x-operation-id-source: derived
+  /api/billboards/{id}/unpublish:
+    put:
+      summary: Unpublish a billboard
+      tags:
+      - billboards
+      description: This endpoint allows the client to remove a billboard from rotation by un-publishing it.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the billboard to unpublish.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 123
+      responses:
+        '204':
+          description: no content
+        '404':
+          description: not found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+      operationId: putApiBillboardsByIdUnpublish
+      x-operation-id-source: derived
+components:
+  schemas:
+    Billboard:
+      description: Billboard, aka Widget, ex. Display Ad
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the Billboard
+        name:
+          type: string
+          description: For internal use, helps distinguish ads from one another
+        body_markdown:
+          type: string
+          description: The text (in markdown) of the ad (required)
+        approved:
+          type: boolean
+          description: Ad must be both published and approved to be in rotation
+        published:
+          type: boolean
+          description: Ad must be both published and approved to be in rotation
+        expires_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Timestamp when the billboard expires. After this time, the billboard will automatically be marked as not approved.
+        organization_id:
+          type:
+          - integer
+          - 'null'
+          description: Identifies the organization to which the ad belongs
+        creator_id:
+          type:
+          - integer
+          - 'null'
+          description: Identifies the user who created the ad.
+        placement_area:
+          type: string
+          enum:
+          - sidebar_left
+          - sidebar_left_2
+          - sidebar_right
+          - sidebar_right_second
+          - sidebar_right_third
+          - feed_first
+          - feed_second
+          - feed_third
+          - home_hero
+          - footer
+          - page_fixed_bottom
+          - post_fixed_bottom
+          - post_body_bottom
+          - post_sidebar
+          - post_comments
+          - post_comments_mid
+          - digest_first
+          - digest_second
+          description: Identifies which area of site layout the ad can appear in
+        tag_list:
+          type: string
+          description: Tags on which this ad can be displayed (blank is all/any tags)
+        exclude_article_ids:
+          type:
+          - string
+          - 'null'
+          description: Articles this ad should *not* appear on (blank means no articles are disallowed, and this ad can appear next to any/all articles). Comma-separated list of integer Article IDs
+        audience_segment_id:
+          type: integer
+          description: Specifies a specific audience segment who will see this billboard
+        audience_segment_type:
+          type: string
+          enum:
+          - manual
+          - trusted
+          - posted
+          - no_posts_yet
+          - dark_theme
+          - light_theme
+          - no_experience
+          - experience1
+          - experience2
+          - experience3
+          - experience4
+          - experience5
+          description: Specifies a group of users who will see this billboard (must match audience_segment_id if both provided)
+        target_geolocations:
+          type: array
+          items:
+            type: string
+          description: Locations to show this billboard in (blank means it will be shown in all locations). Specified as a comma-separated list or array of ISO 3166-2 country and optionally region codes)
+        display_to:
+          type: string
+          enum:
+          - all
+          - logged_in
+          - logged_out
+          default: all
+          description: Potentially limits visitors to whom the ad is visible
+        type_of:
+          type: string
+          enum:
+          - in_house
+          - community
+          - external
+          default: in_house
+          description: 'Types of the billboards:
+
+            in_house (created by admins),
+
+            community (created by an entity, appears on entity''s content),
+
+            external ( created by an entity, or a non-entity, can appear everywhere)
+
+            '
+      required:
+      - name
+      - body_markdown
+      - placement_area
+  securitySchemes:
+    api-key:
+      type: apiKey
+      name: api-key
+      in: header
+      description: "API Key authentication.\n\nAuthentication for some endpoints, like write operations on the\nArticles API require a DEV API key.\n\nAll authenticated endpoints are CORS disabled, the API key is intended for non-browser scripts.\n\n### Getting an API key\n\nTo obtain one, please follow these steps:\n\n  - visit https://dev.to/settings/extensions\n  - in the \"DEV API Keys\" section create a new key by adding a\n    description and clicking on \"Generate API Key\"\n\n    ![obtain a DEV API Key](https://user-images.githubusercontent.com/37842/172718105-bd93664e-76e0-477d-99c4-265dda0b06c5.png)\n\n  - You'll see the newly generated key in the same view\n    ![generated DEV API Key](https://user-images.githubusercontent.com/37842/172718151-e7fe26a0-9937-42e8-96c6-333acdab9e49.png)"

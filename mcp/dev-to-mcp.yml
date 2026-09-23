@@ -1,0 +1,100 @@
+generated: '2026-09-17'
+method: derived
+source: openapi/ (refined per-tag specs) + openapi/_original/dev-to-forem-api-v1-openapi.json — no published MCP
+  server found
+status: candidate
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: api-key
+  verified: searched
+search_evidence:
+- probe: github.com/orgs/forem repositories (all 21 public repos listed)
+  result: no MCP server repo
+- probe: GitHub code/repo search org:forem mcp
+  result: 0 results
+- probe: npm registry search "forem mcp" and @forem/* scope
+  result: no first-party package
+- probe: https://dev.to/llms.txt
+  result: names the OpenAPI, the docs and robots.txt — no MCP endpoint
+- probe: https://dev.to/.well-known/ai-plugin.json
+  result: 200 — an OpenAI plugin manifest, which is not MCP
+note: 'DEV/Forem ships no MCP server, hosted or stdio. It does ship the pre-MCP equivalent: a live /.well-known/ai-plugin.json
+  with auth: none. The tools below are a DERIVED candidate set mapped from real operationIds in the published contract
+  — nobody serves them. No endpoint is invented. Tool operationIds are verified against the repo openapi/ set. Note
+  that the webhook operations (getWebhooks, createWebhook) exist in the repo specs and in the V0 reference but are
+  ABSENT from the currently-published V1 contract at https://dev.to/openapi.json, so a client binding to V1 alone
+  will not find them; createReaction/toggleReaction carry operationIds only in the refined copies, because the live
+  V1 spec leaves both operations without one.'
+tools:
+- name: search_articles
+  rest: GET /api/articles/search
+  operationId: searchArticles
+  description: Search published articles by keyword, tag, author or recency.
+- name: list_articles
+  rest: GET /api/articles
+  operationId: getArticles
+  description: List published articles, filterable by tag, username, organization or state.
+- name: get_article
+  rest: GET /api/articles/{id}
+  operationId: getArticleById
+  description: Retrieve one article including body_markdown.
+- name: create_article
+  rest: POST /api/articles
+  operationId: createArticle
+  description: Publish or draft an article. Rate limited to 10 requests / 30s. NOT idempotent — a retry duplicates.
+  consequence: write
+- name: update_article
+  rest: PUT /api/articles/{id}
+  operationId: updateArticle
+  description: Update an existing article. Rate limited to 30 requests / 30s.
+  consequence: write
+- name: unpublish_article
+  rest: PUT /api/articles/{id}/unpublish
+  operationId: unpublishArticle
+  description: Reverse a publish. The only reversal path — there is no article delete.
+  consequence: write
+- name: get_user
+  rest: GET /api/users/{id}
+  operationId: getUser
+  description: Retrieve a user profile.
+- name: get_me
+  rest: GET /api/users/me
+  operationId: getUserMe
+  description: Retrieve the authenticated user.
+- name: list_comments
+  rest: GET /api/comments
+  operationId: getCommentsByArticleId
+  description: List comments on an article or podcast episode.
+- name: create_reaction
+  rest: POST /api/reactions
+  operationId: createReaction
+  description: React to an article, comment or user. Idempotent — safe to retry.
+  consequence: write
+- name: list_tags
+  rest: GET /api/tags
+  operationId: getTags
+  description: List tags ordered by popularity.
+- name: list_followed_tags
+  rest: GET /api/follows/tags
+  operationId: getFollowedTags
+  description: List the authenticated user's followed tags.
+- name: list_reading_list
+  rest: GET /api/readinglist
+  operationId: getReadinglist
+  description: List the authenticated user's saved articles.
+- name: get_organization
+  rest: GET /api/organizations/{username}
+  operationId: getOrganization
+  description: Retrieve an organization profile.
+- name: list_webhooks
+  rest: GET /api/webhooks
+  operationId: getWebhooks
+  description: List webhook subscriptions.
+- name: create_webhook
+  rest: POST /api/webhooks
+  operationId: createWebhook
+  description: Subscribe to platform events. Not idempotent.
+  consequence: write

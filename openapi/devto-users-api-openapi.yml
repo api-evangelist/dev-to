@@ -1,0 +1,1510 @@
+openapi: 3.2.0
+info:
+  title: Devto Users API
+  version: 1.0.0
+  description: 'Operations tagged users across 2 of this provider''s published API definitions: openapi.json, openapi.yaml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://dev.to/api
+  description: Production server
+security:
+- api-key: []
+tags:
+- name: Users
+paths:
+  /api/articles/me:
+    get:
+      summary: User's articles
+      tags:
+      - Users
+      description: 'This endpoint allows the client to retrieve a list of published articles on behalf of an authenticated user.
+
+
+        "Articles" are all the posts that users create on DEV that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but is referred to as article within the code.
+
+
+        Published articles will be in reverse chronological publication order.
+
+
+        It will return published articles with pagination. By default a page will contain 30 articles.'
+      operationId: getUserArticles
+      parameters:
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '200':
+          description: A List of the authenticated user's Articles
+          content:
+            application/json:
+              example: []
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/articles/me/published:
+    get:
+      summary: User's published articles
+      tags:
+      - Users
+      description: 'This endpoint allows the client to retrieve a list of published articles on behalf of an authenticated user.
+
+
+        "Articles" are all the posts that users create on DEV that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but is referred to as article within the code.
+
+
+        Published articles will be in reverse chronological publication order.
+
+
+        It will return published articles with pagination. By default a page will contain 30 articles.'
+      operationId: getUserPublishedArticles
+      parameters:
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '200':
+          description: A List of the authenticated user's Articles
+          content:
+            application/json:
+              example: []
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/articles/me/unpublished:
+    get:
+      summary: User's unpublished articles
+      tags:
+      - Users
+      description: 'This endpoint allows the client to retrieve a list of unpublished articles on behalf of an authenticated user.
+
+
+        "Articles" are all the posts that users create on DEV that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but is referred to as article within the code.
+
+
+        Unpublished articles will be in reverse chronological creation order.
+
+
+        It will return unpublished articles with pagination. By default a page will contain 30 articles.'
+      operationId: getUserUnpublishedArticles
+      parameters:
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '200':
+          description: A List of the authenticated user's Articles
+          content:
+            application/json:
+              example: []
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/articles/me/all:
+    get:
+      summary: User's all articles
+      tags:
+      - Users
+      description: 'This endpoint allows the client to retrieve a list of all articles on behalf of an authenticated user.
+
+
+        "Articles" are all the posts that users create on DEV that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but is referred to as article within the code.
+
+
+        It will return both published and unpublished articles with pagination.
+
+
+        Unpublished articles will be at the top of the list in reverse chronological creation order. Published articles will follow in reverse chronological publication order.
+
+
+        By default a page will contain 30 articles.'
+      operationId: getUserAllArticles
+      parameters:
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '200':
+          description: A List of the authenticated user's Articles
+          content:
+            application/json:
+              example: []
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/organizations/{organization_id_or_username}/users:
+    get:
+      summary: Organization's users
+      tags:
+      - Users
+      security: []
+      description: 'This endpoint allows the client to retrieve a list of users belonging to the organization
+
+
+        It supports pagination, each page will contain `30` users by default.'
+      operationId: getOrgUsers
+      parameters:
+      - name: organization_id_or_username
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '200':
+          description: An Organization's users (with ID)
+          content:
+            application/json:
+              example:
+              - type_of: user
+                id: 4199
+                username: username151
+                name: Maria "Mario" \:/ Pfeffer
+                twitter_username: twitter151
+                github_username: github151
+                summary: null
+                location: null
+                website_url: null
+                joined_at: May 28, 2026
+                profile_image: /uploads/user/profile_image/4199/a36085cc-b1c4-4228-a351-a650ba7f4d44.jpeg
+              - type_of: user
+                id: 4200
+                username: username152
+                name: Tiara "Ebony" \:/ Watsica
+                twitter_username: twitter152
+                github_username: github152
+                summary: null
+                location: null
+                website_url: null
+                joined_at: May 28, 2026
+                profile_image: /uploads/user/profile_image/4200/48796775-4796-4190-ae77-5eb3d3819e6d.jpeg
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/users/{id}/suspend:
+    put:
+      summary: Suspend a User
+      tags:
+      - Users
+      description: 'This endpoint allows the client to suspend a user.
+
+
+        The user associated with the API key must have any ''admin'' or ''moderator'' role.
+
+
+        This specified user will be assigned the ''suspended'' role. Suspending a user will stop the
+
+        user from posting new posts and comments. It doesn''t delete any of the user''s content, just
+
+        prevents them from creating new content while suspended. Users are not notified of their suspension
+
+        in the UI, so if you want them to know about this, you must notify them.'
+      operationId: suspendUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the user to suspend.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      responses:
+        '204':
+          description: User successfully unpublished
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '404':
+          description: Unknown User ID
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/users/{id}/limited:
+    put:
+      summary: Add limited role for a User
+      tags:
+      - Users
+      description: 'This endpoint allows the client to limit a user.
+
+
+        The user associated with the API key must have any ''admin'' or ''moderator'' role.
+
+
+        This specified user will be assigned the ''limited'' role. Limiting a user will limit notifications
+
+        generated from new posts and comments. It doesn''t delete any of the user''s content or prevent them
+
+        from generating new content while limited. Users are not notified of their limits
+
+        in the UI, so if you want them to know about this, you must notify them.'
+      operationId: limitUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the user to limit.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      responses:
+        '204':
+          description: User successfully limited
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '404':
+          description: Unknown User ID
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    delete:
+      summary: Remove limited for a User
+      tags:
+      - Users
+      description: 'This endpoint allows the client to remove limits for a user.
+
+
+        The user associated with the API key must have any ''admin'' or ''moderator'' role.
+
+
+        This specified user will be restored to ''general'' status. Users are not notified
+
+        of limits in the UI, so if you want them to know about this, you must
+
+        notify them.'
+      operationId: unLimitUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the user to un-limit.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      responses:
+        '204':
+          description: User successfully un-limited
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '404':
+          description: Unknown User ID
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/users/{id}/spam:
+    put:
+      summary: Add spam role for a User
+      tags:
+      - Users
+      description: 'This endpoint allows the client to add the spam role to a user.
+
+
+        The user associated with the API key must have any ''admin'' or ''moderator'' role.
+
+
+        This specified user will be assigned the ''spam'' role. Addding the spam role to a user will stop the
+
+        user from posting new posts and comments. It doesn''t delete any of the user''s content, just
+
+        prevents them from creating new content while having the spam role. Users are not notified of their spaminess
+
+        in the UI, so if you want them to know about this, you must notify them'
+      operationId: spamUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the user to assign the spam role.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      responses:
+        '204':
+          description: Spam role assigned to the user successfully
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '404':
+          description: Unknown User ID
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    delete:
+      summary: Remove spam role from a User
+      tags:
+      - Users
+      description: 'This endpoint allows the client to remove the spam role for a user.
+
+
+        The user associated with the API key must have any ''admin'' or ''moderator'' role.
+
+
+        This specified user will be restored to ''general'' status. Users are not notified
+
+        of removing their spam role in the UI, so if you want them to know about this, you must
+
+        notify them.'
+      operationId: unSpamUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the user to remove the spam role from.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      responses:
+        '204':
+          description: Successfully removed the spam role from a user
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '404':
+          description: Unknown User ID
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/users/{id}/trusted:
+    put:
+      summary: Add trusted role for a User
+      tags:
+      - Users
+      description: 'This endpoint allows the client to add the trusted role to a user.
+
+        The user associated with the API key must have an ''admin'' or ''moderator'' role.
+
+        The specified user will be assigned the ''trusted'' role. Adding the trusted role to a user
+
+        allows them to upvote and downvote posts and flag content that needs investigating by admins.
+
+        Users are notified of this change in the UI, and by email.'
+      operationId: trustUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the user to assign the trusted role.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      responses:
+        '204':
+          description: Trusted role assigned to the user successfully
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '404':
+          description: Unknown User ID
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    delete:
+      summary: Remove trusted role from a User
+      tags:
+      - Users
+      description: 'This endpoint allows the client to remove the trusted role for a user.
+
+        The user associated with the API key must have an ''admin'' or ''moderator'' role.
+
+        The specified user will be restored to ''general'' status. Users are not notified
+
+        of removing their trusted role in the UI, so if you want them to know about this, you must
+
+        notify them.'
+      operationId: unTrustUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the user to remove the trusted role from.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      responses:
+        '204':
+          description: Successfully removed the trusted role from a user
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '404':
+          description: Unknown User ID
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/users/me:
+    get:
+      summary: The authenticated user
+      tags:
+      - Users
+      description: This endpoint allows the client to retrieve information about the authenticated user
+      operationId: getUserMe
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              example:
+                type_of: user
+                id: 4306
+                username: username258
+                name: Vania "Earl" \:/ Langworth
+                twitter_username: twitter258
+                github_username: github258
+                email: null
+                summary: null
+                location: null
+                website_url: null
+                joined_at: May 28, 2026
+                profile_image: /uploads/user/profile_image/4306/55fabae2-ecb8-4e4c-bafa-c7c9b1ed240a.jpeg
+                badge_ids: []
+                followers_count: 0
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/MyUser'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/users/{id}:
+    get:
+      summary: A User
+      tags:
+      - Users
+      description: 'This endpoint allows the client to retrieve a single user, either by id
+
+        or by the user''s username.
+
+
+        For complete documentation, see the v0 API docs: https://developers.forem.com/api/v0#tag/users/operation/getUser'
+      operationId: getUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/ExtendedUser'
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/users/{id}/unpublish:
+    put:
+      summary: Unpublish a User's Articles and Comments
+      tags:
+      - Users
+      description: 'This endpoint allows the client to unpublish all of the articles and
+
+        comments created by a user.
+
+
+        The user associated with the API key must have any ''admin'' or ''moderator'' role.
+
+
+        This specified user''s articles and comments will be unpublished and will no longer be
+
+        visible to the public. They will remain in the database and will set back to draft status
+
+        on the specified user''s dashboard. Any notifications associated with the specified user''s
+
+        articles and comments will be deleted.
+
+
+        Note this endpoint unpublishes articles and comments asychronously: it will return a 204 NO CONTENT
+
+        status code immediately, but the articles and comments will not be unpublished until the
+
+        request is completed on the server.'
+      operationId: unpublishUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the user to unpublish.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      responses:
+        '204':
+          description: User's articles and comments successfully unpublished
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '404':
+          description: Unknown User ID (still accepted for async processing)
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/admin/users:
+    post:
+      summary: Invite a User
+      tags:
+      - Users
+      description: 'This endpoint allows the client to trigger an invitation to the provided email address.
+
+
+        It requires a token from a user with `super_admin` privileges.'
+      operationId: postAdminUsersCreate
+      parameters: []
+      responses:
+        '200':
+          description: Successful
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              example:
+                error: 'param is missing or the value is empty: email'
+                status: 422
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInviteParam'
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /articles/me:
+    get:
+      summary: User's articles
+      tags:
+      - Users
+      description: 'This endpoint allows the client to retrieve a list of published articles on behalf of an authenticated user.
+
+
+        "Articles" are all the posts that users create on DEV that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but is referred to as article within the code.
+
+
+        Published articles will be in reverse chronological publication order.
+
+
+        It will return published articles with pagination. By default a page will contain 30 articles.'
+      operationId: getUserArticles
+      parameters:
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '200':
+          description: A List of the authenticated user's Articles
+          content:
+            application/json:
+              example: []
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /articles/me/published:
+    get:
+      summary: User's published articles
+      tags:
+      - Users
+      description: 'This endpoint allows the client to retrieve a list of published articles on behalf of an authenticated user.
+
+
+        "Articles" are all the posts that users create on DEV that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but is referred to as article within the code.
+
+
+        Published articles will be in reverse chronological publication order.
+
+
+        It will return published articles with pagination. By default a page will contain 30 articles.'
+      operationId: getUserPublishedArticles
+      parameters:
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '200':
+          description: A List of the authenticated user's Articles
+          content:
+            application/json:
+              example: []
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /articles/me/unpublished:
+    get:
+      summary: User's unpublished articles
+      tags:
+      - Users
+      description: 'This endpoint allows the client to retrieve a list of unpublished articles on behalf of an authenticated user.
+
+
+        "Articles" are all the posts that users create on DEV that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but is referred to as article within the code.
+
+
+        Unpublished articles will be in reverse chronological creation order.
+
+
+        It will return unpublished articles with pagination. By default a page will contain 30 articles.'
+      operationId: getUserUnpublishedArticles
+      parameters:
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '200':
+          description: A List of the authenticated user's Articles
+          content:
+            application/json:
+              example: []
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /articles/me/all:
+    get:
+      summary: User's all articles
+      tags:
+      - Users
+      description: 'This endpoint allows the client to retrieve a list of all articles on behalf of an authenticated user.
+
+
+        "Articles" are all the posts that users create on DEV that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but is referred to as article within the code.
+
+
+        It will return both published and unpublished articles with pagination.
+
+
+        Unpublished articles will be at the top of the list in reverse chronological creation order. Published articles will follow in reverse chronological publication order.
+
+
+        By default a page will contain 30 articles.'
+      operationId: getUserAllArticles
+      parameters:
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '200':
+          description: A List of the authenticated user's Articles
+          content:
+            application/json:
+              example: []
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /organizations/{username}/users:
+    get:
+      summary: Organization's users
+      tags:
+      - Users
+      security: []
+      description: 'This endpoint allows the client to retrieve a list of users belonging to the organization
+
+
+        It supports pagination, each page will contain `30` users by default.'
+      operationId: getOrgUsers
+      parameters:
+      - name: username
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '200':
+          description: An Organization's users
+          content:
+            application/json:
+              example:
+              - type_of: user
+                id: 1390
+                username: username445
+                name: Ute "Doreen" \:/ Tillman
+                twitter_username: twitter445
+                github_username: github445
+                summary: null
+                location: null
+                website_url: null
+                joined_at: Apr 14, 2023
+                profile_image: /uploads/user/profile_image/1390/7b885cdf-c1c6-481a-a6d8-19f0404da87a.jpeg
+              - type_of: user
+                id: 1391
+                username: username446
+                name: Abraham "Colton" \:/ Ritchie
+                twitter_username: twitter446
+                github_username: github446
+                summary: null
+                location: null
+                website_url: null
+                joined_at: Apr 14, 2023
+                profile_image: /uploads/user/profile_image/1391/273ffa06-dc97-4b84-ba4c-43d24efb55e5.jpeg
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User_2'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /users/me:
+    get:
+      summary: The authenticated user
+      tags:
+      - Users
+      description: This endpoint allows the client to retrieve information about the authenticated user
+      operationId: getUserMe
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              example:
+                type_of: user
+                id: 1431
+                username: username480
+                name: Willy "Myron" \:/ Herzog
+                twitter_username: twitter480
+                github_username: github480
+                summary: null
+                location: null
+                website_url: null
+                joined_at: Apr 14, 2023
+                profile_image: /uploads/user/profile_image/1431/b547e3a6-5076-44dd-a4f6-9b85022b4e76.jpeg
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/User_2'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /users/{id}:
+    get:
+      summary: A User
+      tags:
+      - Users
+      description: 'This endpoint allows the client to retrieve a single user, either by id
+
+        or by the user''s username.
+
+
+        For complete documentation, see the v0 API docs: https://developers.forem.com/api/v0#tag/users/operation/getUser'
+      operationId: getUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/User_2'
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /users/{id}/unpublish:
+    put:
+      summary: Unpublish a User's Articles and Comments
+      tags:
+      - Users
+      description: 'This endpoint allows the client to unpublish all of the articles and
+
+        comments created by a user.
+
+
+        The user associated with the API key must have any ''admin'' or ''moderator'' role.
+
+
+        This specified user''s articles and comments will be unpublished and will no longer be
+
+        visible to the public. They will remain in the database and will set back to draft status
+
+        on the specified user''s dashboard. Any notifications associated with the specified user''s
+
+        articles and comments will be deleted.
+
+
+        Note this endpoint unpublishes articles and comments asychronously: it will return a 204 NO CONTENT
+
+        status code immediately, but the articles and comments will not be unpublished until the
+
+        request is completed on the server.'
+      operationId: unpublishUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the user to unpublish.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      responses:
+        '204':
+          description: User's articles and comments successfully unpublished
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '404':
+          description: Unknown User ID (still accepted for async processing)
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /users/{id}/suspend:
+    put:
+      summary: Suspend a User
+      tags:
+      - Users
+      description: 'This endpoint allows the client to suspend a user.
+
+
+        The user associated with the API key must have any ''admin'' or ''moderator'' role.
+
+
+        This specified user will be assigned the ''suspended'' role. Suspending a user will stop the
+
+        user from posting new posts and comments. It doesn''t delete any of the user''s content, just
+
+        prevents them from creating new content while suspended. Users are not notified of their suspension
+
+        in the UI, so if you want them to know about this, you must notify them.'
+      operationId: suspendUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the user to suspend.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      responses:
+        '204':
+          description: User successfully unpublished
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '404':
+          description: Unknown User ID
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /admin/users:
+    post:
+      summary: Invite a User
+      tags:
+      - Users
+      description: 'This endpoint allows the client to trigger an invitation to the provided email address.
+
+
+        It requires a token from a user with `super_admin` privileges.'
+      operationId: postAdminUsersCreate
+      parameters: []
+      responses:
+        '200':
+          description: Successful
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              example:
+                error: 'param is missing or the value is empty: email'
+                status: 422
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInviteParam'
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+components:
+  parameters:
+    perPageParam30to1000:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 30
+    pageParam:
+      in: query
+      name: page
+      required: false
+      description: Pagination page
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
+  schemas:
+    User:
+      description: The representation of a user returned in a list
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        name:
+          type: string
+        summary:
+          type:
+          - string
+          - 'null'
+        twitter_username:
+          type: string
+        github_username:
+          type: string
+        website_url:
+          type:
+          - string
+          - 'null'
+        location:
+          type:
+          - string
+          - 'null'
+        joined_at:
+          type: string
+        profile_image:
+          type: string
+    ArticleFlareTag:
+      description: Flare tag of the article
+      type: object
+      properties:
+        name:
+          type: string
+        bg_color_hex:
+          description: Background color (hexadecimal)
+          type:
+          - string
+          - 'null'
+        text_color_hex:
+          description: Text color (hexadecimal)
+          type:
+          - string
+          - 'null'
+    MyUser:
+      description: The representation of a user when accessed by themselves
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        name:
+          type: string
+        summary:
+          type:
+          - string
+          - 'null'
+        twitter_username:
+          type: string
+        github_username:
+          type: string
+        email:
+          type:
+          - string
+          - 'null'
+          description: Email (if user allows displaying email on their profile) or nil
+        website_url:
+          type:
+          - string
+          - 'null'
+        location:
+          type:
+          - string
+          - 'null'
+        joined_at:
+          type: string
+        profile_image:
+          type: string
+        badge_ids:
+          type: array
+          items:
+            type: integer
+          description: ids of the badges awarded to the user
+        followers_count:
+          type: integer
+    UserInviteParam:
+      description: User invite parameters
+      type: object
+      properties:
+        email:
+          type: string
+        name:
+          type:
+          - string
+          - 'null'
+    SharedOrganization:
+      description: The organization the resource belongs to
+      type: object
+      properties:
+        name:
+          type: string
+        username:
+          type: string
+        slug:
+          type: string
+        profile_image:
+          description: Profile image (640x640)
+          type: string
+          format: url
+        profile_image_90:
+          description: Profile image (90x90)
+          type: string
+          format: url
+    ExtendedUser:
+      description: The representation of a user
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        name:
+          type: string
+        summary:
+          type:
+          - string
+          - 'null'
+        twitter_username:
+          type: string
+        github_username:
+          type: string
+        email:
+          type:
+          - string
+          - 'null'
+          description: Email (if user allows displaying email on their profile) or nil
+        website_url:
+          type:
+          - string
+          - 'null'
+        location:
+          type:
+          - string
+          - 'null'
+        joined_at:
+          type: string
+        profile_image:
+          type: string
+        badge_ids:
+          type: array
+          items:
+            type: integer
+          description: ids of the badges awarded to the user
+    SharedUser:
+      description: The resource creator
+      type: object
+      properties:
+        name:
+          type: string
+        username:
+          type: string
+        twitter_username:
+          type:
+          - string
+          - 'null'
+        github_username:
+          type:
+          - string
+          - 'null'
+        website_url:
+          type:
+          - string
+          - 'null'
+          format: url
+        profile_image:
+          description: Profile image (640x640)
+          type: string
+        profile_image_90:
+          description: Profile image (90x90)
+          type: string
+    ArticleIndex:
+      description: Representation of an article or post returned in a list
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int32
+        title:
+          type: string
+        description:
+          type: string
+        cover_image:
+          type:
+          - string
+          - 'null'
+          format: url
+        readable_publish_date:
+          type: string
+        social_image:
+          type: string
+          format: url
+        tag_list:
+          type: array
+          items:
+            type: string
+        tags:
+          type: string
+        slug:
+          type: string
+        path:
+          type: string
+          format: path
+        url:
+          type: string
+          format: url
+        canonical_url:
+          type: string
+          format: url
+        positive_reactions_count:
+          type: integer
+          format: int32
+        public_reactions_count:
+          type: integer
+          format: int32
+        created_at:
+          type: string
+          format: date-time
+        edited_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        crossposted_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        published_at:
+          type: string
+          format: date-time
+        last_comment_at:
+          type: string
+          format: date-time
+        published_timestamp:
+          description: Crossposting or published date time
+          type: string
+          format: date-time
+        reading_time_minutes:
+          description: Reading time, in minutes
+          type: integer
+          format: int32
+        user:
+          $ref: '#/components/schemas/SharedUser'
+        flare_tag:
+          $ref: '#/components/schemas/ArticleFlareTag'
+        organization:
+          $ref: '#/components/schemas/SharedOrganization'
+      required:
+      - type_of
+      - id
+      - title
+      - description
+      - cover_image
+      - readable_publish_date
+      - social_image
+      - tag_list
+      - tags
+      - slug
+      - path
+      - url
+      - canonical_url
+      - comments_count
+      - positive_reactions_count
+      - public_reactions_count
+      - created_at
+      - edited_at
+      - crossposted_at
+      - published_at
+      - last_comment_at
+      - published_timestamp
+      - user
+      - reading_time_minutes
+    User_2:
+      description: The representation of a user
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        name:
+          type: string
+        summary:
+          type:
+          - string
+          - 'null'
+        twitter_username:
+          type: string
+        github_username:
+          type: string
+        website_url:
+          type:
+          - string
+          - 'null'
+        location:
+          type:
+          - string
+          - 'null'
+        joined_at:
+          type: string
+        profile_image:
+          type: string
+  securitySchemes:
+    api-key:
+      type: apiKey
+      name: api-key
+      in: header
+      description: "API Key authentication.\n\nAuthentication for some endpoints, like write operations on the\nArticles API require a DEV API key.\n\nAll authenticated endpoints are CORS disabled, the API key is intended for non-browser scripts.\n\n### Getting an API key\n\nTo obtain one, please follow these steps:\n\n  - visit https://dev.to/settings/extensions\n  - in the \"DEV API Keys\" section create a new key by adding a\n    description and clicking on \"Generate API Key\"\n\n    ![obtain a DEV API Key](https://user-images.githubusercontent.com/37842/172718105-bd93664e-76e0-477d-99c4-265dda0b06c5.png)\n\n  - You'll see the newly generated key in the same view\n    ![generated DEV API Key](https://user-images.githubusercontent.com/37842/172718151-e7fe26a0-9937-42e8-96c6-333acdab9e49.png)"
+x-refined-from:
+- openapi.json
+- openapi.yaml

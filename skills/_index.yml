@@ -1,0 +1,46 @@
+generated: '2026-09-17'
+method: generated
+source: openapi/ refined per-tag specs + conventions/dev-to-conventions.yml + https://dev.to/llms.txt
+note: 'Packaged Agent Skills for the Forem API V1 surface. Every operationId referenced is verified against the
+  specs in openapi/. No provider-published skills or AGENTS.md were found on dev.to or developers.forem.com, so
+  these are generated, not harvested. Each skill front-loads the three rules that actually break agents on this
+  API: the Accept header is the version selector, article creates are not idempotent and have no delete, and DEV
+  requires an ai_disclosure_level on authored content.'
+skills:
+- file: skills/dev-to-manage-webhooks.md
+  name: dev-to-manage-webhooks
+  description: Subscribe to and manage DEV (dev.to) article lifecycle webhooks through the Forem API, and reconcile
+    the fact that the webhook operations are absent from the currently published V1 OpenAPI.
+  api: dev-to:dev-to-webhooks-api
+  operations:
+  - getWebhooks
+  - createWebhook
+  - getWebhookById
+  - deleteWebhook
+- file: skills/dev-to-publish-article.md
+  name: dev-to-publish-article
+  description: Publish, update or unpublish an article on DEV (dev.to) via the Forem API V1 on behalf of an authorized
+    account holder, with the AI-disclosure field set correctly.
+  api: dev-to:dev-to-articles-api
+  operations:
+  - createArticle
+  - updateArticle
+  - unpublishArticle
+  - getArticleById
+  - getUserAllArticles
+- file: skills/dev-to-read-community.md
+  name: dev-to-read-community
+  description: Read DEV (dev.to) content safely and without authentication — search and list articles, read comments,
+    resolve users and organizations, and walk tags — using the public read surface of the Forem API V1.
+  api: dev-to:dev-to-articles-api
+  operations:
+  - getArticles
+  - getLatestArticles
+  - getArticleById
+  - getArticleByPath
+  - getCommentsByArticleId
+  - getCommentById
+  - getUser
+  - getOrganization
+  - getOrgArticles
+  - getTags

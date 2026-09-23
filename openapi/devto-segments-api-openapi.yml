@@ -1,0 +1,448 @@
+openapi: 3.2.0
+info:
+  title: Forem API V1 Segments API
+  version: 1.0.0
+  description: 'Access Forem articles, users and other resources via API.
+
+    For a real-world example of Forem in action, check out DEV.
+
+    All endpoints can be accessed with the ''api-key'' header and a accept header, but
+
+    some of them are accessible publicly without authentication.
+
+
+    Dates and date times, unless otherwise specified, must be in
+
+    the RFC 3339 format.'
+servers:
+- url: https://dev.to/api
+  description: Production server
+security:
+- api-key: []
+tags:
+- name: Segments
+paths:
+  /api/segments:
+    get:
+      summary: Manually managed audience segments
+      tags:
+      - Segments
+      description: 'This endpoint allows the client to retrieve a list of audience segments.
+
+
+        An audience segment is a group of users that can be targeted by a Billboard. This API only permits managing segments you create and maintain yourself.
+
+
+        The endpoint supports pagination, and each page will contain `30` segments by default.'
+      operationId: getSegments
+      parameters:
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '200':
+          description: A List of manually managed audience segments
+          content:
+            application/json:
+              example:
+              - id: 34
+                created_at: '2026-05-28T12:45:19.104-06:00'
+                name: null
+                type_of: manual
+                updated_at: '2026-05-28T12:45:19.104-06:00'
+                user_count: 1
+              - id: 33
+                created_at: '2026-05-28T12:45:19.016-06:00'
+                name: null
+                type_of: manual
+                updated_at: '2026-05-28T12:45:19.016-06:00'
+                user_count: 3
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Segment'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+    post:
+      summary: Create a manually managed audience segment
+      tags:
+      - Segments
+      description: 'This endpoint allows the client to create a new audience segment.
+
+
+        An audience segment is a group of users that can be targeted by a Billboard. This API only permits managing segments you create and maintain yourself.'
+      operationId: createSegment
+      responses:
+        '201':
+          description: A manually managed audience segment
+          content:
+            application/json:
+              example:
+                id: 35
+                created_at: '2026-05-28T12:45:19.421-06:00'
+                name: null
+                type_of: manual
+                updated_at: '2026-05-28T12:45:19.421-06:00'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+  /api/segments/{id}:
+    get:
+      summary: A manually managed audience segment
+      tags:
+      - Segments
+      description: This endpoint allows the client to retrieve a single manually-managed audience segment specified by ID.
+      operationId: getSegment
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+      responses:
+        '200':
+          description: The audience segment
+          content:
+            application/json:
+              example:
+                id: 36
+                created_at: '2026-05-28T12:45:19.625-06:00'
+                name: null
+                type_of: manual
+                updated_at: '2026-05-28T12:45:19.625-06:00'
+                user_count: 3
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Segment'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '404':
+          description: Audience Segment Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+    delete:
+      summary: Delete a manually managed audience segment
+      tags:
+      - Segments
+      description: 'This endpoint allows the client to delete an audience segment specified by ID.
+
+
+        Audience segments cannot be deleted if there are still any Billboards using them.'
+      operationId: deleteSegment
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+      responses:
+        '200':
+          description: The deleted audience segment
+          content:
+            application/json:
+              example:
+                id: 40
+                created_at: '2026-05-28T12:45:20.004-06:00'
+                name: null
+                type_of: manual
+                updated_at: '2026-05-28T12:45:20.004-06:00'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '404':
+          description: Audience Segment Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+        '409':
+          description: Audience segment could not be deleted
+          content:
+            application/json:
+              example:
+                error: Segments cannot be deleted while in use by any billboards
+  /api/segments/{id}/users:
+    get:
+      summary: Users in a manually managed audience segment
+      tags:
+      - Segments
+      description: This endpoint allows the client to retrieve a list of the users in an audience segment specified by ID. The endpoint supports pagination, and each page will contain `30` users by default.
+      operationId: getUsersInSegment
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      responses:
+        '200':
+          description: A List of users in the audience segment
+          content:
+            application/json:
+              example:
+              - type_of: user
+                id: 4109
+                username: username61
+                name: Erminia "Pedro" \:/ Turcotte
+                twitter_username: twitter61
+                github_username: github61
+                summary: null
+                location: null
+                website_url: null
+                joined_at: May 28, 2026
+                profile_image: /uploads/user/profile_image/4109/6812d241-6f58-4837-885e-56a5c1a1cac7.jpeg
+              - type_of: user
+                id: 4110
+                username: username62
+                name: Perry "Jazmin" \:/ Harvey
+                twitter_username: twitter62
+                github_username: github62
+                summary: null
+                location: null
+                website_url: null
+                joined_at: May 28, 2026
+                profile_image: /uploads/user/profile_image/4110/66331066-af5b-44d8-bf8c-5a3787ecbfa2.jpeg
+              - type_of: user
+                id: 4111
+                username: username63
+                name: Kristofer "Ruth" \:/ Graham
+                twitter_username: twitter63
+                github_username: github63
+                summary: null
+                location: null
+                website_url: null
+                joined_at: May 28, 2026
+                profile_image: /uploads/user/profile_image/4111/1536d24e-ea86-4abf-bbac-d0eef3b4ebbd.jpeg
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '404':
+          description: Audience Segment Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+  /api/segments/{id}/add_users:
+    put:
+      summary: Add users to a manually managed audience segment
+      tags:
+      - Segments
+      description: 'This endpoint allows the client to add users in bulk to an audience segment specified by ID.
+
+
+        Successes are users that were included in the segment (even if they were already in it), and failures are users that could not be added to the segment.'
+      operationId: addUsersToSegment
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+      responses:
+        '200':
+          description: Result of adding the users to the segment.
+          content:
+            application/json:
+              example:
+                succeeded:
+                - 4117
+                - 4118
+                - 4119
+                failed: []
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '404':
+          description: Audience Segment Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              example:
+                error: 'param is missing or the value is empty: user_ids'
+                status: 422
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SegmentUserIds'
+  /api/segments/{id}/remove_users:
+    put:
+      summary: Remove users from a manually managed audience segment
+      tags:
+      - Segments
+      description: 'This endpoint allows the client to remove users in bulk from an audience segment specified by ID.
+
+
+        Successes are users that were removed; failures are users that weren''t a part of the segment.'
+      operationId: removeUsersFromSegment
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+      responses:
+        '200':
+          description: Result of removing the users to the segment.
+          content:
+            application/json:
+              example:
+                succeeded:
+                - 4136
+                - 4137
+                - 4138
+                failed: []
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '404':
+          description: Audience Segment Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              example:
+                error: 'param is missing or the value is empty: user_ids'
+                status: 422
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SegmentUserIds'
+components:
+  schemas:
+    Segment:
+      description: A manually managed audience segment
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the segment
+        type_of:
+          type: string
+          enum:
+          - manual
+          default: manual
+          description: Marks the segment as manually managed (other types are internal)
+        user_count:
+          type: integer
+          description: The current number of users in the segment
+    SegmentUserIds:
+      type: object
+      properties:
+        user_ids:
+          type: array
+          items:
+            type: integer
+          maxItems: 10000
+    User:
+      description: The representation of a user returned in a list
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        name:
+          type: string
+        summary:
+          type:
+          - string
+          - 'null'
+        twitter_username:
+          type: string
+        github_username:
+          type: string
+        website_url:
+          type:
+          - string
+          - 'null'
+        location:
+          type:
+          - string
+          - 'null'
+        joined_at:
+          type: string
+        profile_image:
+          type: string
+  parameters:
+    perPageParam30to1000:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 30
+  securitySchemes:
+    api-key:
+      type: apiKey
+      name: api-key
+      in: header
+      description: "API Key authentication.\n\nAuthentication for some endpoints, like write operations on the\nArticles API require a DEV API key.\n\nAll authenticated endpoints are CORS disabled, the API key is intended for non-browser scripts.\n\n### Getting an API key\n\nTo obtain one, please follow these steps:\n\n  - visit https://dev.to/settings/extensions\n  - in the \"DEV API Keys\" section create a new key by adding a\n    description and clicking on \"Generate API Key\"\n\n    ![obtain a DEV API Key](https://user-images.githubusercontent.com/37842/172718105-bd93664e-76e0-477d-99c4-265dda0b06c5.png)\n\n  - You'll see the newly generated key in the same view\n    ![generated DEV API Key](https://user-images.githubusercontent.com/37842/172718151-e7fe26a0-9937-42e8-96c6-333acdab9e49.png)"

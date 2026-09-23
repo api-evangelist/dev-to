@@ -1,0 +1,49 @@
+generated: '2026-09-17'
+method: searched
+source: https://developers.forem.com/api + live 299 Warning header on https://dev.to/api/articles + https://status.dev.to
+versioning:
+  scheme: media-type versioning via Accept header
+  current: v1
+  supported:
+  - v0 (deprecated)
+  - v1
+  docs: https://developers.forem.com/api
+deprecation:
+  policy_published: true
+  docs: https://developers.forem.com/api
+  statement: '"Version 0 — This is the legacy API. It is deprecated and will be removed in a future release. Clients
+    can continue to use it as is, but we recommend using the version 1 API."'
+  runtime_signal:
+    header: Warning
+    code: 299
+    observed: true
+    evidence: 'live GET https://dev.to/api/articles returned: Warning: 299 - "This endpoint is part of the V0 (beta)
+      API. To start using the V1 endpoints add the Accept header and set it to application/vnd.forem.api-v1+json.
+      Visit https://developers.forem.com/api for more information."'
+  rfc8594:
+    sunset_header: false
+    deprecation_header: false
+    note: Forem signals deprecation with an RFC 7234 Warning 299, not the RFC 8594 Sunset or Deprecation headers.
+      No removal date is published for V0 — "a future release" is the only commitment — so a client cannot compute
+      a migration deadline.
+  deprecated_operations_in_spec: 0
+  note: 'No operation in the V1 OpenAPI carries `deprecated: true`. The deprecation is whole-version (V0), not per-operation.'
+status_page:
+  url: https://status.dev.to
+  title: DEV Status
+  provider: Atlassian Statuspage
+  http_status: 200
+  note: Confirmed live 2026-09-17. dev.to/security explicitly names status.dev.to as Atlassian-hosted.
+sla:
+  published: false
+  note: No SLA or uptime commitment is published for the API. DEV is a free community platform.
+release_cadence:
+  changelog_published: false
+  note: No dated API changelog exists. github.com/forem/forem publishes no GitHub Releases (the releases API returns
+    an empty array) and its CHANGELOG.md contains a single 2021-07-23 line, "Initial versioned release". https://dev.to/changelog
+    is a podcast page, not a product changelog. No ChangeLog pointer is emitted, because asserting one would credit
+    DEV with a surface it does not serve.
+source_availability:
+  open_source: true
+  repository: https://github.com/forem/forem
+  note: Forem is open source, so API changes are observable in the commit history even though no changelog is curated.

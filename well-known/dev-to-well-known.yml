@@ -1,0 +1,59 @@
+generated: '2026-09-17'
+method: probed
+source: live HTTPS probes of the named /.well-known/ path list on every host in apis.yml + OpenAPI servers[]
+summary:
+  hosts_probed: 4
+  paths_probed: 13
+  documents_served: 1
+note: 'dev.to serves exactly one well-known document: an OpenAI plugin manifest at /.well-known/ai-plugin.json (auth:
+  none) that points at a 5KB ChatGPT-plugin subset spec at https://dev.to/openapi.yml — distinct from the full 139-operation
+  Forem API V1 spec at https://dev.to/openapi.json. No security.txt, no api-catalog, no OAuth/OIDC discovery and
+  no A2A agent card on any host; every one of those returns a real HTML 404, not an SPA shell.'
+hosts:
+- host: dev.to
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    note: 404 — host serves an HTML 404 page at this path
+  - path: /.well-known/openid-configuration
+    status: 404
+    note: 404 — host serves an HTML 404 page at this path
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    note: 404 — host serves an HTML 404 page at this path
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    note: 404 — host serves an HTML 404 page at this path
+  - path: /.well-known/api-catalog
+    status: 404
+    note: 404 — host serves an HTML 404 page at this path
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    file: dev-to-ai-plugin.json
+  - path: /.well-known/agent-card.json
+    status: 404
+    note: 404 — host serves an HTML 404 page at this path
+  - path: /.well-known/agent.json
+    status: 404
+    note: 404 — host serves an HTML 404 page at this path
+  - path: /.well-known/aauth-resource.json
+    status: 404
+    note: 404 — host serves an HTML 404 page at this path
+- host: www.dev.to
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    note: 404 — host serves an HTML 404 page at this path
+- host: developers.forem.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    note: 404 — host serves an HTML 404 page at this path
+  - path: /.well-known/agent-card.json
+    status: 404
+    note: 404 — host serves an HTML 404 page at this path
+- host: forem.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    note: 404 — host serves an HTML 404 page at this path

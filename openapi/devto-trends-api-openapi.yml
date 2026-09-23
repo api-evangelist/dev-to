@@ -1,0 +1,441 @@
+openapi: 3.2.0
+info:
+  title: Forem API V1 Trends API
+  version: 1.0.0
+  description: 'Access Forem articles, users and other resources via API.
+
+    For a real-world example of Forem in action, check out DEV.
+
+    All endpoints can be accessed with the ''api-key'' header and a accept header, but
+
+    some of them are accessible publicly without authentication.
+
+
+    Dates and date times, unless otherwise specified, must be in
+
+    the RFC 3339 format.'
+servers:
+- url: https://dev.to/api
+  description: Production server
+security:
+- api-key: []
+tags:
+- name: Trends
+paths:
+  /api/trends:
+    get:
+      summary: Trends
+      security: []
+      tags:
+      - Trends
+      description: 'This endpoint allows the client to retrieve a list of active trends.
+
+
+        Trends represent topics or themes that are currently hot and heavily discussed in the community.
+
+        It will return trends ordered by score and recency.
+
+
+        It supports pagination, each page will contain 10 trends by default.'
+      operationId: getTrends
+      parameters:
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam10to1000'
+      responses:
+        '200':
+          description: A List of Trends
+          content:
+            application/json:
+              example:
+              - type_of: trend
+                id: 269
+                name: Ruby 3.4 release
+                slug: ruby-3-4-release
+                description: Discussions around the latest Ruby 3.4 features
+                key_questions: []
+                score: 15.5
+                articles_count: 1
+                cover_image: null
+                first_observed_at: '2026-05-28T18:45:30Z'
+                last_observed_at: '2026-05-28T18:45:30Z'
+                created_at: '2026-05-28T18:45:30Z'
+                updated_at: '2026-05-28T18:45:30Z'
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Trend'
+  /api/trends/{id_or_slug}:
+    get:
+      summary: A Trend
+      security: []
+      tags:
+      - Trends
+      description: This endpoint allows the client to retrieve details of a single trend using either its numeric ID or unique slug.
+      operationId: getTrend
+      parameters:
+      - name: id_or_slug
+        in: path
+        required: true
+        description: The ID or slug of the trend to retrieve.
+        example: ruby-3-4-release
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A Trend
+          content:
+            application/json:
+              example:
+                type_of: trend
+                id: 270
+                name: Ruby 3.4 release
+                slug: ruby-3-4-release
+                description: Discussions around the latest Ruby 3.4 features
+                key_questions: []
+                score: 15.5
+                articles_count: 1
+                cover_image: null
+                first_observed_at: '2026-05-28T18:45:30Z'
+                last_observed_at: '2026-05-28T18:45:30Z'
+                created_at: '2026-05-28T18:45:30Z'
+                updated_at: '2026-05-28T18:45:30Z'
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Trend'
+        '404':
+          description: Trend Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+  /api/trends/{trend_id_or_slug}/articles:
+    get:
+      summary: Articles in a Trend
+      security: []
+      tags:
+      - Trends
+      description: 'This endpoint allows the client to retrieve a list of published articles belonging to a trend.
+
+
+        Articles will be ordered by their proximity (distance) to the trend''s centroid, then by article score.
+
+        It supports pagination, each page will contain 10 articles by default.'
+      operationId: getTrendArticles
+      parameters:
+      - name: trend_id_or_slug
+        in: path
+        required: true
+        description: The ID or slug of the trend to retrieve articles for.
+        example: ruby-3-4-release
+        schema:
+          type: string
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam10to1000'
+      responses:
+        '200':
+          description: A List of Articles in the Trend
+          content:
+            application/json:
+              example:
+              - type_of: article
+                id: 2267
+                title: Ruby 3.4 features deep dive
+                description: Put a bird on it fashion axe salvia pickled selfies pinterest. Ennui heirloom swag vhs yuccie food...
+                readable_publish_date: May 28
+                slug: ruby-34-features-deep-dive-2a22
+                path: /username218/ruby-34-features-deep-dive-2a22
+                url: http://forem.test/username218/ruby-34-features-deep-dive-2a22
+                comments_count: 0
+                public_reactions_count: 0
+                collection_id: null
+                published_timestamp: '2026-05-28T18:45:30Z'
+                language: en
+                subforem_id: null
+                positive_reactions_count: 0
+                cover_image: http://forem.test/assets/4-dcfcc4d8dd259bc0751c2de24b1cf244b181c789934368ca1cb471f0944b695d.png
+                social_image: http://forem.test/assets/4-dcfcc4d8dd259bc0751c2de24b1cf244b181c789934368ca1cb471f0944b695d.png
+                canonical_url: http://forem.test/username218/ruby-34-features-deep-dive-2a22
+                created_at: '2026-05-28T18:45:30Z'
+                edited_at: null
+                crossposted_at: null
+                published_at: '2026-05-28T18:45:30Z'
+                last_comment_at: '2026-05-28T18:45:30Z'
+                reading_time_minutes: 1
+                tag_list:
+                - javascript
+                - html
+                - discuss
+                tags: javascript, html, discuss
+                user:
+                  name: Jennie "Trenton" \:/ Mitchell
+                  username: username218
+                  twitter_username: twitter218
+                  github_username: github218
+                  user_id: 4266
+                  website_url: null
+                  profile_image: /uploads/user/profile_image/4266/633ee7e9-0ce0-4b3b-ba3a-011971fde181.jpeg
+                  profile_image_90: /uploads/user/profile_image/4266/633ee7e9-0ce0-4b3b-ba3a-011971fde181.jpeg
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+        '404':
+          description: Trend Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+components:
+  parameters:
+    pageParam:
+      in: query
+      name: page
+      required: false
+      description: Pagination page
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
+    perPageParam10to1000:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 10
+  schemas:
+    ArticleFlareTag:
+      description: Flare tag of the article
+      type: object
+      properties:
+        name:
+          type: string
+        bg_color_hex:
+          description: Background color (hexadecimal)
+          type:
+          - string
+          - 'null'
+        text_color_hex:
+          description: Text color (hexadecimal)
+          type:
+          - string
+          - 'null'
+    SharedOrganization:
+      description: The organization the resource belongs to
+      type: object
+      properties:
+        name:
+          type: string
+        username:
+          type: string
+        slug:
+          type: string
+        profile_image:
+          description: Profile image (640x640)
+          type: string
+          format: url
+        profile_image_90:
+          description: Profile image (90x90)
+          type: string
+          format: url
+    Trend:
+      description: Representation of a trend
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        key_questions:
+          type: array
+          items:
+            type: string
+        score:
+          type: number
+          format: float
+        articles_count:
+          type: integer
+          format: int32
+        cover_image:
+          type:
+          - string
+          - 'null'
+          format: url
+        first_observed_at:
+          type: string
+          format: date-time
+        last_observed_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - type_of
+      - id
+      - name
+      - slug
+      - key_questions
+      - score
+      - articles_count
+      - first_observed_at
+      - last_observed_at
+      - created_at
+      - updated_at
+    SharedUser:
+      description: The resource creator
+      type: object
+      properties:
+        name:
+          type: string
+        username:
+          type: string
+        twitter_username:
+          type:
+          - string
+          - 'null'
+        github_username:
+          type:
+          - string
+          - 'null'
+        website_url:
+          type:
+          - string
+          - 'null'
+          format: url
+        profile_image:
+          description: Profile image (640x640)
+          type: string
+        profile_image_90:
+          description: Profile image (90x90)
+          type: string
+    ArticleIndex:
+      description: Representation of an article or post returned in a list
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int32
+        title:
+          type: string
+        description:
+          type: string
+        cover_image:
+          type:
+          - string
+          - 'null'
+          format: url
+        readable_publish_date:
+          type: string
+        social_image:
+          type: string
+          format: url
+        tag_list:
+          type: array
+          items:
+            type: string
+        tags:
+          type: string
+        slug:
+          type: string
+        path:
+          type: string
+          format: path
+        url:
+          type: string
+          format: url
+        canonical_url:
+          type: string
+          format: url
+        positive_reactions_count:
+          type: integer
+          format: int32
+        public_reactions_count:
+          type: integer
+          format: int32
+        created_at:
+          type: string
+          format: date-time
+        edited_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        crossposted_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        published_at:
+          type: string
+          format: date-time
+        last_comment_at:
+          type: string
+          format: date-time
+        published_timestamp:
+          description: Crossposting or published date time
+          type: string
+          format: date-time
+        reading_time_minutes:
+          description: Reading time, in minutes
+          type: integer
+          format: int32
+        user:
+          $ref: '#/components/schemas/SharedUser'
+        flare_tag:
+          $ref: '#/components/schemas/ArticleFlareTag'
+        organization:
+          $ref: '#/components/schemas/SharedOrganization'
+      required:
+      - type_of
+      - id
+      - title
+      - description
+      - cover_image
+      - readable_publish_date
+      - social_image
+      - tag_list
+      - tags
+      - slug
+      - path
+      - url
+      - canonical_url
+      - comments_count
+      - positive_reactions_count
+      - public_reactions_count
+      - created_at
+      - edited_at
+      - crossposted_at
+      - published_at
+      - last_comment_at
+      - published_timestamp
+      - user
+      - reading_time_minutes
+  securitySchemes:
+    api-key:
+      type: apiKey
+      name: api-key
+      in: header
+      description: "API Key authentication.\n\nAuthentication for some endpoints, like write operations on the\nArticles API require a DEV API key.\n\nAll authenticated endpoints are CORS disabled, the API key is intended for non-browser scripts.\n\n### Getting an API key\n\nTo obtain one, please follow these steps:\n\n  - visit https://dev.to/settings/extensions\n  - in the \"DEV API Keys\" section create a new key by adding a\n    description and clicking on \"Generate API Key\"\n\n    ![obtain a DEV API Key](https://user-images.githubusercontent.com/37842/172718105-bd93664e-76e0-477d-99c4-265dda0b06c5.png)\n\n  - You'll see the newly generated key in the same view\n    ![generated DEV API Key](https://user-images.githubusercontent.com/37842/172718151-e7fe26a0-9937-42e8-96c6-333acdab9e49.png)"

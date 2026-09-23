@@ -1,0 +1,57 @@
+generated: '2026-09-17'
+method: derived
+source: openapi/_original/dev-to-forem-api-v1-openapi.json + https://developers.forem.com/api + live probes
+conformance:
+- id: openapi-3.0
+  conforms: true
+  evidence: 'https://dev.to/openapi.json declares openapi: 3.0.3 with 99 paths and 139 operations.'
+- id: rfc3339-datetimes
+  conforms: true
+  evidence: 'API description: "Dates and date times, unless otherwise specified, must be in the RFC 3339 format."'
+- id: rfc9068-jwt-access-tokens
+  conforms: true
+  evidence: 'components.securitySchemes.bearer_auth: "Short-lived RS256 RFC 9068 access token issued by the configured
+    delegation service and verified against its configured JWKS." Available on instances with delegated access enabled.'
+- id: media-type-versioning
+  conforms: true
+  evidence: 'Accept: application/vnd.forem.api-v1+json is the documented version selector (https://developers.forem.com/api).'
+- id: pagination
+  conforms: true
+  evidence: Shared components.parameters pageParam / perPageParam* applied across index operations.
+- id: idempotency
+  conforms: false
+  evidence: 'Documented on exactly one operation (POST /api/reactions); no Idempotency-Key mechanism exists. See
+    conventions/dev-to-conventions.yml idempotency.coverage: partial.'
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: Errors return application/json {"status","error"}, not application/problem+json. No type/title/detail/instance
+    members.
+- id: oauth2
+  conforms: false
+  evidence: No oauth2 securityScheme in the contract and no OAuth flow documented for API clients.
+- id: oidc
+  conforms: false
+  evidence: https://dev.to/.well-known/openid-configuration returns 404.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: https://dev.to/.well-known/security.txt returns 404, although a human-readable disclosure policy exists
+    at https://dev.to/security.
+- id: rfc8594-sunset
+  conforms: false
+  evidence: Deprecation is signalled with a 299 Warning header, not Sunset/Deprecation headers; no removal date
+    published.
+- id: openai-plugin-manifest
+  conforms: true
+  evidence: 'https://dev.to/.well-known/ai-plugin.json returns 200 with a valid v1 manifest (auth: none) pointing
+    at https://dev.to/openapi.yml.'
+domain_standard:
+  declared: false
+  note: 'Developer-community publishing has no industry contract standard for this pipeline to check against — no
+    SCIM, OData, ActivityPub actor, OAI-PMH verb or comparable signature appears in the contract. This is reward-only,
+    so nothing is invented to fill the slot. The nearest thing Forem does publish is its own AI-disclosure vocabulary
+    (ai_disclosure_level: no_ai | some_ai | fully_autonomous), declared in https://dev.to/llms.txt and accepted
+    on the article payload — a house convention, not an industry standard.'
+certifications:
+  published: false
+  note: No SOC 2, ISO 27001, PCI or comparable certification is published; no trust center exists. No Compliance
+    pointer is emitted.
