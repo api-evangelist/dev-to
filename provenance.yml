@@ -10,7 +10,7 @@ artifacts:
     method: unknown
     evidence: no authorship recorded
   authentication/dev-to-authentication.yml:
-    method: derived
+    method: searched
     evidence: declared in the artifact
   collections/dev-to-articles-api.opencollection.json:
     method: derived
@@ -25,17 +25,17 @@ artifacts:
     method: derived
     evidence: openapi/dev-to-comments-api
   collections/dev-to-displayads-api.opencollection.json:
-    method: derived
-    evidence: openapi/dev-to-displayads-api
+    method: unknown
+    evidence: no authorship recorded
   collections/dev-to-displayads-api.postman_collection.json:
-    method: derived
-    evidence: openapi/dev-to-displayads-api
+    method: unknown
+    evidence: no authorship recorded
   collections/dev-to-followedtags-api.opencollection.json:
-    method: derived
-    evidence: openapi/dev-to-followedtags-api
+    method: unknown
+    evidence: no authorship recorded
   collections/dev-to-followedtags-api.postman_collection.json:
-    method: derived
-    evidence: openapi/dev-to-followedtags-api
+    method: unknown
+    evidence: no authorship recorded
   collections/dev-to-followers-api.opencollection.json:
     method: derived
     evidence: openapi/dev-to-followers-api
@@ -61,17 +61,17 @@ artifacts:
     method: derived
     evidence: openapi/dev-to-pages-api
   collections/dev-to-podcastepisodes-api.opencollection.json:
-    method: derived
-    evidence: openapi/dev-to-podcastepisodes-api
+    method: unknown
+    evidence: no authorship recorded
   collections/dev-to-podcastepisodes-api.postman_collection.json:
-    method: derived
-    evidence: openapi/dev-to-podcastepisodes-api
+    method: unknown
+    evidence: no authorship recorded
   collections/dev-to-profileimages-api.opencollection.json:
-    method: derived
-    evidence: openapi/dev-to-profileimages-api
+    method: unknown
+    evidence: no authorship recorded
   collections/dev-to-profileimages-api.postman_collection.json:
-    method: derived
-    evidence: openapi/dev-to-profileimages-api
+    method: unknown
+    evidence: no authorship recorded
   collections/dev-to-reactions-api.opencollection.json:
     method: derived
     evidence: openapi/dev-to-reactions-api
@@ -79,11 +79,11 @@ artifacts:
     method: derived
     evidence: openapi/dev-to-reactions-api
   collections/dev-to-readinglist-api.opencollection.json:
-    method: derived
-    evidence: openapi/dev-to-readinglist-api
+    method: unknown
+    evidence: no authorship recorded
   collections/dev-to-readinglist-api.postman_collection.json:
-    method: derived
-    evidence: openapi/dev-to-readinglist-api
+    method: unknown
+    evidence: no authorship recorded
   collections/dev-to-tags-api.opencollection.json:
     method: derived
     evidence: openapi/dev-to-tags-api
@@ -102,64 +102,31 @@ artifacts:
   collections/dev-to-webhooks-api.postman_collection.json:
     method: derived
     evidence: openapi/dev-to-webhooks-api
+  conformance/dev-to-conformance.yml:
+    method: derived
+    evidence: declared in the artifact
+  conventions/dev-to-conventions.yml:
+    method: searched
+    evidence: declared in the artifact
+  data-model/dev-to-data-model.yml:
+    method: derived
+    evidence: declared in the artifact
+  errors/dev-to-problem-types.yml:
+    method: derived
+    evidence: declared in the artifact
   finops/dev-to-finops.yml:
     method: generated
     evidence: declared in the artifact
+  front-door-ai/2026-09-17.yml:
+    method: unknown
+    evidence: no authorship recorded
   json-ld/dev-to-context.jsonld:
     method: unknown
     evidence: no authorship recorded
   json-schema/dev-to-article-schema.json:
     method: unknown
     evidence: no authorship recorded
-  kin/checks-2026-09-05T072335.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-06T210741.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-07T135032.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-10T093022.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-10T111628.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-11T211707.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-12T193225.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-17T064519.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-19T080027.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-19T082702.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-19T114122.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-20T165047.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-20T191845.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-20T205517.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-21T110057.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-24T064859.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-24T171257.yml:
+  kin/checks-2026-09-24T161608.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-08-25T125852.yml:
@@ -246,19 +213,150 @@ artifacts:
   kin/score-2026-09-05T072335.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-05T144739.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-05T195450.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-05T211839.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-06T011047.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-06T211804.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-06T224210.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-07T200636.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-07T213054.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-08T214843.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-08T232836.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-10T204815.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-10T222408.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-12T062655.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-12T080032.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-12T204651.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-12T221936.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-13T214537.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-14T064754.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-14T210656.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-14T225847.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-15T211329.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-15T230249.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-16T210549.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-16T225339.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-17T211151.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-17T233623.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-18T205255.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-18T231945.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-19T165737.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-19T193153.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-20T205903.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-20T232958.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-21T211425.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-21T233935.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-22T213221.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-23T000603.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-24T064009.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-24T090406.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-24T161608.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  lifecycle/dev-to-lifecycle.yml:
+    method: searched
+    evidence: declared in the artifact
+  llms/dev-to-llms.txt:
+    method: searched
+    evidence: 'derive-llms-provenance.py: harvested'
+  mcp/dev-to-mcp.yml:
+    method: derived
+    evidence: declared in the artifact
   openapi/_original/dev-to-forem-api-openapi.yml:
     method: harvested
-    evidence: fetched from the provider as-is; byte-identical to the source
+    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
+      to the provider's source is unverified
+  openapi/_original/dev-to-forem-api-v1-openapi.json:
+    method: harvested
+    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
+      to the provider's source is unverified
   openapi/dev-to-articles-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/dev-to-comments-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
-  openapi/dev-to-displayads-api-openapi.yml:
+  openapi/dev-to-display-ads-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
-  openapi/dev-to-followedtags-api-openapi.yml:
+  openapi/dev-to-followed-tags-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/dev-to-followers-api-openapi.yml:
@@ -270,16 +368,16 @@ artifacts:
   openapi/dev-to-pages-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
-  openapi/dev-to-podcastepisodes-api-openapi.yml:
+  openapi/dev-to-podcast-episodes-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
-  openapi/dev-to-profileimages-api-openapi.yml:
+  openapi/dev-to-profile-images-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/dev-to-reactions-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
-  openapi/dev-to-readinglist-api-openapi.yml:
+  openapi/dev-to-reading-list-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/dev-to-tags-api-openapi.yml:
@@ -291,11 +389,110 @@ artifacts:
   openapi/dev-to-webhooks-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/devto-agent-sessions-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/devto-articles-api-openapi.yml:
+    method: unknown
+    evidence: no authorship recorded
+  openapi/devto-billboards-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/devto-comments-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/devto-followed-tags-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/devto-followers-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/devto-organizations-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/devto-pages-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/devto-podcast-episodes-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/devto-profile-images-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/devto-reactions-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/devto-reading-list-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/devto-segments-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/devto-surveys-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/devto-tags-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/devto-trends-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/devto-users-api-openapi.yml:
+    method: unknown
+    evidence: no authorship recorded
+  openapi/devto-videos-api-openapi.yml:
+    method: unknown
+    evidence: no authorship recorded
+  overlays/dev-to-articles-api-overlay.yaml:
+    method: derived
+    evidence: declared in the artifact
+  overlays/dev-to-comments-api-overlay.yaml:
+    method: derived
+    evidence: declared in the artifact
+  overlays/dev-to-display-ads-api-overlay.yaml:
+    method: derived
+    evidence: declared in the artifact
+  overlays/dev-to-followed-tags-api-overlay.yaml:
+    method: derived
+    evidence: declared in the artifact
+  overlays/dev-to-followers-api-overlay.yaml:
+    method: derived
+    evidence: declared in the artifact
+  overlays/dev-to-organizations-api-overlay.yaml:
+    method: derived
+    evidence: declared in the artifact
+  overlays/dev-to-pages-api-overlay.yaml:
+    method: derived
+    evidence: declared in the artifact
+  overlays/dev-to-podcast-episodes-api-overlay.yaml:
+    method: derived
+    evidence: declared in the artifact
+  overlays/dev-to-profile-images-api-overlay.yaml:
+    method: derived
+    evidence: declared in the artifact
+  overlays/dev-to-reactions-api-overlay.yaml:
+    method: derived
+    evidence: declared in the artifact
+  overlays/dev-to-reading-list-api-overlay.yaml:
+    method: derived
+    evidence: declared in the artifact
+  overlays/dev-to-tags-api-overlay.yaml:
+    method: derived
+    evidence: declared in the artifact
+  overlays/dev-to-users-api-overlay.yaml:
+    method: derived
+    evidence: declared in the artifact
+  overlays/dev-to-webhooks-api-overlay.yaml:
+    method: derived
+    evidence: declared in the artifact
+  packages/dev-to-packages.yml:
+    method: searched
+    evidence: declared in the artifact
   plans/dev-to-plans-pricing.yml:
-    method: generated
+    method: searched
     evidence: declared in the artifact
   rate-limits/dev-to-rate-limits.yml:
-    method: generated
+    method: searched
     evidence: declared in the artifact
   rules/dev-to-asyncapi-spectral-rules.yml:
     method: generated
@@ -304,5 +501,26 @@ artifacts:
     method: generated
     evidence: declared in the artifact
   security/dev-to-domain-security.yml:
+    method: unknown
+    evidence: no authorship recorded
+  security/dev-to-vulnerability-disclosure.yml:
+    method: searched
+    evidence: declared in the artifact
+  skills/_index.yml:
+    method: generated
+    evidence: declared in the artifact
+  skills/dev-to-manage-webhooks.md:
+    method: generated
+    evidence: declared in the artifact
+  skills/dev-to-publish-article.md:
+    method: generated
+    evidence: declared in the artifact
+  skills/dev-to-read-community.md:
+    method: generated
+    evidence: declared in the artifact
+  well-known/dev-to-ai-plugin.json:
+    method: unknown
+    evidence: no authorship recorded
+  well-known/dev-to-well-known.yml:
     method: unknown
     evidence: no authorship recorded
