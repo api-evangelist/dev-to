@@ -1,0 +1,991 @@
+openapi: 3.2.0
+info:
+  title: Forem API V1 Admin API
+  version: 1.0.0
+  description: Access Forem articles, users and other resources via API.
+servers:
+- url: https://dev.to
+  description: Production server
+security:
+- api-key: []
+- bearer_auth: []
+tags:
+- name: Admin
+paths:
+  /api/admin/concepts:
+    get:
+      summary: Retrieve all concepts (Admin)
+      tags:
+      - Admin
+      description: Retrieve all concepts in the system including system and draft concepts. Admin credentials required.
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Concept'
+      operationId: getApiAdminConcepts
+      x-operation-id-source: derived
+    post:
+      summary: Create a concept (Admin)
+      tags:
+      - Admin
+      description: 'Create a new Concept.
+
+
+        ### Parameters:
+
+        - **name**: Human readable label for the concept.
+
+        - **description**: Detailed semantic definition used to generate the anchor embedding.
+
+        - **similarity_threshold**: Target similarity threshold for categorizing articles under this concept.
+
+        - **parent_id**: ID of parent concept, if establishing a hierarchy.'
+      parameters: []
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Concept'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                concept:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    parent_id:
+                      type:
+                      - integer
+                      - 'null'
+                    similarity_threshold:
+                      type: number
+                    score:
+                      type: number
+                  required:
+                  - name
+      operationId: postApiAdminConcepts
+      x-operation-id-source: derived
+  /api/admin/concepts/{id}:
+    get:
+      summary: Retrieve concept detail (Admin)
+      tags:
+      - Admin
+      description: Retrieve full details of a specific concept by ID. Admin credentials required.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Concept'
+      operationId: getApiAdminConceptsById
+      x-operation-id-source: derived
+    patch:
+      summary: Update a concept (Admin)
+      tags:
+      - Admin
+      description: Update concept properties. Admin credentials required.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Concept'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                concept:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    parent_id:
+                      type:
+                      - integer
+                      - 'null'
+                    similarity_threshold:
+                      type: number
+                    score:
+                      type: number
+      operationId: patchApiAdminConceptsById
+      x-operation-id-source: derived
+    delete:
+      summary: Delete a concept (Admin)
+      tags:
+      - Admin
+      description: Permanently delete a concept by ID. Admin credentials required.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: no content
+      operationId: deleteApiAdminConceptsById
+      x-operation-id-source: derived
+  /api/admin/concepts/{id}/trigger_lookback:
+    post:
+      summary: Trigger concept lookback backfill (Admin)
+      tags:
+      - Admin
+      description: Trigger a background backfill worker to scan historical articles published in the last `N` days and evaluate them against this concept.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                days:
+                  type: integer
+              required:
+              - days
+      operationId: postApiAdminConceptsByIdTriggerLookback
+      x-operation-id-source: derived
+  /api/feedback_messages/{id}:
+    patch:
+      summary: Update a feedback message's status (Admin)
+      tags:
+      - Admin
+      description: 'Update the status of a user feedback message or report.
+
+
+        ### Feedback Messages Overview:
+
+        - Feedback messages are submitted by users via support forms or content abuse reporting modals.
+
+        - Requires Administrator privileges.
+
+        - Used to track moderation/resolution workflows (e.g. marking a spam report as `Resolved`, `Spam`, or `Ignored`).'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique feedback message ID.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                feedback_message:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                  required:
+                  - status
+        description: Feedback parameters containing the status updates.
+      operationId: patchApiFeedbackMessagesById
+      x-operation-id-source: derived
+  /api/admin/request_redirects:
+    get:
+      summary: Retrieve all request redirects (Admin)
+      tags:
+      - Admin
+      description: 'Retrieve a list of all request redirects configured on the platform.
+
+
+        ### Redirects Overview:
+
+        - Redirects map incoming HTTP request paths or domains to specific target destination URLs (301 or 302 redirects).
+
+        - Primarily used for managing vanity URLs, legacy path support, or domain migrations.
+
+        - Requires Administrator privileges.'
+      parameters:
+      - name: page
+        in: query
+        required: false
+        description: Pagination page index.
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        required: false
+        description: Number of items to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RequestRedirect'
+      operationId: getApiAdminRequestRedirects
+      x-operation-id-source: derived
+    post:
+      summary: Create a request redirect (Admin)
+      tags:
+      - Admin
+      description: 'Create a new request redirect route. Requires Administrator privileges.
+
+
+        ### Body Parameter Guidelines:
+
+        - **original_url**: The source path (e.g. `/old-page`) to intercept.
+
+        - **destination_url**: The target destination (e.g. `https://myforem.com/new-page`) to redirect users to.
+
+        - **request_domain**: The domain scope (e.g. `dev.to`) where this redirect rule applies.'
+      parameters: []
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestRedirect'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                request_redirect:
+                  type: object
+                  properties:
+                    original_url:
+                      type: string
+                    destination_url:
+                      type: string
+                    request_domain:
+                      type: string
+                  required:
+                  - original_url
+                  - destination_url
+                  - request_domain
+        description: Redirect routing parameters.
+      operationId: postApiAdminRequestRedirects
+      x-operation-id-source: derived
+  /api/admin/request_redirects/{id}:
+    get:
+      summary: Retrieve a request redirect's details (Admin)
+      tags:
+      - Admin
+      description: Retrieve details of a single request redirect route by ID. Requires Admin credentials.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique redirect ID.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestRedirect'
+      operationId: getApiAdminRequestRedirectsById
+      x-operation-id-source: derived
+    patch:
+      summary: Update a request redirect (Admin)
+      tags:
+      - Admin
+      description: Update details (paths or domain scope) of an existing redirect route by ID. Requires Admin credentials.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique redirect ID to update.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestRedirect'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                request_redirect:
+                  type: object
+                  properties:
+                    original_url:
+                      type: string
+                    destination_url:
+                      type: string
+                    request_domain:
+                      type: string
+        description: Updated redirect routing parameters.
+      operationId: patchApiAdminRequestRedirectsById
+      x-operation-id-source: derived
+    delete:
+      summary: Delete a request redirect (Admin)
+      tags:
+      - Admin
+      description: Delete a request redirect route, disabling the routing intercept immediately. Requires Admin credentials.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique redirect ID to delete.
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: no content
+      operationId: deleteApiAdminRequestRedirectsById
+      x-operation-id-source: derived
+  /api/admin/users:
+    post:
+      summary: Invite a User
+      tags:
+      - Admin
+      description: 'Invite a new user to join the platform by email.
+
+
+        ### Super Admin Action:
+
+        - Requires Super Admin privileges.
+
+        - Triggers a system invitation flow and sends an invitation email containing a sign-up link.
+
+        - Handy for invite-only platforms or private enterprise instances.'
+      operationId: postAdminUsersCreate
+      parameters: []
+      responses:
+        '200':
+          description: Successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInviteParam'
+        description: User invite params
+    get:
+      summary: List all users (Admin)
+      tags:
+      - Admin
+      description: 'Retrieve a list of all users registered on the platform.
+
+
+        ### Permissions & Filters:
+
+        - Requires Super Admin privileges.
+
+        - Allows filtering by exact `email` or `username`.
+
+        - Returns paginated list of extended user objects containing email addresses, registration dates, roles, and administrative statuses.'
+      parameters:
+      - name: page
+        in: query
+        required: false
+        description: Pagination page index.
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        required: false
+        description: Number of items to return per page.
+        schema:
+          type: integer
+      - name: email
+        in: query
+        required: false
+        description: Optional email search filter.
+        schema:
+          type: string
+      - name: username
+        in: query
+        required: false
+        description: Optional username search filter.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+      operationId: getApiAdminUsers
+      x-operation-id-source: derived
+  /api/admin/users/{id}:
+    get:
+      summary: Get user detail (Admin)
+      tags:
+      - Admin
+      description: 'Retrieve details of a single user by numerical ID.
+
+
+        ### Super Admin Action:
+
+        - Requires Super Admin privileges.
+
+        - Includes administrative settings, audit notes, email newsletter preferences, and OAuth login identity states.'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique user numeric ID.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+      operationId: getApiAdminUsersById
+      x-operation-id-source: derived
+    patch:
+      summary: Update user profile (Admin)
+      tags:
+      - Admin
+      description: Update a user's public profile fields (name, location, bio summary, website) on their behalf. Requires Super Admin credentials.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique user ID to update.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                username:
+                  type: string
+                summary:
+                  type: string
+                location:
+                  type: string
+                website_url:
+                  type: string
+        description: User profile updated fields.
+      operationId: patchApiAdminUsersById
+      x-operation-id-source: derived
+  /api/admin/users/{id}/email:
+    put:
+      summary: Update user email (Admin)
+      tags:
+      - Admin
+      description: Update a user's primary registration email address. Requires Super Admin credentials.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique user ID to update email for.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+              required:
+              - email
+        description: Email parameters.
+      operationId: putApiAdminUsersByIdEmail
+      x-operation-id-source: derived
+  /api/admin/users/{id}/status:
+    put:
+      summary: Update user moderation status (Admin)
+      tags:
+      - Admin
+      description: 'Manually update a user''s moderation status.
+
+
+        ### Status Details:
+
+        - **status**: Allowed target states (e.g. `active`, `suspended`, `banned`).
+
+        - **note**: Required reason text recorded in the user''s moderation log audit history.
+
+        - Requires Super Admin privileges.'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique user ID.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                note:
+                  type: string
+              required:
+              - status
+        description: Status parameters.
+      operationId: putApiAdminUsersByIdStatus
+      x-operation-id-source: derived
+  /api/admin/users/{id}/notification_settings:
+    put:
+      summary: Update user notification settings (Admin)
+      tags:
+      - Admin
+      description: Update a user's email notification preferences (e.g., unsubscribing them from the system newsletter or the periodic digest). Any subset of the listed properties may be supplied; at least one is required. Requires Super Admin credentials.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique user ID.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                notification_setting:
+                  type: object
+                  properties:
+                    email_newsletter:
+                      type: boolean
+                    email_digest_periodic:
+                      type: boolean
+                    email_comment_notifications:
+                      type: boolean
+                    email_follower_notifications:
+                      type: boolean
+                    email_mention_notifications:
+                      type: boolean
+                    email_unread_notifications:
+                      type: boolean
+                    email_badge_notifications:
+                      type: boolean
+              required:
+              - notification_setting
+        description: Settings parameters.
+      operationId: putApiAdminUsersByIdNotificationSettings
+      x-operation-id-source: derived
+  /api/admin/users/{id}/merge:
+    post:
+      summary: Merge user into another (Admin)
+      tags:
+      - Admin
+      description: 'Merge a duplicate user account into a target main account.
+
+
+        ### Account Merging Behavior:
+
+        - Transfers all comments, articles, reactions, and follows to the target user (`merge_user_id`).
+
+        - Deletes/destroys the source user account once the merge completes successfully.
+
+        - High risk! Action is permanent and irreversible.
+
+        - Requires Super Admin credentials.'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The duplicate user ID that will be deleted after contents merge.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                merge_user_id:
+                  type: integer
+              required:
+              - merge_user_id
+        description: Merge parameters containing the target account ID.
+      operationId: postApiAdminUsersByIdMerge
+      x-operation-id-source: derived
+  /api/admin/users/{user_id}/notes:
+    get:
+      summary: List notes for a user (Admin)
+      tags:
+      - Admin
+      description: Retrieve all moderator/administrator audit log notes appended to a user. Requires Super Admin credentials.
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        description: User ID to fetch notes for.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+      operationId: getApiAdminUsersByUserIdNotes
+      x-operation-id-source: derived
+    post:
+      summary: Add a note to a user (Admin)
+      tags:
+      - Admin
+      description: 'Add a new moderation/audit note to a user.
+
+
+        ### Audit Logging Guidelines:
+
+        - **content**: Plaintext description of behavior, infraction, or actions taken.
+
+        - **reason**: Categorized classification (e.g. `spam`, `abuse`, `harassment`, `administrative`).
+
+        - Requires Super Admin credentials.'
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        description: User ID to append the note to.
+        schema:
+          type: integer
+      responses:
+        '201':
+          description: created
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                reason:
+                  type: string
+              required:
+              - content
+        description: Note attributes.
+      operationId: postApiAdminUsersByUserIdNotes
+      x-operation-id-source: derived
+  /api/admin/users/{user_id}/identities:
+    get:
+      summary: List identities for a user (Admin)
+      tags:
+      - Admin
+      description: Retrieve all linked OAuth identities (e.g., GitHub, Twitter, Apple) for a user. Requires Super Admin credentials.
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        description: User ID to fetch linked identities for.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+      operationId: getApiAdminUsersByUserIdIdentities
+      x-operation-id-source: derived
+    post:
+      summary: Link an identity to a user (Admin)
+      tags:
+      - Admin
+      description: 'Manually link an OAuth provider identity to a user. Requires Super Admin credentials.
+
+
+        ### Identity Binding:
+
+        - **provider**: The login provider name (e.g. `github`, `twitter`).
+
+        - **uid**: The provider''s unique user identifier.
+
+        - **username**: The user''s username on the provider''s service.'
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        description: User ID to bind identity to.
+        schema:
+          type: integer
+      responses:
+        '201':
+          description: created
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                provider:
+                  type: string
+                uid:
+                  type: string
+                username:
+                  type: string
+              required:
+              - provider
+              - uid
+        description: OAuth credentials and identities.
+      operationId: postApiAdminUsersByUserIdIdentities
+      x-operation-id-source: derived
+  /api/admin/users/{user_id}/identities/{id}:
+    delete:
+      summary: Unlink an identity from a user (Admin)
+      tags:
+      - Admin
+      description: Unlink a specific OAuth login provider identity from a user by identity ID. Requires Super Admin credentials.
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        description: User ID.
+        schema:
+          type: integer
+      - name: id
+        in: path
+        required: true
+        description: Identity ID to unlink.
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: no content
+      operationId: deleteApiAdminUsersByUserIdIdentitiesById
+      x-operation-id-source: derived
+  /api/admin/users/identities/bulk:
+    post:
+      summary: Bulk link identities (Admin)
+      tags:
+      - Admin
+      description: Bulk link OAuth identities across multiple users. Requires Super Admin credentials.
+      parameters: []
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                provider:
+                  type: string
+                identities:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      user_id:
+                        type: integer
+                      uid:
+                        type: string
+                    required:
+                    - user_id
+                    - uid
+              required:
+              - provider
+              - identities
+        description: Bulk identity params.
+      operationId: postApiAdminUsersIdentitiesBulk
+      x-operation-id-source: derived
+components:
+  schemas:
+    ConceptDailyMetric:
+      description: Representation of daily metrics for a concept
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        articles_count:
+          type: integer
+        comments_count:
+          type: integer
+        page_views:
+          type: integer
+        reactions_count:
+          type: integer
+        popularity_score:
+          type: number
+          format: float
+      required:
+      - date
+      - articles_count
+      - comments_count
+      - page_views
+      - reactions_count
+      - popularity_score
+    Concept:
+      description: Representation of a concept
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        parent_id:
+          type:
+          - integer
+          - 'null'
+          format: int64
+        score:
+          type: number
+          format: float
+        similarity_threshold:
+          type:
+          - number
+          - 'null'
+          format: float
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        daily_metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConceptDailyMetric'
+        top_articles:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                format: int64
+              title:
+                type: string
+              slug:
+                type: string
+              score:
+                type: number
+                format: float
+              published_at:
+                type: string
+                format: date-time
+      required:
+      - id
+      - name
+      - slug
+      - created_at
+      - updated_at
+    RequestRedirect:
+      description: Representation of a request redirect
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        original_url:
+          type: string
+        destination_url:
+          type: string
+        request_domain:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - id
+      - original_url
+      - destination_url
+      - request_domain
+      - created_at
+      - updated_at
+    UserInviteParam:
+      description: User invite parameters
+      type: object
+      properties:
+        email:
+          type: string
+        name:
+          type:
+          - string
+          - 'null'
+  securitySchemes:
+    api-key:
+      type: apiKey
+      name: api-key
+      in: header
+      description: "API Key authentication.\n\nAuthentication for some endpoints, like write operations on the\nArticles API require a DEV API key.\n\nAll authenticated endpoints are CORS disabled, the API key is intended for non-browser scripts.\n\n### Getting an API key\n\nTo obtain one, please follow these steps:\n\n  - visit https://dev.to/settings/extensions\n  - in the \"DEV API Keys\" section create a new key by adding a\n    description and clicking on \"Generate API Key\"\n\n    ![obtain a DEV API Key](https://user-images.githubusercontent.com/37842/172718105-bd93664e-76e0-477d-99c4-265dda0b06c5.png)\n\n  - You'll see the newly generated key in the same view\n    ![generated DEV API Key](https://user-images.githubusercontent.com/37842/172718151-e7fe26a0-9937-42e8-96c6-333acdab9e49.png)"
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Short-lived RS256 RFC 9068 access token issued by the configured delegation service and verified against its configured JWKS. The issuer authorizes the client and requested operation before minting the token; Forem validates the token and resolves its subject and owner to a local user. An invalid token returns 401; an unavailable trust dependency with no usable cached key returns 503.

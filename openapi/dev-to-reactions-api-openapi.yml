@@ -1,17 +1,13 @@
 openapi: 3.2.0
 info:
-  title: Dev.to Forem Reactions API
-  description: The Dev.to Forem API (v1) is a RESTful API that provides programmatic access to the Dev.to developer community platform, which is built on the open-source Forem framework.
+  title: Dev To Reactions API
   version: 1.0.0
-  contact:
-    name: Forem Support
-    url: https://forem.com
-  termsOfService: https://dev.to/terms
+  description: 'Operations tagged Reactions across 3 of this provider''s published API definitions: dev-to-forem-api-openapi.yml, dev-to-forem-api-v1-openapi.json, devto-reactions-api-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://dev.to/api
   description: Dev.to Production Server
-security:
-- apiKey: []
+- url: https://dev.to
+  description: Production server
 tags:
 - name: Reactions
   description: Endpoints for creating and toggling reactions on articles, comments, and users.
@@ -61,6 +57,11 @@ paths:
                 $ref: '#/components/schemas/Reaction'
         '401':
           description: Unauthorized
+      security:
+      - apiKey: []
+    servers:
+    - url: https://dev.to/api
+      description: Production server
   /reactions:
     post:
       operationId: createReaction
@@ -107,6 +108,123 @@ paths:
                 $ref: '#/components/schemas/Reaction'
         '401':
           description: Unauthorized
+      security:
+      - apiKey: []
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/reactions/toggle:
+    post:
+      summary: toggle reaction
+      tags:
+      - Reactions
+      description: 'Toggle a reaction on a target resource (Article, Comment, or User) on behalf of the authenticated user.
+
+
+        ### Toggle Logic:
+
+        - **First Request**: Creates a new reaction of the specified category on the reactable target.
+
+        - **Second Request (with same parameters)**: Deletes the existing reaction.
+
+        - Particularly useful for simple, interactive UI buttons like "Like", "Unicorn", or "Save" where clicking toggles the active state.'
+      parameters:
+      - name: category
+        in: query
+        required: true
+        description: The type of reaction (e.g. `like` for standard likes, `unicorn` for outstanding posts, `save` for bookmarking to the reading list).
+        schema:
+          type: string
+          enum:
+          - like
+          - unicorn
+          - exploding_head
+          - raised_hands
+          - fire
+      - name: reactable_id
+        in: query
+        required: true
+        description: The unique numerical ID of the target resource (Article, Comment, or User) being reacted to.
+        schema:
+          type: integer
+          format: int32
+      - name: reactable_type
+        in: query
+        required: true
+        description: The class name of the target resource being reacted to (e.g. `Article`, `Comment`, `User`).
+        schema:
+          type: string
+          enum:
+          - Comment
+          - Article
+          - User
+      responses:
+        '200':
+          description: successful
+        '401':
+          description: unauthorized
+      security:
+      - api-key: []
+      - bearer_auth: []
+      operationId: postApiReactionsToggle
+      x-operation-id-source: derived
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/reactions:
+    post:
+      summary: create reaction
+      tags:
+      - Reactions
+      description: 'Create a reaction on a target resource (Article, Comment, or User) on behalf of the authenticated user.
+
+
+        ### Usage Details:
+
+        - Unlike the toggle endpoint, this endpoint is idempotent: multiple requests to react with the same category to the same target will return the existing reaction without deleting it.'
+      parameters:
+      - name: category
+        in: query
+        required: true
+        description: The type of reaction (e.g. `like` for standard likes, `unicorn` for outstanding posts, `save` for bookmarking to the reading list).
+        schema:
+          type: string
+          enum:
+          - like
+          - unicorn
+          - exploding_head
+          - raised_hands
+          - fire
+      - name: reactable_id
+        in: query
+        required: true
+        description: The unique numerical ID of the target resource (Article, Comment, or User) being reacted to.
+        schema:
+          type: integer
+          format: int32
+      - name: reactable_type
+        in: query
+        required: true
+        description: The class name of the target resource being reacted to (e.g. `Article`, `Comment`, `User`).
+        schema:
+          type: string
+          enum:
+          - Comment
+          - Article
+          - User
+      responses:
+        '200':
+          description: successful
+        '401':
+          description: unauthorized
+      security:
+      - api-key: []
+      - bearer_auth: []
+      operationId: postApiReactions
+      x-operation-id-source: derived
+    servers:
+    - url: https://dev.to/api
+      description: Production server
 components:
   schemas:
     Reaction:
@@ -140,6 +258,20 @@ components:
       in: header
       name: api-key
       description: API key obtained from the DEV.to settings page. Pass in the api-key header for authenticated requests.
+    api-key:
+      type: apiKey
+      name: api-key
+      in: header
+      description: "API Key authentication.\n\nAuthentication for some endpoints, like write operations on the\nArticles API require a DEV API key.\n\nAll authenticated endpoints are CORS disabled, the API key is intended for non-browser scripts.\n\n### Getting an API key\n\nTo obtain one, please follow these steps:\n\n  - visit https://dev.to/settings/extensions\n  - in the \"DEV API Keys\" section create a new key by adding a\n    description and clicking on \"Generate API Key\"\n\n    ![obtain a DEV API Key](https://user-images.githubusercontent.com/37842/172718105-bd93664e-76e0-477d-99c4-265dda0b06c5.png)\n\n  - You'll see the newly generated key in the same view\n    ![generated DEV API Key](https://user-images.githubusercontent.com/37842/172718151-e7fe26a0-9937-42e8-96c6-333acdab9e49.png)"
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Short-lived RS256 RFC 9068 access token issued by the configured delegation service and verified against its configured JWKS. The issuer authorizes the client and requested operation before minting the token; Forem validates the token and resolves its subject and owner to a local user. An invalid token returns 401; an unavailable trust dependency with no usable cached key returns 503.
 externalDocs:
   description: Forem API V1 Documentation
   url: https://developers.forem.com/api/v1
+x-refined-from:
+- dev-to-forem-api-openapi.yml
+- dev-to-forem-api-v1-openapi.json
+- devto-reactions-api-openapi.yml

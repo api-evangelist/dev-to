@@ -1,17 +1,13 @@
 openapi: 3.2.0
 info:
-  title: Dev.to Forem Pages API
-  description: The Dev.to Forem API (v1) is a RESTful API that provides programmatic access to the Dev.to developer community platform, which is built on the open-source Forem framework.
+  title: Dev To Pages API
   version: 1.0.0
-  contact:
-    name: Forem Support
-    url: https://forem.com
-  termsOfService: https://dev.to/terms
+  description: 'Operations tagged Pages across 3 of this provider''s published API definitions: dev-to-forem-api-openapi.yml, dev-to-forem-api-v1-openapi.json, devto-pages-api-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://dev.to/api
   description: Dev.to Production Server
-security:
-- apiKey: []
+- url: https://dev.to
+  description: Production server
 tags:
 - name: Pages
   description: Endpoints for managing static pages on the platform. Requires admin-level API key.
@@ -34,6 +30,8 @@ paths:
                   $ref: '#/components/schemas/Page'
         '401':
           description: Unauthorized
+      security:
+      - apiKey: []
     post:
       operationId: createPage
       summary: Create a new page
@@ -57,6 +55,11 @@ paths:
           description: Unauthorized
         '422':
           description: Unprocessable Entity
+      security:
+      - apiKey: []
+    servers:
+    - url: https://dev.to/api
+      description: Production server
   /pages/{id}:
     get:
       operationId: getPageById
@@ -82,6 +85,8 @@ paths:
           description: Unauthorized
         '404':
           description: Page not found
+      security:
+      - apiKey: []
     put:
       operationId: updatePage
       summary: Update details for a page
@@ -114,6 +119,8 @@ paths:
           description: Page not found
         '422':
           description: Unprocessable Entity
+      security:
+      - apiKey: []
     delete:
       operationId: deletePage
       summary: Remove a page
@@ -134,6 +141,207 @@ paths:
           description: Unauthorized
         '404':
           description: Page not found
+      security:
+      - apiKey: []
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/pages:
+    get:
+      summary: show details for all pages
+      security: []
+      tags:
+      - Pages
+      description: 'Retrieve details for all Page objects in the system.
+
+
+        ### Pages Overview:
+
+        - Pages are custom static or dynamic views hosted on the Forem instance.
+
+        - Publicly visible unless restricted.
+
+        - Helpful for building custom menus, rendering site policies, or embedding custom forms.'
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Page_2'
+      operationId: getApiPages
+      x-operation-id-source: derived
+    post:
+      summary: pages
+      tags:
+      - Pages
+      description: 'Create a new custom page. Requires administrative privileges.
+
+
+        ### Body Parameter Guidelines:
+
+        - **title**: Heading displayed at the top of the page.
+
+        - **slug**: URL path identifier. Must be unique and URL-safe.
+
+        - **body_markdown**: Content written in Markdown format.
+
+        - **body_json**: Optional JSON payload for API-consumed/structured data pages.
+
+        - **is_top_level_path**: Set to `true` to serve the page directly at the root (e.g. `/{slug}`) instead of under the default namespace `/page/{slug}`. Use with caution to avoid namespace collisions with core Forem paths.
+
+        - **template**: Layout styling options (`contained` or custom layouts).'
+      parameters: []
+      responses:
+        '200':
+          description: successful
+        '401':
+          description: unauthorized
+        '422':
+          description: unprocessable
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: Title of the page
+                slug:
+                  type: string
+                  description: Used to link to this page in URLs, must be unique and URL-safe
+                description:
+                  type: string
+                  description: For internal use, helps similar pages from one another
+                body_markdown:
+                  type: string
+                  description: The text (in markdown) of the page (required)
+                body_json:
+                  type: string
+                  description: For JSON pages, the JSON body
+                is_top_level_path:
+                  type: boolean
+                  description: If true, the page is available at '/{slug}' instead of '/page/{slug}', use with caution
+                template:
+                  type: string
+                  enum:
+                  - contained
+                  - full_within_layout
+                  - nav_bar_included
+                  - json
+                  - css
+                  - txt
+                  default: contained
+                  description: Controls what kind of layout the page is rendered in
+        description: Page parameters.
+      security:
+      - api-key: []
+      - bearer_auth: []
+      operationId: postApiPages
+      x-operation-id-source: derived
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/pages/{id}:
+    get:
+      summary: show details for a page
+      security: []
+      tags:
+      - Pages
+      description: Retrieve details for a single Page object specified by ID.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The unique ID of the page.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page_2'
+      operationId: getApiPagesById
+      x-operation-id-source: derived
+    put:
+      summary: update details for a page
+      tags:
+      - Pages
+      description: Update an existing page's details by ID. Requires administrative privileges.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the page to update.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page_2'
+        '401':
+          description: unauthorized
+        '422':
+          description: unprocessable
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Page_2'
+        description: Representation of Page to be updated
+      security:
+      - api-key: []
+      - bearer_auth: []
+      operationId: putApiPagesById
+      x-operation-id-source: derived
+    delete:
+      summary: remove a page
+      tags:
+      - Pages
+      description: Delete a custom page from the system by ID. Requires administrative privileges.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the page to delete.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page_2'
+        '401':
+          description: unauthorized
+        '422':
+          description: unprocessable
+      security:
+      - api-key: []
+      - bearer_auth: []
+      operationId: deleteApiPagesById
+      x-operation-id-source: derived
+    servers:
+    - url: https://dev.to/api
+      description: Production server
 components:
   schemas:
     Page:
@@ -169,12 +377,162 @@ components:
         template:
           type: string
           description: The template used to render the page.
+    Page_2:
+      description: Representation of a page object
+      type: object
+      properties:
+        title:
+          type: string
+          description: Title of the page
+        slug:
+          type: string
+          description: Used to link to this page in URLs, must be unique and URL-safe
+        description:
+          type: string
+          description: For internal use, helps similar pages from one another
+        body_markdown:
+          type:
+          - string
+          - 'null'
+          description: The text (in markdown) of the ad (required)
+        body_json:
+          type:
+          - string
+          - 'null'
+          description: For JSON pages, the JSON body
+        is_top_level_path:
+          type: boolean
+          description: If true, the page is available at '/{slug}' instead of '/page/{slug}', use with caution
+        social_image:
+          type:
+          - object
+          - 'null'
+        template:
+          type: string
+          enum:
+          - contained
+          - full_within_layout
+          - nav_bar_included
+          - json
+          - css
+          - txt
+          default: contained
+          description: Controls what kind of layout the page is rendered in
+      required:
+      - title
+      - slug
+      - description
+      - template
+    Page_2_2:
+      description: Representation of a page object
+      type: object
+      properties:
+        title:
+          type: string
+          description: Title of the page
+        slug:
+          type: string
+          description: Used to link to this page in URLs, must be unique and URL-safe
+        description:
+          type: string
+          description: For internal use, helps similar pages from one another
+        body_markdown:
+          type:
+          - string
+          - 'null'
+          description: The text (in markdown) of the ad (required)
+        body_json:
+          type:
+          - string
+          - 'null'
+          description: For JSON pages, the JSON body
+        is_top_level_path:
+          type: boolean
+          description: If true, the page is available at '/{slug}' instead of '/page/{slug}', use with caution
+        social_image:
+          type:
+          - object
+          - 'null'
+        template:
+          type: string
+          enum:
+          - contained
+          - full_within_layout
+          - nav_bar_included
+          - json
+          default: contained
+          description: Controls what kind of layout the page is rendered in
+      required:
+      - title
+      - slug
+      - description
+      - template
+    Page_3:
+      description: Representation of a page object
+      type: object
+      properties:
+        title:
+          type: string
+          description: Title of the page
+        slug:
+          type: string
+          description: Used to link to this page in URLs, must be unique and URL-safe
+        description:
+          type: string
+          description: For internal use, helps similar pages from one another
+        body_markdown:
+          type:
+          - string
+          - 'null'
+          description: The text (in markdown) of the ad (required)
+        body_json:
+          type:
+          - string
+          - 'null'
+          description: For JSON pages, the JSON body
+        is_top_level_path:
+          type: boolean
+          description: If true, the page is available at '/{slug}' instead of '/page/{slug}', use with caution
+        social_image:
+          type:
+          - object
+          - 'null'
+        template:
+          type: string
+          enum:
+          - contained
+          - full_within_layout
+          - nav_bar_included
+          - json
+          - css
+          - txt
+          default: contained
+          description: Controls what kind of layout the page is rendered in
+      required:
+      - title
+      - slug
+      - description
+      - template
   securitySchemes:
     apiKey:
       type: apiKey
       in: header
       name: api-key
       description: API key obtained from the DEV.to settings page. Pass in the api-key header for authenticated requests.
+    api-key:
+      type: apiKey
+      name: api-key
+      in: header
+      description: "API Key authentication.\n\nAuthentication for some endpoints, like write operations on the\nArticles API require a DEV API key.\n\nAll authenticated endpoints are CORS disabled, the API key is intended for non-browser scripts.\n\n### Getting an API key\n\nTo obtain one, please follow these steps:\n\n  - visit https://dev.to/settings/extensions\n  - in the \"DEV API Keys\" section create a new key by adding a\n    description and clicking on \"Generate API Key\"\n\n    ![obtain a DEV API Key](https://user-images.githubusercontent.com/37842/172718105-bd93664e-76e0-477d-99c4-265dda0b06c5.png)\n\n  - You'll see the newly generated key in the same view\n    ![generated DEV API Key](https://user-images.githubusercontent.com/37842/172718151-e7fe26a0-9937-42e8-96c6-333acdab9e49.png)"
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Short-lived RS256 RFC 9068 access token issued by the configured delegation service and verified against its configured JWKS. The issuer authorizes the client and requested operation before minting the token; Forem validates the token and resolves its subject and owner to a local user. An invalid token returns 401; an unavailable trust dependency with no usable cached key returns 503.
 externalDocs:
   description: Forem API V1 Documentation
   url: https://developers.forem.com/api/v1
+x-refined-from:
+- dev-to-forem-api-openapi.yml
+- dev-to-forem-api-v1-openapi.json
+- devto-pages-api-openapi.yml

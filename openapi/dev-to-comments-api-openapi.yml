@@ -1,17 +1,13 @@
 openapi: 3.2.0
 info:
-  title: Dev.to Forem Comments API
-  description: The Dev.to Forem API (v1) is a RESTful API that provides programmatic access to the Dev.to developer community platform, which is built on the open-source Forem framework.
+  title: Dev To Comments API
   version: 1.0.0
-  contact:
-    name: Forem Support
-    url: https://forem.com
-  termsOfService: https://dev.to/terms
+  description: 'Operations tagged Comments across 3 of this provider''s published API definitions: dev-to-forem-api-openapi.yml, dev-to-forem-api-v1-openapi.json, devto-comments-api-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://dev.to/api
   description: Dev.to Production Server
-security:
-- apiKey: []
+- url: https://dev.to
+  description: Production server
 tags:
 - name: Comments
   description: Endpoints for retrieving comments on articles and podcast episodes, including threaded conversation views.
@@ -44,6 +40,9 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Comment'
+    servers:
+    - url: https://dev.to/api
+      description: Production server
   /comments/{id}:
     get:
       operationId: getCommentById
@@ -68,32 +67,101 @@ paths:
                 $ref: '#/components/schemas/Comment'
         '404':
           description: Comment not found
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/comments:
+    get:
+      summary: Comments
+      security: []
+      tags:
+      - Comments
+      description: 'This endpoint allows the client to retrieve all comments belonging to an article or podcast episode as threaded conversations.
+
+
+        ### Threaded Structure & Pagination Tips:
+
+        - **Threaded Format**: Comments are returned as a tree structure (nested arrays of replies). Each top-level comment contains its nested child comments recursively.
+
+        - **Query Constraints**: You must provide either `a_id` (Article ID) OR `p_id` (Podcast Episode ID) to fetch comments. Specifying both is not supported.
+
+        - **Pagination**: When paginating, the `page` parameter filters the *top-level* comments only. All replies to those top-level comments are returned nested inline, regardless of page index.
+
+        - If the `page` parameter is omitted, the response returns the full comment tree in a single payload.'
+      operationId: getApiComments
+      parameters:
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      - name: a_id
+        in: query
+        required: false
+        description: Article identifier. Provide this to fetch comments belonging to a specific article.
+        schema:
+          type: string
+        example: '321'
+      - name: p_id
+        in: query
+        required: false
+        description: Podcast Episode identifier. Provide this to fetch comments belonging to a specific podcast episode.
+        schema:
+          type: string
+        example: '321'
+      - name: page
+        in: query
+        required: false
+        description: Pagination page index for top-level comments.
+        schema:
+          type: string
+        example: '321'
+      responses:
+        '200':
+          description: A List of Comments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment_2'
+        '404':
+          description: Resource Not Found
+      x-operation-id-source: normalized
+      x-operation-id-original: getCommentsByArticleId
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/comments/{id}:
+    get:
+      summary: Comment by id
+      security: []
+      tags:
+      - Comments
+      description: 'This endpoint allows the client to retrieve a specific comment and all of its nested descendant replies.
+
+
+        ### Integration Tip:
+
+        - Handy for linking directly to a deep comment thread or loading individual comment replies on demand.'
+      operationId: getApiCommentsById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Comment identifier (the unique alpha-numeric `id_code` of the comment).
+        schema:
+          type: string
+        example: '321'
+      responses:
+        '200':
+          description: A List of the Comments
+        '404':
+          description: Comment Not Found
+      x-operation-id-source: normalized
+      x-operation-id-original: getCommentById
+    servers:
+    - url: https://dev.to/api
+      description: Production server
 components:
   schemas:
-    Comment:
-      type: object
-      description: A comment on an article or podcast episode, with nested children for threaded conversations.
-      properties:
-        type_of:
-          type: string
-          description: The type of resource, always "comment".
-        id_code:
-          type: string
-          description: The unique identifier code of the comment.
-        created_at:
-          type: string
-          format: date-time
-          description: The ISO 8601 timestamp when the comment was created.
-        body_html:
-          type: string
-          description: The comment body rendered as HTML.
-        user:
-          $ref: '#/components/schemas/User'
-        children:
-          type: array
-          items:
-            $ref: '#/components/schemas/Comment'
-          description: Nested child comments in the thread.
     User:
       type: object
       description: A user account on the DEV platform.
@@ -140,12 +208,113 @@ components:
           type: string
           format: date-time
           description: The ISO 8601 timestamp when the user joined.
+    Comment:
+      type: object
+      description: A comment on an article or podcast episode, with nested children for threaded conversations.
+      properties:
+        type_of:
+          type: string
+          description: The type of resource, always "comment".
+        id_code:
+          type: string
+          description: The unique identifier code of the comment.
+        created_at:
+          type: string
+          format: date-time
+          description: The ISO 8601 timestamp when the comment was created.
+        body_html:
+          type: string
+          description: The comment body rendered as HTML.
+        user:
+          $ref: '#/components/schemas/User'
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+          description: Nested child comments in the thread.
+    Comment_2:
+      description: A Comment on an Article or Podcast Episode
+      type: object
+      properties:
+        type_of:
+          type: string
+        id_code:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        image_url:
+          description: Podcast image url
+          type: string
+          format: url
+        ai_disclosure_level:
+          type: string
+          enum:
+          - not_disclosed
+          - no_ai
+          - some_ai
+          - fully_autonomous
+          description: Level of AI tooling usage disclosure
+        ai_disclosure_label:
+          type: string
+          description: Human-readable label of AI disclosure
+    Comment_3:
+      description: A Comment on an Article or Podcast Episode
+      type: object
+      properties:
+        type_of:
+          type: string
+        id_code:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        image_url:
+          description: Podcast image url
+          type: string
+          format: url
+  parameters:
+    pageParam:
+      in: query
+      name: page
+      required: false
+      description: Pagination page
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
+    perPageParam30to1000:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 30
   securitySchemes:
     apiKey:
       type: apiKey
       in: header
       name: api-key
       description: API key obtained from the DEV.to settings page. Pass in the api-key header for authenticated requests.
+    api-key:
+      type: apiKey
+      name: api-key
+      in: header
+      description: "API Key authentication.\n\nAuthentication for some endpoints, like write operations on the\nArticles API require a DEV API key.\n\nAll authenticated endpoints are CORS disabled, the API key is intended for non-browser scripts.\n\n### Getting an API key\n\nTo obtain one, please follow these steps:\n\n  - visit https://dev.to/settings/extensions\n  - in the \"DEV API Keys\" section create a new key by adding a\n    description and clicking on \"Generate API Key\"\n\n    ![obtain a DEV API Key](https://user-images.githubusercontent.com/37842/172718105-bd93664e-76e0-477d-99c4-265dda0b06c5.png)\n\n  - You'll see the newly generated key in the same view\n    ![generated DEV API Key](https://user-images.githubusercontent.com/37842/172718151-e7fe26a0-9937-42e8-96c6-333acdab9e49.png)"
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Short-lived RS256 RFC 9068 access token issued by the configured delegation service and verified against its configured JWKS. The issuer authorizes the client and requested operation before minting the token; Forem validates the token and resolves its subject and owner to a local user. An invalid token returns 401; an unavailable trust dependency with no usable cached key returns 503.
 externalDocs:
   description: Forem API V1 Documentation
   url: https://developers.forem.com/api/v1
+x-refined-from:
+- dev-to-forem-api-openapi.yml
+- dev-to-forem-api-v1-openapi.json
+- devto-comments-api-openapi.yml

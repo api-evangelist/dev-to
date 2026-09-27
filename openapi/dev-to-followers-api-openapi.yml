@@ -1,17 +1,13 @@
 openapi: 3.2.0
 info:
-  title: Dev.to Forem Followers API
-  description: The Dev.to Forem API (v1) is a RESTful API that provides programmatic access to the Dev.to developer community platform, which is built on the open-source Forem framework.
+  title: Dev To Followers API
   version: 1.0.0
-  contact:
-    name: Forem Support
-    url: https://forem.com
-  termsOfService: https://dev.to/terms
+  description: 'Operations tagged Followers across 3 of this provider''s published API definitions: dev-to-forem-api-openapi.yml, dev-to-forem-api-v1-openapi.json, devto-followers-api-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://dev.to/api
   description: Dev.to Production Server
-security:
-- apiKey: []
+- url: https://dev.to
+  description: Production server
 tags:
 - name: Followers
   description: Endpoints for retrieving followers of the authenticated user.
@@ -42,8 +38,87 @@ paths:
                   $ref: '#/components/schemas/User'
         '401':
           description: Unauthorized
+      security:
+      - apiKey: []
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/followers/users:
+    get:
+      summary: Followers
+      tags:
+      - Followers
+      description: 'This endpoint allows the client to retrieve a list of the followers they have.
+
+
+        ### Integration & Pagination Guidance:
+
+        - "Followers" are other users registered on the platform who follow the authenticated user.
+
+        - Supports pagination, defaulting to 80 followers per page.
+
+        - The `sort` query parameter determines the sorting order based on when the follow relationship was established.'
+      operationId: getApiFollowersUsers
+      parameters:
+      - $ref: '#/components/parameters/pageParam_2'
+      - $ref: '#/components/parameters/perPageParam30to1000_2'
+      - name: sort
+        in: query
+        required: false
+        description: Specifies the sort order for the follow relationship created_at field. Use `created_at` for chronological (oldest first) or `-created_at` for reverse chronological (newest first).
+        schema:
+          type: string
+        example: created_at
+      responses:
+        '200':
+          description: A List of followers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  description: A follower
+                  type: object
+                  properties:
+                    type_of:
+                      description: user_follower by default
+                      type: string
+                    id:
+                      type: integer
+                      format: int32
+                    user_id:
+                      description: The follower's user id
+                      type: integer
+                      format: int32
+                    name:
+                      description: The follower's name
+                      type: string
+                    path:
+                      description: A path to the follower's profile
+                      type: string
+                    profile_image:
+                      description: Profile image (640x640)
+                      type: string
+        '401':
+          description: unauthorized
+      security:
+      - api-key: []
+      - bearer_auth: []
+      x-operation-id-source: normalized
+      x-operation-id-original: getFollowers
+    servers:
+    - url: https://dev.to/api
+      description: Production server
 components:
   parameters:
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Pagination page number.
     perPageParam30to1000:
       name: per_page
       in: query
@@ -53,14 +128,48 @@ components:
         maximum: 1000
         default: 30
       description: Number of items per page (max 1000, default 30).
-    pageParam:
-      name: page
+    pageParam_2:
       in: query
+      name: page
+      required: false
+      description: Pagination page
       schema:
         type: integer
+        format: int32
         minimum: 1
         default: 1
-      description: Pagination page number.
+    perPageParam30to1000_2:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 30
+    pageParam_3:
+      in: query
+      name: page
+      required: false
+      description: Pagination page
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
+    perPageParam30to1000_3:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 30
   schemas:
     User:
       type: object
@@ -114,6 +223,20 @@ components:
       in: header
       name: api-key
       description: API key obtained from the DEV.to settings page. Pass in the api-key header for authenticated requests.
+    api-key:
+      type: apiKey
+      name: api-key
+      in: header
+      description: "API Key authentication.\n\nAuthentication for some endpoints, like write operations on the\nArticles API require a DEV API key.\n\nAll authenticated endpoints are CORS disabled, the API key is intended for non-browser scripts.\n\n### Getting an API key\n\nTo obtain one, please follow these steps:\n\n  - visit https://dev.to/settings/extensions\n  - in the \"DEV API Keys\" section create a new key by adding a\n    description and clicking on \"Generate API Key\"\n\n    ![obtain a DEV API Key](https://user-images.githubusercontent.com/37842/172718105-bd93664e-76e0-477d-99c4-265dda0b06c5.png)\n\n  - You'll see the newly generated key in the same view\n    ![generated DEV API Key](https://user-images.githubusercontent.com/37842/172718151-e7fe26a0-9937-42e8-96c6-333acdab9e49.png)"
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Short-lived RS256 RFC 9068 access token issued by the configured delegation service and verified against its configured JWKS. The issuer authorizes the client and requested operation before minting the token; Forem validates the token and resolves its subject and owner to a local user. An invalid token returns 401; an unavailable trust dependency with no usable cached key returns 503.
 externalDocs:
   description: Forem API V1 Documentation
   url: https://developers.forem.com/api/v1
+x-refined-from:
+- dev-to-forem-api-openapi.yml
+- dev-to-forem-api-v1-openapi.json
+- devto-followers-api-openapi.yml

@@ -1,17 +1,13 @@
 openapi: 3.2.0
 info:
-  title: Dev.to Forem Users API
-  description: The Dev.to Forem API (v1) is a RESTful API that provides programmatic access to the Dev.to developer community platform, which is built on the open-source Forem framework.
+  title: Dev To Users API
   version: 1.0.0
-  contact:
-    name: Forem Support
-    url: https://forem.com
-  termsOfService: https://dev.to/terms
+  description: 'Operations tagged Users across 3 of this provider''s published API definitions: dev-to-forem-api-openapi.yml, dev-to-forem-api-v1-openapi.json, devto-users-api-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://dev.to/api
   description: Dev.to Production Server
-security:
-- apiKey: []
+- url: https://dev.to
+  description: Production server
 tags:
 - name: Users
   description: Endpoints for retrieving user profiles and managing user accounts.
@@ -37,6 +33,11 @@ paths:
                   $ref: '#/components/schemas/ArticleIndex'
         '401':
           description: Unauthorized
+      security:
+      - apiKey: []
+    servers:
+    - url: https://dev.to/api
+      description: Production server
   /articles/me/published:
     get:
       operationId: getUserPublishedArticles
@@ -58,6 +59,11 @@ paths:
                   $ref: '#/components/schemas/ArticleIndex'
         '401':
           description: Unauthorized
+      security:
+      - apiKey: []
+    servers:
+    - url: https://dev.to/api
+      description: Production server
   /articles/me/unpublished:
     get:
       operationId: getUserUnpublishedArticles
@@ -79,6 +85,11 @@ paths:
                   $ref: '#/components/schemas/ArticleIndex'
         '401':
           description: Unauthorized
+      security:
+      - apiKey: []
+    servers:
+    - url: https://dev.to/api
+      description: Production server
   /articles/me/all:
     get:
       operationId: getUserAllArticles
@@ -100,6 +111,11 @@ paths:
                   $ref: '#/components/schemas/ArticleIndex'
         '401':
           description: Unauthorized
+      security:
+      - apiKey: []
+    servers:
+    - url: https://dev.to/api
+      description: Production server
   /organizations/{username}/users:
     get:
       operationId: getOrgUsers
@@ -128,6 +144,9 @@ paths:
                   $ref: '#/components/schemas/User'
         '404':
           description: Organization not found
+    servers:
+    - url: https://dev.to/api
+      description: Production server
   /users/me:
     get:
       operationId: getUserMe
@@ -144,6 +163,11 @@ paths:
                 $ref: '#/components/schemas/User'
         '401':
           description: Unauthorized
+      security:
+      - apiKey: []
+    servers:
+    - url: https://dev.to/api
+      description: Production server
   /users/{id}:
     get:
       operationId: getUser
@@ -168,6 +192,9 @@ paths:
                 $ref: '#/components/schemas/User'
         '404':
           description: User not found
+    servers:
+    - url: https://dev.to/api
+      description: Production server
   /users/{id}/unpublish:
     put:
       operationId: unpublishUser
@@ -189,6 +216,11 @@ paths:
           description: Unauthorized
         '404':
           description: User not found
+      security:
+      - apiKey: []
+    servers:
+    - url: https://dev.to/api
+      description: Production server
   /users/{id}/suspend:
     put:
       operationId: suspendUser
@@ -210,8 +242,1160 @@ paths:
           description: Unauthorized
         '404':
           description: User not found
+      security:
+      - apiKey: []
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/articles/me:
+    get:
+      summary: User's articles
+      tags:
+      - Users
+      description: 'This endpoint allows the client to retrieve a list of published articles on behalf of an authenticated user.
+
+
+        "Articles" are all the posts that users create on DEV that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but is referred to as article within the code.
+
+
+        Published articles will be in reverse chronological publication order.
+
+
+        It will return published articles with pagination. By default a page will contain 30 articles.'
+      operationId: getApiArticlesMe
+      parameters:
+      - $ref: '#/components/parameters/pageParam_2'
+      - $ref: '#/components/parameters/perPageParam30to1000_2'
+      responses:
+        '401':
+          description: Unauthorized
+        '200':
+          description: A List of the authenticated user's Articles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex_2'
+      security:
+      - api-key: []
+      - bearer_auth: []
+      x-operation-id-source: normalized
+      x-operation-id-original: getUserArticles
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/articles/me/published:
+    get:
+      summary: User's published articles
+      tags:
+      - Users
+      description: 'This endpoint allows the client to retrieve a list of published articles on behalf of an authenticated user.
+
+
+        "Articles" are all the posts that users create on DEV that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but is referred to as article within the code.
+
+
+        Published articles will be in reverse chronological publication order.
+
+
+        It will return published articles with pagination. By default a page will contain 30 articles.'
+      operationId: getApiArticlesMePublished
+      parameters:
+      - $ref: '#/components/parameters/pageParam_2'
+      - $ref: '#/components/parameters/perPageParam30to1000_2'
+      responses:
+        '401':
+          description: Unauthorized
+        '200':
+          description: A List of the authenticated user's Articles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex_2'
+      security:
+      - api-key: []
+      - bearer_auth: []
+      x-operation-id-source: normalized
+      x-operation-id-original: getUserPublishedArticles
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/articles/me/unpublished:
+    get:
+      summary: User's unpublished articles
+      tags:
+      - Users
+      description: 'This endpoint allows the client to retrieve a list of unpublished articles on behalf of an authenticated user.
+
+
+        "Articles" are all the posts that users create on DEV that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but is referred to as article within the code.
+
+
+        Unpublished articles will be in reverse chronological creation order.
+
+
+        It will return unpublished articles with pagination. By default a page will contain 30 articles.'
+      operationId: getApiArticlesMeUnpublished
+      parameters:
+      - $ref: '#/components/parameters/pageParam_2'
+      - $ref: '#/components/parameters/perPageParam30to1000_2'
+      responses:
+        '401':
+          description: Unauthorized
+        '200':
+          description: A List of the authenticated user's Articles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex_2'
+      security:
+      - api-key: []
+      - bearer_auth: []
+      x-operation-id-source: normalized
+      x-operation-id-original: getUserUnpublishedArticles
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/articles/me/all:
+    get:
+      summary: User's all articles
+      tags:
+      - Users
+      description: 'This endpoint allows the client to retrieve a list of all articles on behalf of an authenticated user.
+
+
+        "Articles" are all the posts that users create on DEV that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but is referred to as article within the code.
+
+
+        It will return both published and unpublished articles with pagination.
+
+
+        Unpublished articles will be at the top of the list in reverse chronological creation order. Published articles will follow in reverse chronological publication order.
+
+
+        By default a page will contain 30 articles.'
+      operationId: getApiArticlesMeAll
+      parameters:
+      - $ref: '#/components/parameters/pageParam_2'
+      - $ref: '#/components/parameters/perPageParam30to1000_2'
+      responses:
+        '401':
+          description: Unauthorized
+        '200':
+          description: A List of the authenticated user's Articles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex_2'
+      security:
+      - api-key: []
+      - bearer_auth: []
+      x-operation-id-source: normalized
+      x-operation-id-original: getUserAllArticles
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/organizations/{organization_id_or_username}/users:
+    get:
+      summary: Organization's users
+      tags:
+      - Users
+      security: []
+      description: 'Retrieve a list of public user profiles associated with the organization.
+
+
+        ### Path Parameter Options:
+
+        - **organization_id_or_username**: Supports either the organization''s unique numerical ID OR its string username (slug).
+
+        - Ideal for displaying team member directory lists on organization/brand pages.'
+      operationId: getApiOrganizationsByOrganizationIdOrUsernameUsers
+      parameters:
+      - name: organization_id_or_username
+        in: path
+        required: true
+        description: The organization's numerical ID or string username.
+        schema:
+          type: string
+      - $ref: '#/components/parameters/pageParam_2'
+      - $ref: '#/components/parameters/perPageParam30to1000_2'
+      responses:
+        '200':
+          description: An Organization's users (with ID)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User_2'
+        '404':
+          description: Not Found
+      x-operation-id-source: normalized
+      x-operation-id-original: getOrgUsers
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/users/{id}/suspend:
+    put:
+      summary: Suspend a User
+      tags:
+      - Users
+      description: 'Suspend a user''s account.
+
+
+        ### Suspension Details:
+
+        - The user associated with the API key must have an `admin` or `moderator` role.
+
+        - Assigns the `suspended` role to the user, preventing them from posting new content (articles or comments) while suspended.
+
+        - Existing content is not deleted.
+
+        - Suspended users are not notified in the UI; if you want them to know, you must notify them explicitly.'
+      operationId: putApiUsersByIdSuspend
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The unique ID of the user to suspend.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      responses:
+        '204':
+          description: User successfully unpublished
+        '401':
+          description: Unauthorized
+        '404':
+          description: Unknown User ID
+      security:
+      - api-key: []
+      - bearer_auth: []
+      x-operation-id-source: normalized
+      x-operation-id-original: suspendUser
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/users/{id}/limited:
+    put:
+      summary: Add limited role for a User
+      tags:
+      - Users
+      description: 'Limit a user''s account permissions.
+
+
+        ### Limited Details:
+
+        - Requires `admin` or `moderator` privileges.
+
+        - Assigns the `limited` role, which rate-limits notifications generated by their actions (such as publishing new posts or comments).
+
+        - Does not restrict content creation or delete content.'
+      operationId: limitUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the user to limit.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      responses:
+        '204':
+          description: User successfully limited
+        '401':
+          description: Unauthorized
+        '404':
+          description: Unknown User ID
+      security:
+      - api-key: []
+      - bearer_auth: []
+    delete:
+      summary: Remove limited for a User
+      tags:
+      - Users
+      description: Remove the limited role, restoring the user to general privileges. Requires `admin` or `moderator` role.
+      operationId: unLimitUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the user to un-limit.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      responses:
+        '204':
+          description: User successfully un-limited
+        '401':
+          description: Unauthorized
+        '404':
+          description: Unknown User ID
+      security:
+      - api-key: []
+      - bearer_auth: []
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/users/{id}/spam:
+    put:
+      summary: Add spam role for a User
+      tags:
+      - Users
+      description: 'Flag a user as spammer.
+
+
+        ### Spam Role Details:
+
+        - Requires `admin` or `moderator` privileges.
+
+        - Stops the user from creating new posts or comments, acting as a shadowban or block on activity.
+
+        - Existing content remains but is hidden from search/feeds.'
+      operationId: spamUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the user to assign the spam role.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      responses:
+        '204':
+          description: Spam role assigned to the user successfully
+        '401':
+          description: Unauthorized
+        '404':
+          description: Unknown User ID
+      security:
+      - api-key: []
+      - bearer_auth: []
+    delete:
+      summary: Remove spam role from a User
+      tags:
+      - Users
+      description: Unflag a user as spammer, restoring general permissions. Requires `admin` or `moderator` role.
+      operationId: unSpamUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the user to remove the spam role from.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      responses:
+        '204':
+          description: Successfully removed the spam role from a user
+        '401':
+          description: Unauthorized
+        '404':
+          description: Unknown User ID
+      security:
+      - api-key: []
+      - bearer_auth: []
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/users/{id}/trusted:
+    put:
+      summary: Add trusted role for a User
+      tags:
+      - Users
+      description: 'Assign the trusted role to a user.
+
+
+        ### Trusted Role Details:
+
+        - Requires `admin` or `moderator` privileges.
+
+        - Trusted users gain privileges like casting flag votes on inappropriate content or participating in priority review queues.
+
+        - Triggers a system notification and an email to the user.'
+      operationId: trustUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the user to assign the trusted role.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      responses:
+        '204':
+          description: Trusted role assigned to the user successfully
+        '401':
+          description: Unauthorized
+        '404':
+          description: Unknown User ID
+      security:
+      - api-key: []
+      - bearer_auth: []
+    delete:
+      summary: Remove trusted role from a User
+      tags:
+      - Users
+      description: Revoke the trusted role, returning the user to general status. Requires `admin` or `moderator` role.
+      operationId: unTrustUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the user to remove the trusted role from.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      responses:
+        '204':
+          description: Successfully removed the trusted role from a user
+        '401':
+          description: Unauthorized
+        '404':
+          description: Unknown User ID
+      security:
+      - api-key: []
+      - bearer_auth: []
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/users/me:
+    get:
+      summary: The authenticated user
+      tags:
+      - Users
+      description: Returned only for delegated Bearer tokens, on any Bearer-capable endpoint, when the configured JWKS endpoint cannot be reached or returns an unusable key set and no cached keys remain. Invalid tokens are 401, never 503.
+      operationId: getApiUsersMe
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/MyUser'
+        '401':
+          description: Unauthorized
+        '503':
+          description: Delegated access unavailable
+      security:
+      - api-key: []
+      - bearer_auth: []
+      x-operation-id-source: normalized
+      x-operation-id-original: getUserMe
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/users/{id}:
+    get:
+      summary: A User
+      tags:
+      - Users
+      security: []
+      description: 'This endpoint allows the client to retrieve a single user, either by id or by the user''s username.
+
+
+        ### Path Parameter Options:
+
+        - **id**: Can be either the user''s unique numerical ID (e.g. `123`) OR the user''s string username (e.g. `ben`).
+
+        - Note that the returned user object schema (`ExtendedUser`) includes extended profile statistics and social link details.'
+      operationId: getApiUsersById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The user's unique numerical ID or string username.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/ExtendedUser'
+      x-operation-id-source: normalized
+      x-operation-id-original: getUser
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/users/search:
+    get:
+      summary: Search for users
+      tags:
+      - Users
+      description: 'Search for a user by email address.
+
+
+        ### Permissions & Context:
+
+        - Requires administrative privileges (`api-key` of an administrator).
+
+        - Used to verify account existence or map email addresses to platform usernames.'
+      operationId: searchUsers
+      parameters:
+      - name: email
+        in: query
+        required: true
+        description: The exact email address of the user to search for.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExtendedUser'
+      security:
+      - api-key: []
+      - bearer_auth: []
+    servers:
+    - url: https://dev.to
+      description: Production server
+  /api/users/{id}/unpublish:
+    put:
+      summary: Unpublish a User's Articles and Comments
+      tags:
+      - Users
+      description: 'This endpoint allows the client to unpublish all of the articles and comments created by a user.
+
+
+        ### Administrative Action:
+
+        - Requires the authenticated user to be an Administrator.
+
+        - This is a destructive administrative action that immediately unpublishes all posts/comments from public feeds.
+
+        - Ideal for handling spam accounts or cleanup operations.'
+      operationId: putApiUsersByIdUnpublish
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The unique numerical ID of the user whose content will be unpublished.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      responses:
+        '204':
+          description: User's articles and comments successfully unpublished
+      security:
+      - api-key: []
+      - bearer_auth: []
+      x-operation-id-source: normalized
+      x-operation-id-original: unpublishUser
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/admin/users:
+    post:
+      summary: Invite a User
+      tags:
+      - Users
+      description: 'Invite a new user to join the platform by email.
+
+
+        ### Super Admin Action:
+
+        - Requires Super Admin privileges.
+
+        - Triggers a system invitation flow and sends an invitation email containing a sign-up link.
+
+        - Handy for invite-only platforms or private enterprise instances.'
+      operationId: postAdminUsersCreate
+      parameters: []
+      responses:
+        '200':
+          description: Successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInviteParam'
+        description: User invite params
+      security:
+      - api-key: []
+      - bearer_auth: []
+    get:
+      summary: List all users (Admin)
+      tags:
+      - Users
+      description: 'Retrieve a list of all users registered on the platform.
+
+
+        ### Permissions & Filters:
+
+        - Requires Super Admin privileges.
+
+        - Allows filtering by exact `email` or `username`.
+
+        - Returns paginated list of extended user objects containing email addresses, registration dates, roles, and administrative statuses.'
+      parameters:
+      - name: page
+        in: query
+        required: false
+        description: Pagination page index.
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        required: false
+        description: Number of items to return per page.
+        schema:
+          type: integer
+      - name: email
+        in: query
+        required: false
+        description: Optional email search filter.
+        schema:
+          type: string
+      - name: username
+        in: query
+        required: false
+        description: Optional username search filter.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+      security:
+      - api-key: []
+      - bearer_auth: []
+      operationId: getApiAdminUsers
+      x-operation-id-source: derived
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/admin/users/{id}:
+    get:
+      summary: Get user detail (Admin)
+      tags:
+      - Users
+      description: 'Retrieve details of a single user by numerical ID.
+
+
+        ### Super Admin Action:
+
+        - Requires Super Admin privileges.
+
+        - Includes administrative settings, audit notes, email newsletter preferences, and OAuth login identity states.'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique user numeric ID.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+      security:
+      - api-key: []
+      - bearer_auth: []
+      operationId: getApiAdminUsersById
+      x-operation-id-source: derived
+    patch:
+      summary: Update user profile (Admin)
+      tags:
+      - Users
+      description: Update a user's public profile fields (name, location, bio summary, website) on their behalf. Requires Super Admin credentials.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique user ID to update.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                username:
+                  type: string
+                summary:
+                  type: string
+                location:
+                  type: string
+                website_url:
+                  type: string
+        description: User profile updated fields.
+      security:
+      - api-key: []
+      - bearer_auth: []
+      operationId: patchApiAdminUsersById
+      x-operation-id-source: derived
+    servers:
+    - url: https://dev.to
+      description: Production server
+  /api/admin/users/{id}/email:
+    put:
+      summary: Update user email (Admin)
+      tags:
+      - Users
+      description: Update a user's primary registration email address. Requires Super Admin credentials.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique user ID to update email for.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+              required:
+              - email
+        description: Email parameters.
+      security:
+      - api-key: []
+      - bearer_auth: []
+      operationId: putApiAdminUsersByIdEmail
+      x-operation-id-source: derived
+    servers:
+    - url: https://dev.to
+      description: Production server
+  /api/admin/users/{id}/status:
+    put:
+      summary: Update user moderation status (Admin)
+      tags:
+      - Users
+      description: 'Manually update a user''s moderation status.
+
+
+        ### Status Details:
+
+        - **status**: Allowed target states (e.g. `active`, `suspended`, `banned`).
+
+        - **note**: Required reason text recorded in the user''s moderation log audit history.
+
+        - Requires Super Admin privileges.'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique user ID.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                note:
+                  type: string
+              required:
+              - status
+        description: Status parameters.
+      security:
+      - api-key: []
+      - bearer_auth: []
+      operationId: putApiAdminUsersByIdStatus
+      x-operation-id-source: derived
+    servers:
+    - url: https://dev.to
+      description: Production server
+  /api/admin/users/{id}/notification_settings:
+    put:
+      summary: Update user notification settings (Admin)
+      tags:
+      - Users
+      description: Update a user's email notification preferences (e.g., unsubscribing them from the system newsletter or the periodic digest). Any subset of the listed properties may be supplied; at least one is required. Requires Super Admin credentials.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique user ID.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                notification_setting:
+                  type: object
+                  properties:
+                    email_newsletter:
+                      type: boolean
+                    email_digest_periodic:
+                      type: boolean
+                    email_comment_notifications:
+                      type: boolean
+                    email_follower_notifications:
+                      type: boolean
+                    email_mention_notifications:
+                      type: boolean
+                    email_unread_notifications:
+                      type: boolean
+                    email_badge_notifications:
+                      type: boolean
+              required:
+              - notification_setting
+        description: Settings parameters.
+      security:
+      - api-key: []
+      - bearer_auth: []
+      operationId: putApiAdminUsersByIdNotificationSettings
+      x-operation-id-source: derived
+    servers:
+    - url: https://dev.to
+      description: Production server
+  /api/admin/users/{id}/merge:
+    post:
+      summary: Merge user into another (Admin)
+      tags:
+      - Users
+      description: 'Merge a duplicate user account into a target main account.
+
+
+        ### Account Merging Behavior:
+
+        - Transfers all comments, articles, reactions, and follows to the target user (`merge_user_id`).
+
+        - Deletes/destroys the source user account once the merge completes successfully.
+
+        - High risk! Action is permanent and irreversible.
+
+        - Requires Super Admin credentials.'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The duplicate user ID that will be deleted after contents merge.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                merge_user_id:
+                  type: integer
+              required:
+              - merge_user_id
+        description: Merge parameters containing the target account ID.
+      security:
+      - api-key: []
+      - bearer_auth: []
+      operationId: postApiAdminUsersByIdMerge
+      x-operation-id-source: derived
+    servers:
+    - url: https://dev.to
+      description: Production server
+  /api/admin/users/{user_id}/notes:
+    get:
+      summary: List notes for a user (Admin)
+      tags:
+      - Users
+      description: Retrieve all moderator/administrator audit log notes appended to a user. Requires Super Admin credentials.
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        description: User ID to fetch notes for.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+      security:
+      - api-key: []
+      - bearer_auth: []
+      operationId: getApiAdminUsersByUserIdNotes
+      x-operation-id-source: derived
+    post:
+      summary: Add a note to a user (Admin)
+      tags:
+      - Users
+      description: 'Add a new moderation/audit note to a user.
+
+
+        ### Audit Logging Guidelines:
+
+        - **content**: Plaintext description of behavior, infraction, or actions taken.
+
+        - **reason**: Categorized classification (e.g. `spam`, `abuse`, `harassment`, `administrative`).
+
+        - Requires Super Admin credentials.'
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        description: User ID to append the note to.
+        schema:
+          type: integer
+      responses:
+        '201':
+          description: created
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                reason:
+                  type: string
+              required:
+              - content
+        description: Note attributes.
+      security:
+      - api-key: []
+      - bearer_auth: []
+      operationId: postApiAdminUsersByUserIdNotes
+      x-operation-id-source: derived
+    servers:
+    - url: https://dev.to
+      description: Production server
+  /api/admin/users/{user_id}/identities:
+    get:
+      summary: List identities for a user (Admin)
+      tags:
+      - Users
+      description: Retrieve all linked OAuth identities (e.g., GitHub, Twitter, Apple) for a user. Requires Super Admin credentials.
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        description: User ID to fetch linked identities for.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+      security:
+      - api-key: []
+      - bearer_auth: []
+      operationId: getApiAdminUsersByUserIdIdentities
+      x-operation-id-source: derived
+    post:
+      summary: Link an identity to a user (Admin)
+      tags:
+      - Users
+      description: 'Manually link an OAuth provider identity to a user. Requires Super Admin credentials.
+
+
+        ### Identity Binding:
+
+        - **provider**: The login provider name (e.g. `github`, `twitter`).
+
+        - **uid**: The provider''s unique user identifier.
+
+        - **username**: The user''s username on the provider''s service.'
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        description: User ID to bind identity to.
+        schema:
+          type: integer
+      responses:
+        '201':
+          description: created
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                provider:
+                  type: string
+                uid:
+                  type: string
+                username:
+                  type: string
+              required:
+              - provider
+              - uid
+        description: OAuth credentials and identities.
+      security:
+      - api-key: []
+      - bearer_auth: []
+      operationId: postApiAdminUsersByUserIdIdentities
+      x-operation-id-source: derived
+    servers:
+    - url: https://dev.to
+      description: Production server
+  /api/admin/users/{user_id}/identities/{id}:
+    delete:
+      summary: Unlink an identity from a user (Admin)
+      tags:
+      - Users
+      description: Unlink a specific OAuth login provider identity from a user by identity ID. Requires Super Admin credentials.
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        description: User ID.
+        schema:
+          type: integer
+      - name: id
+        in: path
+        required: true
+        description: Identity ID to unlink.
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: no content
+      security:
+      - api-key: []
+      - bearer_auth: []
+      operationId: deleteApiAdminUsersByUserIdIdentitiesById
+      x-operation-id-source: derived
+    servers:
+    - url: https://dev.to
+      description: Production server
+  /api/admin/users/identities/bulk:
+    post:
+      summary: Bulk link identities (Admin)
+      tags:
+      - Users
+      description: Bulk link OAuth identities across multiple users. Requires Super Admin credentials.
+      parameters: []
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                provider:
+                  type: string
+                identities:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      user_id:
+                        type: integer
+                      uid:
+                        type: string
+                    required:
+                    - user_id
+                    - uid
+              required:
+              - provider
+              - identities
+        description: Bulk identity params.
+      security:
+      - api-key: []
+      - bearer_auth: []
+      operationId: postApiAdminUsersIdentitiesBulk
+      x-operation-id-source: derived
+    servers:
+    - url: https://dev.to
+      description: Production server
+  /admin/users:
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+    post:
+      summary: Invite a User
+      tags:
+      - Users
+      description: 'This endpoint allows the client to trigger an invitation to the provided email address.
+
+
+        It requires a token from a user with `super_admin` privileges.'
+      operationId: postAdminUsers
+      parameters: []
+      responses:
+        '200':
+          description: Successful
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              example:
+                error: 'param is missing or the value is empty: email'
+                status: 422
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInviteParam'
+      security:
+      - api-key: []
+      x-operation-id-source: normalized
+      x-operation-id-original: postAdminUsersCreate
 components:
   parameters:
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Pagination page number.
     perPageParam30to1000:
       name: per_page
       in: query
@@ -221,15 +1405,116 @@ components:
         maximum: 1000
         default: 30
       description: Number of items per page (max 1000, default 30).
-    pageParam:
-      name: page
+    pageParam_2:
       in: query
+      name: page
+      required: false
+      description: Pagination page
       schema:
         type: integer
+        format: int32
         minimum: 1
         default: 1
-      description: Pagination page number.
+    perPageParam30to1000_2:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 30
+    pageParam_3:
+      in: query
+      name: page
+      required: false
+      description: Pagination page
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
+    perPageParam30to1000_3:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 30
   schemas:
+    User:
+      type: object
+      description: A user account on the DEV platform.
+      properties:
+        name:
+          type: string
+          description: The display name of the user.
+        username:
+          type: string
+          description: The unique username of the user.
+        twitter_username:
+          type: string
+          nullable: true
+          description: The user's Twitter username.
+        github_username:
+          type: string
+          nullable: true
+          description: The user's GitHub username.
+        user_id:
+          type: integer
+          description: The unique numeric ID of the user.
+        website_url:
+          type: string
+          format: uri
+          nullable: true
+          description: The user's website URL.
+        location:
+          type: string
+          nullable: true
+          description: The user's location.
+        summary:
+          type: string
+          nullable: true
+          description: A brief bio or summary of the user.
+        profile_image:
+          type: string
+          format: uri
+          description: The URL of the user's profile image.
+        profile_image_90:
+          type: string
+          format: uri
+          description: The URL of the 90px profile image.
+        joined_at:
+          type: string
+          format: date-time
+          description: The ISO 8601 timestamp when the user joined.
+    Organization:
+      type: object
+      description: An organization on the DEV platform that can publish articles and have members.
+      properties:
+        name:
+          type: string
+          description: The display name of the organization.
+        username:
+          type: string
+          description: The unique username (slug) of the organization.
+        slug:
+          type: string
+          description: The URL slug of the organization.
+        profile_image:
+          type: string
+          format: uri
+          description: The URL of the organization's profile image.
+        profile_image_90:
+          type: string
+          format: uri
+          description: The URL of the 90px profile image.
     ArticleIndex:
       type: object
       description: A summary article object returned in list endpoints, with fewer fields than the full article representation.
@@ -308,79 +1593,591 @@ components:
           $ref: '#/components/schemas/User'
         organization:
           $ref: '#/components/schemas/Organization'
-    Organization:
+    SharedUser:
+      description: The resource creator
       type: object
-      description: An organization on the DEV platform that can publish articles and have members.
       properties:
         name:
           type: string
-          description: The display name of the organization.
         username:
           type: string
-          description: The unique username (slug) of the organization.
-        slug:
-          type: string
-          description: The URL slug of the organization.
+        twitter_username:
+          type:
+          - string
+          - 'null'
+        github_username:
+          type:
+          - string
+          - 'null'
+        website_url:
+          type:
+          - string
+          - 'null'
+          format: url
         profile_image:
+          description: Profile image (640x640)
           type: string
-          format: uri
-          description: The URL of the organization's profile image.
         profile_image_90:
+          description: Profile image (90x90)
           type: string
-          format: uri
-          description: The URL of the 90px profile image.
-    User:
+    UserInviteParam:
+      description: User invite parameters
       type: object
-      description: A user account on the DEV platform.
       properties:
-        name:
+        email:
           type: string
-          description: The display name of the user.
+        name:
+          type:
+          - string
+          - 'null'
+    MyUser:
+      description: The representation of a user when accessed by themselves
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int64
         username:
           type: string
-          description: The unique username of the user.
+        name:
+          type: string
+        summary:
+          type:
+          - string
+          - 'null'
         twitter_username:
           type: string
-          nullable: true
-          description: The user's Twitter username.
         github_username:
           type: string
-          nullable: true
-          description: The user's GitHub username.
-        user_id:
-          type: integer
-          description: The unique numeric ID of the user.
+        email:
+          type:
+          - string
+          - 'null'
+          description: Authenticated user's own email address, always returned regardless of display_email_on_profile setting
         website_url:
-          type: string
-          format: uri
-          nullable: true
-          description: The user's website URL.
+          type:
+          - string
+          - 'null'
         location:
-          type: string
-          nullable: true
-          description: The user's location.
-        summary:
-          type: string
-          nullable: true
-          description: A brief bio or summary of the user.
-        profile_image:
-          type: string
-          format: uri
-          description: The URL of the user's profile image.
-        profile_image_90:
-          type: string
-          format: uri
-          description: The URL of the 90px profile image.
+          type:
+          - string
+          - 'null'
         joined_at:
           type: string
+        profile_image:
+          type: string
+        badge_ids:
+          type: array
+          items:
+            type: integer
+          description: ids of the badges awarded to the user
+        followers_count:
+          type: integer
+    ArticleFlareTag:
+      description: Flare tag of the article
+      type: object
+      properties:
+        name:
+          type: string
+        bg_color_hex:
+          description: Background color (hexadecimal)
+          type:
+          - string
+          - 'null'
+        text_color_hex:
+          description: Text color (hexadecimal)
+          type:
+          - string
+          - 'null'
+    SharedOrganization:
+      description: The organization the resource belongs to
+      type: object
+      properties:
+        name:
+          type: string
+        username:
+          type: string
+        slug:
+          type: string
+        profile_image:
+          description: Profile image (640x640)
+          type: string
+          format: url
+        profile_image_90:
+          description: Profile image (90x90)
+          type: string
+          format: url
+    User_2:
+      description: The representation of a user returned in a list
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        name:
+          type: string
+        summary:
+          type:
+          - string
+          - 'null'
+        twitter_username:
+          type: string
+        github_username:
+          type: string
+        website_url:
+          type:
+          - string
+          - 'null'
+        location:
+          type:
+          - string
+          - 'null'
+        joined_at:
+          type: string
+        profile_image:
+          type: string
+    ExtendedUser:
+      description: The representation of a user
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        name:
+          type: string
+        summary:
+          type:
+          - string
+          - 'null'
+        twitter_username:
+          type: string
+        github_username:
+          type: string
+        email:
+          type:
+          - string
+          - 'null'
+          description: Email (requires authentication and if user allows displaying email on their profile) or nil
+        website_url:
+          type:
+          - string
+          - 'null'
+        location:
+          type:
+          - string
+          - 'null'
+        joined_at:
+          type: string
+        profile_image:
+          type: string
+        badge_ids:
+          type: array
+          items:
+            type: integer
+          description: ids of the badges awarded to the user
+    ArticleIndex_2:
+      description: Representation of an article or post returned in a list
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int32
+        title:
+          type: string
+        description:
+          type: string
+        cover_image:
+          type:
+          - string
+          - 'null'
+          format: url
+        readable_publish_date:
+          type: string
+        social_image:
+          type: string
+          format: url
+        tag_list:
+          type: array
+          items:
+            type: string
+        tags:
+          type: string
+        slug:
+          type: string
+        path:
+          type: string
+          format: path
+        url:
+          type: string
+          format: url
+        canonical_url:
+          type: string
+          format: url
+        positive_reactions_count:
+          type: integer
+          format: int32
+        public_reactions_count:
+          type: integer
+          format: int32
+        created_at:
+          type: string
           format: date-time
-          description: The ISO 8601 timestamp when the user joined.
+        edited_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        crossposted_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        published_at:
+          type: string
+          format: date-time
+        last_comment_at:
+          type: string
+          format: date-time
+        published_timestamp:
+          description: Crossposting or published date time
+          type: string
+          format: date-time
+        reading_time_minutes:
+          description: Reading time, in minutes
+          type: integer
+          format: int32
+        ai_disclosure_level:
+          type: string
+          enum:
+          - not_disclosed
+          - no_ai
+          - some_ai
+          - fully_autonomous
+          description: Level of AI tooling usage disclosure
+        ai_disclosure_label:
+          type: string
+          description: Human-readable label of AI disclosure
+        user:
+          $ref: '#/components/schemas/SharedUser'
+        flare_tag:
+          $ref: '#/components/schemas/ArticleFlareTag'
+        organization:
+          $ref: '#/components/schemas/SharedOrganization'
+      required:
+      - type_of
+      - id
+      - title
+      - description
+      - cover_image
+      - readable_publish_date
+      - social_image
+      - tag_list
+      - tags
+      - slug
+      - path
+      - url
+      - canonical_url
+      - comments_count
+      - positive_reactions_count
+      - public_reactions_count
+      - created_at
+      - edited_at
+      - crossposted_at
+      - published_at
+      - last_comment_at
+      - published_timestamp
+      - user
+      - reading_time_minutes
+    MyUser_2:
+      description: The representation of a user when accessed by themselves
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        name:
+          type: string
+        summary:
+          type:
+          - string
+          - 'null'
+        twitter_username:
+          type: string
+        github_username:
+          type: string
+        email:
+          type:
+          - string
+          - 'null'
+          description: Email (if user allows displaying email on their profile) or nil
+        website_url:
+          type:
+          - string
+          - 'null'
+        location:
+          type:
+          - string
+          - 'null'
+        joined_at:
+          type: string
+        profile_image:
+          type: string
+        badge_ids:
+          type: array
+          items:
+            type: integer
+          description: ids of the badges awarded to the user
+        followers_count:
+          type: integer
+    User_3:
+      description: The representation of a user returned in a list
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        name:
+          type: string
+        summary:
+          type:
+          - string
+          - 'null'
+        twitter_username:
+          type: string
+        github_username:
+          type: string
+        website_url:
+          type:
+          - string
+          - 'null'
+        location:
+          type:
+          - string
+          - 'null'
+        joined_at:
+          type: string
+        profile_image:
+          type: string
+    ExtendedUser_2:
+      description: The representation of a user
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        name:
+          type: string
+        summary:
+          type:
+          - string
+          - 'null'
+        twitter_username:
+          type: string
+        github_username:
+          type: string
+        email:
+          type:
+          - string
+          - 'null'
+          description: Email (if user allows displaying email on their profile) or nil
+        website_url:
+          type:
+          - string
+          - 'null'
+        location:
+          type:
+          - string
+          - 'null'
+        joined_at:
+          type: string
+        profile_image:
+          type: string
+        badge_ids:
+          type: array
+          items:
+            type: integer
+          description: ids of the badges awarded to the user
+    ArticleIndex_3:
+      description: Representation of an article or post returned in a list
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int32
+        title:
+          type: string
+        description:
+          type: string
+        cover_image:
+          type:
+          - string
+          - 'null'
+          format: url
+        readable_publish_date:
+          type: string
+        social_image:
+          type: string
+          format: url
+        tag_list:
+          type: array
+          items:
+            type: string
+        tags:
+          type: string
+        slug:
+          type: string
+        path:
+          type: string
+          format: path
+        url:
+          type: string
+          format: url
+        canonical_url:
+          type: string
+          format: url
+        positive_reactions_count:
+          type: integer
+          format: int32
+        public_reactions_count:
+          type: integer
+          format: int32
+        created_at:
+          type: string
+          format: date-time
+        edited_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        crossposted_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        published_at:
+          type: string
+          format: date-time
+        last_comment_at:
+          type: string
+          format: date-time
+        published_timestamp:
+          description: Crossposting or published date time
+          type: string
+          format: date-time
+        reading_time_minutes:
+          description: Reading time, in minutes
+          type: integer
+          format: int32
+        user:
+          $ref: '#/components/schemas/SharedUser'
+        flare_tag:
+          $ref: '#/components/schemas/ArticleFlareTag'
+        organization:
+          $ref: '#/components/schemas/SharedOrganization'
+      required:
+      - type_of
+      - id
+      - title
+      - description
+      - cover_image
+      - readable_publish_date
+      - social_image
+      - tag_list
+      - tags
+      - slug
+      - path
+      - url
+      - canonical_url
+      - comments_count
+      - positive_reactions_count
+      - public_reactions_count
+      - created_at
+      - edited_at
+      - crossposted_at
+      - published_at
+      - last_comment_at
+      - published_timestamp
+      - user
+      - reading_time_minutes
+    User_2_2:
+      description: The representation of a user
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        name:
+          type: string
+        summary:
+          type:
+          - string
+          - 'null'
+        twitter_username:
+          type: string
+        github_username:
+          type: string
+        website_url:
+          type:
+          - string
+          - 'null'
+        location:
+          type:
+          - string
+          - 'null'
+        joined_at:
+          type: string
+        profile_image:
+          type: string
   securitySchemes:
     apiKey:
       type: apiKey
       in: header
       name: api-key
       description: API key obtained from the DEV.to settings page. Pass in the api-key header for authenticated requests.
+    api-key:
+      type: apiKey
+      name: api-key
+      in: header
+      description: "API Key authentication.\n\nAuthentication for some endpoints, like write operations on the\nArticles API require a DEV API key.\n\nAll authenticated endpoints are CORS disabled, the API key is intended for non-browser scripts.\n\n### Getting an API key\n\nTo obtain one, please follow these steps:\n\n  - visit https://dev.to/settings/extensions\n  - in the \"DEV API Keys\" section create a new key by adding a\n    description and clicking on \"Generate API Key\"\n\n    ![obtain a DEV API Key](https://user-images.githubusercontent.com/37842/172718105-bd93664e-76e0-477d-99c4-265dda0b06c5.png)\n\n  - You'll see the newly generated key in the same view\n    ![generated DEV API Key](https://user-images.githubusercontent.com/37842/172718151-e7fe26a0-9937-42e8-96c6-333acdab9e49.png)"
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Short-lived RS256 RFC 9068 access token issued by the configured delegation service and verified against its configured JWKS. The issuer authorizes the client and requested operation before minting the token; Forem validates the token and resolves its subject and owner to a local user. An invalid token returns 401; an unavailable trust dependency with no usable cached key returns 503.
 externalDocs:
   description: Forem API V1 Documentation
   url: https://developers.forem.com/api/v1
+x-refined-from:
+- dev-to-forem-api-openapi.yml
+- dev-to-forem-api-v1-openapi.json
+- devto-users-api-openapi.yml

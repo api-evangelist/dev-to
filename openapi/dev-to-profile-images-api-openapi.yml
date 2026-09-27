@@ -1,71 +1,134 @@
 openapi: 3.2.0
 info:
-  title: Dev.to Forem Profile Images API
-  description: The Dev.to Forem API (v1) is a RESTful API that provides programmatic access to the Dev.to developer community platform, which is built on the open-source Forem framework.
+  title: Dev To profile images API
   version: 1.0.0
-  contact:
-    name: Forem Support
-    url: https://forem.com
-  termsOfService: https://dev.to/terms
+  description: 'Operations tagged profile images across 2 of this provider''s published API definitions: dev-to-forem-api-v1-openapi.json, devto-profile-images-api-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
+- url: https://dev.to
+  description: Production server
 - url: https://dev.to/api
-  description: Dev.to Production Server
-security:
-- apiKey: []
+  description: Production server
 tags:
 - name: profile images
-  description: Endpoints for retrieving profile images of users and organizations.
 paths:
-  /profile_images/{username}:
+  /api/profile_images/{username}:
     get:
-      operationId: getProfileImage
       summary: A Users or organizations profile image
-      description: Retrieves the profile image URL for a user or organization by username.
       tags:
       - profile images
-      security: []
+      description: 'Retrieve the profile image URL and configuration for a user or organization by username.
+
+
+        ### Integration Details:
+
+        - Bypasses authentication.
+
+        - Convenient for quickly displaying avatars/icons in comments lists, headers, or sidebar elements without requesting the full user profile model.'
+      operationId: getProfileImage
       parameters:
       - name: username
         in: path
         required: true
+        description: The unique username of the target user or organization.
         schema:
           type: string
-        description: The username of the user or organization.
+        example: janedoe
       responses:
         '200':
-          description: Profile image URLs
+          description: An object containing profile image details
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProfileImage'
+                type: object
+                items:
+                  $ref: '#/components/schemas/ProfileImage'
         '404':
-          description: User or organization not found
+          description: Resource Not Found
+      security:
+      - api-key: []
+      - bearer_auth: []
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /profile_images/{username}:
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+    get:
+      summary: A Users or organizations profile image
+      tags:
+      - profile images
+      description: 'This endpoint allows the client to retrieve a user or organization profile image information by its
+
+        corresponding username.'
+      operationId: getProfileImagesByUsername
+      parameters:
+      - name: username
+        in: path
+        required: true
+        description: The parameter is the username of the user or the username of the organization.
+        schema:
+          type: string
+        example: janedoe
+      responses:
+        '200':
+          description: An object containing profile image details
+          content:
+            application/json:
+              example:
+                type_of: profile_image
+                image_of: user
+                profile_image: /uploads/user/profile_image/1419/f2b13e85-a3a0-49cf-9da0-7922248be024.jpeg
+                profile_image_90: /uploads/user/profile_image/1419/f2b13e85-a3a0-49cf-9da0-7922248be024.jpeg
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/ProfileImage'
+        '404':
+          description: Resource Not Found
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
+      security:
+      - api-key: []
+      x-operation-id-source: normalized
+      x-operation-id-original: getProfileImage
 components:
   schemas:
     ProfileImage:
+      description: A profile image object
       type: object
-      description: Profile image URLs for a user or organization.
       properties:
         type_of:
+          description: Return profile_image
           type: string
-          description: The type of resource (user or organization).
         image_of:
+          description: Determines the type of the profile image owner (user or organization)
           type: string
-          description: The entity type the image belongs to.
         profile_image:
+          description: Profile image (640x640)
           type: string
-          format: uri
-          description: The URL of the standard profile image.
         profile_image_90:
+          description: Profile image (90x90)
           type: string
-          format: uri
-          description: The URL of the 90px profile image.
   securitySchemes:
+    api-key:
+      type: apiKey
+      name: api-key
+      in: header
+      description: "API Key authentication.\n\nAuthentication for some endpoints, like write operations on the\nArticles API require a DEV API key.\n\nAll authenticated endpoints are CORS disabled, the API key is intended for non-browser scripts.\n\n### Getting an API key\n\nTo obtain one, please follow these steps:\n\n  - visit https://dev.to/settings/extensions\n  - in the \"DEV API Keys\" section create a new key by adding a\n    description and clicking on \"Generate API Key\"\n\n    ![obtain a DEV API Key](https://user-images.githubusercontent.com/37842/172718105-bd93664e-76e0-477d-99c4-265dda0b06c5.png)\n\n  - You'll see the newly generated key in the same view\n    ![generated DEV API Key](https://user-images.githubusercontent.com/37842/172718151-e7fe26a0-9937-42e8-96c6-333acdab9e49.png)"
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Short-lived RS256 RFC 9068 access token issued by the configured delegation service and verified against its configured JWKS. The issuer authorizes the client and requested operation before minting the token; Forem validates the token and resolves its subject and owner to a local user. An invalid token returns 401; an unavailable trust dependency with no usable cached key returns 503.
     apiKey:
       type: apiKey
       in: header
       name: api-key
       description: API key obtained from the DEV.to settings page. Pass in the api-key header for authenticated requests.
-externalDocs:
-  description: Forem API V1 Documentation
-  url: https://developers.forem.com/api/v1
+x-refined-from:
+- dev-to-forem-api-v1-openapi.json
+- devto-profile-images-api-openapi.yml

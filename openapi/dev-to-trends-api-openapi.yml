@@ -1,80 +1,131 @@
 openapi: 3.2.0
 info:
-  title: Devto Readinglist Reading List API
+  title: Dev To Trends API
   version: 1.0.0
-  description: 'Operations tagged readinglist across 2 of this provider''s published API definitions: openapi.json, openapi.yaml. Each path carries the servers of the definition it was published in.'
+  description: 'Operations tagged trends across 2 of this provider''s published API definitions: dev-to-forem-api-v1-openapi.json, devto-trends-api-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
+- url: https://dev.to
+  description: Production server
 - url: https://dev.to/api
   description: Production server
-security:
-- api-key: []
 tags:
-- name: Reading List
+- name: Trends
 paths:
-  /api/readinglist:
-    servers:
-    - url: https://dev.to/api
-      description: Production server
+  /api/trends:
     get:
-      summary: Readinglist
+      summary: Trends
+      security: []
       tags:
-      - Reading List
-      description: 'This endpoint allows the client to retrieve a list of articles that were saved to a Users readinglist.
+      - Trends
+      description: 'Retrieve a list of active trends.
 
-        It supports pagination, each page will contain `30` articles by default'
-      operationId: getReadinglist
+
+        ### Trends Overview & Score Calculation:
+
+        - Trends represent hot topics or semantic themes currently being heavily discussed in the community.
+
+        - They are computed by clustering semantic concept embeddings of recently published articles.
+
+        - The `score` reflects the volume and engagement (views, comments, reactions) of articles associated with the trend.
+
+        - Returned trends are ordered by score and recency.
+
+        - Publicly accessible without authentication.
+
+
+        It supports pagination, each page will contain 10 trends by default.'
+      operationId: getTrends
       parameters:
       - $ref: '#/components/parameters/pageParam'
-      - $ref: '#/components/parameters/perPageParam30to1000'
+      - $ref: '#/components/parameters/perPageParam10to1000'
       responses:
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              example:
-                error: unauthorized
-                status: 401
         '200':
-          description: A list of articles in the users readinglist
+          description: A List of Trends
           content:
             application/json:
-              example: []
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Trend'
+    servers:
+    - url: https://dev.to
+      description: Production server
+  /api/trends/{id_or_slug}:
+    get:
+      summary: A Trend
+      security: []
+      tags:
+      - Trends
+      description: 'Retrieve details of a single trend using either its numeric ID or unique slug.
+
+
+        ### Usage Guidance:
+
+        - Useful for loading details of a trending topic (description, score, and slug details) to render header sections on trending tag or topic pages.'
+      operationId: getTrend
+      parameters:
+      - name: id_or_slug
+        in: path
+        required: true
+        description: The ID or slug of the trend to retrieve.
+        example: ruby-3-4-release
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A Trend
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Trend'
+        '404':
+          description: Trend Not Found
+    servers:
+    - url: https://dev.to
+      description: Production server
+  /api/trends/{trend_id_or_slug}/articles:
+    get:
+      summary: Articles in a Trend
+      security: []
+      tags:
+      - Trends
+      description: 'Retrieve a list of published articles belonging to a trend.
+
+
+        ### Article Ordering & Proximity:
+
+        - Articles are mapped to trends based on their embedding distance to the trend''s centroid.
+
+        - Returned articles are ordered by proximity/similarity (distance) first (most relevant posts first), and then by overall article engagement score.
+
+        - Supports pagination, each page will contain 10 articles by default.'
+      operationId: getTrendArticles
+      parameters:
+      - name: trend_id_or_slug
+        in: path
+        required: true
+        description: The ID or slug of the trend to retrieve articles for.
+        example: ruby-3-4-release
+        schema:
+          type: string
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam10to1000'
+      responses:
+        '200':
+          description: A List of Articles in the Trend
+          content:
+            application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/ArticleIndex'
-  /readinglist:
+        '404':
+          description: Trend Not Found
     servers:
-    - url: https://dev.to/api
+    - url: https://dev.to
       description: Production server
-    get:
-      summary: Readinglist
-      tags:
-      - Reading List
-      description: 'This endpoint allows the client to retrieve a list of articles that were saved to a Users readinglist.
-
-        It supports pagination, each page will contain `30` articles by default'
-      operationId: getReadinglist
-      parameters:
-      - $ref: '#/components/parameters/pageParam'
-      - $ref: '#/components/parameters/perPageParam30to1000'
-      responses:
-        '200':
-          description: A list of articles in the users readinglist
-          content:
-            application/json:
-              example: []
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ArticleIndex'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              example:
-                error: unauthorized
-                status: 401
 components:
   parameters:
     pageParam:
@@ -87,7 +138,7 @@ components:
         format: int32
         minimum: 1
         default: 1
-    perPageParam30to1000:
+    perPageParam10to1000:
       in: query
       name: per_page
       required: false
@@ -97,28 +148,7 @@ components:
         format: int32
         minimum: 1
         maximum: 1000
-        default: 30
-    pageParam_2:
-      in: query
-      name: page
-      required: false
-      description: Pagination page
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        default: 1
-    perPageParam30to1000_2:
-      in: query
-      name: per_page
-      required: false
-      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        maximum: 1000
-        default: 30
+        default: 10
   schemas:
     SharedUser:
       description: The resource creator
@@ -254,6 +284,17 @@ components:
           description: Reading time, in minutes
           type: integer
           format: int32
+        ai_disclosure_level:
+          type: string
+          enum:
+          - not_disclosed
+          - no_ai
+          - some_ai
+          - fully_autonomous
+          description: Level of AI tooling usage disclosure
+        ai_disclosure_label:
+          type: string
+          description: Human-readable label of AI disclosure
         user:
           $ref: '#/components/schemas/SharedUser'
         flare_tag:
@@ -285,73 +326,62 @@ components:
       - published_timestamp
       - user
       - reading_time_minutes
-    User:
+    Trend:
+      description: Representation of a trend
       type: object
-      description: A user account on the DEV platform.
       properties:
-        name:
+        type_of:
           type: string
-          description: The display name of the user.
-        username:
-          type: string
-          description: The unique username of the user.
-        twitter_username:
-          type: string
-          nullable: true
-          description: The user's Twitter username.
-        github_username:
-          type: string
-          nullable: true
-          description: The user's GitHub username.
-        user_id:
+        id:
           type: integer
-          description: The unique numeric ID of the user.
-        website_url:
-          type: string
-          format: uri
-          nullable: true
-          description: The user's website URL.
-        location:
-          type: string
-          nullable: true
-          description: The user's location.
-        summary:
-          type: string
-          nullable: true
-          description: A brief bio or summary of the user.
-        profile_image:
-          type: string
-          format: uri
-          description: The URL of the user's profile image.
-        profile_image_90:
-          type: string
-          format: uri
-          description: The URL of the 90px profile image.
-        joined_at:
-          type: string
-          format: date-time
-          description: The ISO 8601 timestamp when the user joined.
-    Organization:
-      type: object
-      description: An organization on the DEV platform that can publish articles and have members.
-      properties:
+          format: int64
         name:
           type: string
-          description: The display name of the organization.
-        username:
-          type: string
-          description: The unique username (slug) of the organization.
         slug:
           type: string
-          description: The URL slug of the organization.
-        profile_image:
+        description:
+          type:
+          - string
+          - 'null'
+        key_questions:
+          type: array
+          items:
+            type: string
+        score:
+          type: number
+          format: float
+        articles_count:
+          type: integer
+          format: int32
+        cover_image:
+          type:
+          - string
+          - 'null'
+          format: url
+        first_observed_at:
           type: string
-          format: uri
-          description: The URL of the organization's profile image.
-        profile_image_90:
+          format: date-time
+        last_observed_at:
           type: string
-          format: uri
-          description: The URL of the 90px profile image.
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - type_of
+      - id
+      - name
+      - slug
+      - key_questions
+      - score
+      - articles_count
+      - first_observed_at
+      - last_observed_at
+      - created_at
+      - updated_at
     ArticleIndex_2:
       description: Representation of an article or post returned in a list
       type: object
@@ -425,17 +455,6 @@ components:
           description: Reading time, in minutes
           type: integer
           format: int32
-        ai_disclosure_level:
-          type: string
-          enum:
-          - not_disclosed
-          - no_ai
-          - some_ai
-          - fully_autonomous
-          description: Level of AI tooling usage disclosure
-        ai_disclosure_label:
-          type: string
-          description: Human-readable label of AI disclosure
         user:
           $ref: '#/components/schemas/SharedUser'
         flare_tag:
@@ -473,16 +492,11 @@ components:
       name: api-key
       in: header
       description: "API Key authentication.\n\nAuthentication for some endpoints, like write operations on the\nArticles API require a DEV API key.\n\nAll authenticated endpoints are CORS disabled, the API key is intended for non-browser scripts.\n\n### Getting an API key\n\nTo obtain one, please follow these steps:\n\n  - visit https://dev.to/settings/extensions\n  - in the \"DEV API Keys\" section create a new key by adding a\n    description and clicking on \"Generate API Key\"\n\n    ![obtain a DEV API Key](https://user-images.githubusercontent.com/37842/172718105-bd93664e-76e0-477d-99c4-265dda0b06c5.png)\n\n  - You'll see the newly generated key in the same view\n    ![generated DEV API Key](https://user-images.githubusercontent.com/37842/172718151-e7fe26a0-9937-42e8-96c6-333acdab9e49.png)"
-    apiKey:
-      type: apiKey
-      in: header
-      name: api-key
-      description: API key obtained from the DEV.to settings page. Pass in the api-key header for authenticated requests.
     bearer_auth:
       type: http
       scheme: bearer
       bearerFormat: JWT
       description: Short-lived RS256 RFC 9068 access token issued by the configured delegation service and verified against its configured JWKS. The issuer authorizes the client and requested operation before minting the token; Forem validates the token and resolves its subject and owner to a local user. An invalid token returns 401; an unavailable trust dependency with no usable cached key returns 503.
 x-refined-from:
-- openapi.json
-- openapi.yaml
+- dev-to-forem-api-v1-openapi.json
+- devto-trends-api-openapi.yml

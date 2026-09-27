@@ -1,0 +1,323 @@
+openapi: 3.2.0
+info:
+  title: Dev To Agent Sessions API
+  version: 1.0.0
+  description: 'Operations tagged agent_sessions across 2 of this provider''s published API definitions: dev-to-forem-api-v1-openapi.json, devto-agent-sessions-api-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://dev.to
+  description: Production server
+- url: https://dev.to/api
+  description: Production server
+tags:
+- name: Agent Sessions
+paths:
+  /api/agent_sessions:
+    get:
+      summary: list the authenticated user's agent sessions
+      tags:
+      - Agent Sessions
+      description: 'Retrieve a list of the authenticated user''s agent sessions.
+
+
+        ### Agent Sessions Overview:
+
+        - Agent sessions represent coding conversation transcripts uploaded from CLI tools (like Claude Code).
+
+        - Used by the developer portal to render interactive walkthroughs or session summaries.
+
+        - Requires authentication.'
+      operationId: getAgentSessions
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AgentSessionIndex'
+        '401':
+          description: unauthorized
+      security:
+      - api-key: []
+      - bearer_auth: []
+    post:
+      summary: upload a new agent session
+      tags:
+      - Agent Sessions
+      description: 'Upload a new agent session.
+
+
+        ### S3 Upload Workflow:
+
+        1. Call the S3 presign endpoint to obtain a direct upload URL for the raw session transcript file.
+
+        2. Upload the raw transcript to S3.
+
+        3. Send a POST request to this endpoint with the S3 key (`s3_key`) and the pre-parsed, curated JSON payload (`curated_data`).'
+      operationId: createAgentSession
+      parameters: []
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentSessionIndex'
+        '401':
+          description: unauthorized
+        '422':
+          description: unprocessable
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: Title for the session (auto-generated if omitted)
+                curated_data:
+                  type: string
+                  description: JSON string of curated session data with messages array and metadata.
+                s3_key:
+                  type: string
+                  description: S3 object key from presign endpoint (optional).
+                tool_name:
+                  type: string
+                  description: Tool that produced the session (e.g. claude_code, codex).
+                  enum:
+                  - claude_code
+                  - codex
+                  - gemini_cli
+                  - github_copilot
+                  - opencode
+                  - pi
+              required:
+              - curated_data
+        description: Agent session upload parameters.
+      security:
+      - api-key: []
+      - bearer_auth: []
+    servers:
+    - url: https://dev.to
+      description: Production server
+  /api/agent_sessions/{id}:
+    get:
+      summary: show details for an agent session
+      tags:
+      - Agent Sessions
+      description: 'Retrieve details for a single agent session by unique slug or ID.
+
+
+        ### Integration Tip:
+
+        - Returns the complete session structure including parsed message logs, token counts, slices, and tool execution metadata.'
+      operationId: getAgentSessionById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The unique slug or ID of the agent session.
+        schema:
+          type: string
+        example: my-session-abc123
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentSessionShow'
+        '401':
+          description: unauthorized
+        '404':
+          description: not found
+      security:
+      - api-key: []
+      - bearer_auth: []
+    servers:
+    - url: https://dev.to
+      description: Production server
+  /api/agent_sessions/presign:
+    post:
+      summary: request a presigned URL to upload raw session transcript to S3
+      tags:
+      - Agent Sessions
+      description: Generate an S3 presigned PUT URL and object key for uploading raw session transcripts directly to S3.
+      operationId: presignAgentSession
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  s3_key:
+                    type: string
+                  presigned_url:
+                    type: string
+                required:
+                - s3_key
+                - presigned_url
+        '401':
+          description: unauthorized
+        '503':
+          description: service unavailable
+      security:
+      - api-key: []
+      - bearer_auth: []
+    servers:
+    - url: https://dev.to
+      description: Production server
+  /api/agent_sessions/{id}/raw_url:
+    get:
+      summary: request a presigned S3 GET URL to download the raw session transcript
+      tags:
+      - Agent Sessions
+      description: Retrieve a temporary presigned GET URL to download the original raw transcript file from S3.
+      operationId: getAgentSessionRawUrl
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The unique slug or ID of the agent session.
+        schema:
+          type: string
+        example: my-session-abc123
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  raw_url:
+                    type: string
+                required:
+                - raw_url
+        '401':
+          description: unauthorized
+        '404':
+          description: not found
+      security:
+      - api-key: []
+      - bearer_auth: []
+    servers:
+    - url: https://dev.to
+      description: Production server
+components:
+  schemas:
+    AgentSessionShow:
+      description: Full representation of an agent session including messages and curation data
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        slug:
+          type: string
+        title:
+          type: string
+        tool_name:
+          type: string
+          description: Tool that produced the session (e.g. claude_code, codex)
+        total_messages:
+          type: integer
+          format: int32
+        curated_count:
+          type: integer
+          format: int32
+          description: Number of curated messages selected for display
+        published:
+          type: boolean
+        metadata:
+          type:
+          - object
+          - 'null'
+          description: Session metadata (tool-specific)
+        messages:
+          type: array
+          items:
+            type: object
+          description: All normalized messages in the session
+        slices:
+          type: array
+          items:
+            type: object
+          description: Named slices grouping message ranges
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        url:
+          type: string
+          format: url
+      required:
+      - id
+      - slug
+      - title
+      - tool_name
+      - total_messages
+      - curated_count
+      - published
+      - messages
+      - slices
+      - created_at
+      - updated_at
+      - url
+    AgentSessionIndex:
+      description: Representation of an agent session returned in a list or after creation
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        slug:
+          type: string
+        title:
+          type: string
+        tool_name:
+          type: string
+          description: Tool that produced the session (e.g. claude_code, codex)
+        total_messages:
+          type: integer
+          format: int32
+        published:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        url:
+          type: string
+          format: url
+      required:
+      - id
+      - slug
+      - title
+      - tool_name
+      - total_messages
+      - published
+      - created_at
+      - url
+  securitySchemes:
+    api-key:
+      type: apiKey
+      name: api-key
+      in: header
+      description: "API Key authentication.\n\nAuthentication for some endpoints, like write operations on the\nArticles API require a DEV API key.\n\nAll authenticated endpoints are CORS disabled, the API key is intended for non-browser scripts.\n\n### Getting an API key\n\nTo obtain one, please follow these steps:\n\n  - visit https://dev.to/settings/extensions\n  - in the \"DEV API Keys\" section create a new key by adding a\n    description and clicking on \"Generate API Key\"\n\n    ![obtain a DEV API Key](https://user-images.githubusercontent.com/37842/172718105-bd93664e-76e0-477d-99c4-265dda0b06c5.png)\n\n  - You'll see the newly generated key in the same view\n    ![generated DEV API Key](https://user-images.githubusercontent.com/37842/172718151-e7fe26a0-9937-42e8-96c6-333acdab9e49.png)"
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Short-lived RS256 RFC 9068 access token issued by the configured delegation service and verified against its configured JWKS. The issuer authorizes the client and requested operation before minting the token; Forem validates the token and resolves its subject and owner to a local user. An invalid token returns 401; an unavailable trust dependency with no usable cached key returns 503.
+x-refined-from:
+- dev-to-forem-api-v1-openapi.json
+- devto-agent-sessions-api-openapi.yml

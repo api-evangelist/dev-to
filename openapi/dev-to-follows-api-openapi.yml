@@ -1,0 +1,69 @@
+openapi: 3.2.0
+info:
+  title: Forem API V1 Follows API
+  version: 1.0.0
+  description: Access Forem articles, users and other resources via API.
+servers:
+- url: https://dev.to
+  description: Production server
+security:
+- api-key: []
+- bearer_auth: []
+tags:
+- name: follows
+paths:
+  /api/follows:
+    post:
+      summary: Follow users or organizations
+      tags:
+      - follows
+      description: 'Follow users or organizations in bulk on behalf of the authenticated user.
+
+
+        ### Bulk Update Behavior:
+
+        - Accepts arrays of `user_ids` and `organization_ids` in the request body.
+
+        - Performs follow actions for all provided identifiers.
+
+        - Highly efficient for onboarding flows or importing social connections.'
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  outcome:
+                    type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_ids:
+                  type: array
+                  items:
+                    type: integer
+                organization_ids:
+                  type: array
+                  items:
+                    type: integer
+        description: Map containing lists of user and organization IDs to follow.
+      operationId: postApiFollows
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    api-key:
+      type: apiKey
+      name: api-key
+      in: header
+      description: "API Key authentication.\n\nAuthentication for some endpoints, like write operations on the\nArticles API require a DEV API key.\n\nAll authenticated endpoints are CORS disabled, the API key is intended for non-browser scripts.\n\n### Getting an API key\n\nTo obtain one, please follow these steps:\n\n  - visit https://dev.to/settings/extensions\n  - in the \"DEV API Keys\" section create a new key by adding a\n    description and clicking on \"Generate API Key\"\n\n    ![obtain a DEV API Key](https://user-images.githubusercontent.com/37842/172718105-bd93664e-76e0-477d-99c4-265dda0b06c5.png)\n\n  - You'll see the newly generated key in the same view\n    ![generated DEV API Key](https://user-images.githubusercontent.com/37842/172718151-e7fe26a0-9937-42e8-96c6-333acdab9e49.png)"
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Short-lived RS256 RFC 9068 access token issued by the configured delegation service and verified against its configured JWKS. The issuer authorizes the client and requested operation before minting the token; Forem validates the token and resolves its subject and owner to a local user. An invalid token returns 401; an unavailable trust dependency with no usable cached key returns 503.

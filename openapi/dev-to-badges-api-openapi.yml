@@ -1,0 +1,223 @@
+openapi: 3.2.0
+info:
+  title: Forem API V1 Badges API
+  version: 1.0.0
+  description: Access Forem articles, users and other resources via API.
+servers:
+- url: https://dev.to
+  description: Production server
+security:
+- api-key: []
+- bearer_auth: []
+tags:
+- name: Badges
+paths:
+  /api/badges:
+    get:
+      summary: Retrieve all badges
+      tags:
+      - Badges
+      description: 'Retrieve a list of all badges available on the platform.
+
+
+        ### Badges Overview:
+
+        - Badges recognize achievements (e.g., "Top Writer", "Beloved Community Member", or anniversary milestones).
+
+        - Publicly visible on user profiles.'
+      parameters:
+      - name: page
+        in: query
+        required: false
+        description: Pagination page index.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Badge'
+      operationId: getApiBadges
+      x-operation-id-source: derived
+    post:
+      summary: Create a badge
+      tags:
+      - Badges
+      description: 'Create a new badge. Requires administrator privileges.
+
+
+        ### Body Parameter Guidelines:
+
+        - **title**: Unique name for the badge.
+
+        - **description**: Text explanation of the achievement.
+
+        - **remote_badge_image_url**: Public URL to an image asset (PNG, GIF, or SVG) representing the badge icon.
+
+        - **allow_multiple_awards**: Set to `true` if a user can earn the same badge multiple times (e.g. weekly challenges).'
+      parameters: []
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Badge'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                badge:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    description:
+                      type: string
+                    remote_badge_image_url:
+                      type: string
+                    credits_awarded:
+                      type: integer
+                    allow_multiple_awards:
+                      type: boolean
+                  required:
+                  - title
+                  - description
+                  - remote_badge_image_url
+        description: Badge properties to create.
+      operationId: postApiBadges
+      x-operation-id-source: derived
+  /api/badges/{id}:
+    get:
+      summary: Retrieve a badge's details
+      tags:
+      - Badges
+      description: Retrieve details of a single badge by unique numeric ID.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique badge ID.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Badge'
+      operationId: getApiBadgesById
+      x-operation-id-source: derived
+    patch:
+      summary: Update a badge
+      tags:
+      - Badges
+      description: Update badge details (title, description, credits awarded, etc.) by unique ID. Requires administrator privileges.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique badge ID to update.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Badge'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                badge:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    description:
+                      type: string
+                    credits_awarded:
+                      type: integer
+                    allow_multiple_awards:
+                      type: boolean
+        description: Badge properties to update.
+      operationId: patchApiBadgesById
+      x-operation-id-source: derived
+    delete:
+      summary: Delete a badge
+      tags:
+      - Badges
+      description: Delete a badge configuration from the system by ID. Requires administrator privileges.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique badge ID to delete.
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: no content
+      operationId: deleteApiBadgesById
+      x-operation-id-source: derived
+components:
+  schemas:
+    Badge:
+      description: Representation of a badge
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        badge_image:
+          type:
+          - object
+          - 'null'
+          properties:
+            url:
+              type: string
+        credits_awarded:
+          type: integer
+        allow_multiple_awards:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - id
+      - title
+      - slug
+      - description
+      - created_at
+      - updated_at
+  securitySchemes:
+    api-key:
+      type: apiKey
+      name: api-key
+      in: header
+      description: "API Key authentication.\n\nAuthentication for some endpoints, like write operations on the\nArticles API require a DEV API key.\n\nAll authenticated endpoints are CORS disabled, the API key is intended for non-browser scripts.\n\n### Getting an API key\n\nTo obtain one, please follow these steps:\n\n  - visit https://dev.to/settings/extensions\n  - in the \"DEV API Keys\" section create a new key by adding a\n    description and clicking on \"Generate API Key\"\n\n    ![obtain a DEV API Key](https://user-images.githubusercontent.com/37842/172718105-bd93664e-76e0-477d-99c4-265dda0b06c5.png)\n\n  - You'll see the newly generated key in the same view\n    ![generated DEV API Key](https://user-images.githubusercontent.com/37842/172718151-e7fe26a0-9937-42e8-96c6-333acdab9e49.png)"
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Short-lived RS256 RFC 9068 access token issued by the configured delegation service and verified against its configured JWKS. The issuer authorizes the client and requested operation before minting the token; Forem validates the token and resolves its subject and owner to a local user. An invalid token returns 401; an unavailable trust dependency with no usable cached key returns 503.

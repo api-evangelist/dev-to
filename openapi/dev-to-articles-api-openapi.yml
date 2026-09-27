@@ -1,17 +1,13 @@
 openapi: 3.2.0
 info:
-  title: Dev.to Forem Articles API
-  description: The Dev.to Forem API (v1) is a RESTful API that provides programmatic access to the Dev.to developer community platform, which is built on the open-source Forem framework.
+  title: Dev To Articles API
   version: 1.0.0
-  contact:
-    name: Forem Support
-    url: https://forem.com
-  termsOfService: https://dev.to/terms
+  description: 'Operations tagged Articles across 3 of this provider''s published API definitions: dev-to-forem-api-openapi.yml, dev-to-forem-api-v1-openapi.json, devto-articles-api-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://dev.to/api
   description: Dev.to Production Server
-security:
-- apiKey: []
+- url: https://dev.to
+  description: Production server
 tags:
 - name: Articles
   description: Endpoints for creating, reading, updating, and managing articles (blog posts, discussions, help threads) on the platform.
@@ -78,6 +74,8 @@ paths:
           description: Unauthorized - invalid or missing API key
         '422':
           description: Unprocessable Entity - validation errors
+      security:
+      - apiKey: []
     get:
       operationId: getArticles
       summary: Published articles
@@ -136,6 +134,9 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ArticleIndex'
+    servers:
+    - url: https://dev.to/api
+      description: Production server
   /articles/latest:
     get:
       operationId: getLatestArticles
@@ -156,6 +157,9 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ArticleIndex'
+    servers:
+    - url: https://dev.to/api
+      description: Production server
   /articles/{id}:
     get:
       operationId: getArticleById
@@ -238,6 +242,11 @@ paths:
           description: Article not found
         '422':
           description: Unprocessable Entity
+      security:
+      - apiKey: []
+    servers:
+    - url: https://dev.to/api
+      description: Production server
   /articles/{username}/{slug}:
     get:
       operationId: getArticleByPath
@@ -268,6 +277,9 @@ paths:
                 $ref: '#/components/schemas/Article'
         '404':
           description: Article not found
+    servers:
+    - url: https://dev.to/api
+      description: Production server
   /articles/me:
     get:
       operationId: getUserArticles
@@ -289,6 +301,11 @@ paths:
                   $ref: '#/components/schemas/ArticleIndex'
         '401':
           description: Unauthorized
+      security:
+      - apiKey: []
+    servers:
+    - url: https://dev.to/api
+      description: Production server
   /articles/me/published:
     get:
       operationId: getUserPublishedArticles
@@ -310,6 +327,11 @@ paths:
                   $ref: '#/components/schemas/ArticleIndex'
         '401':
           description: Unauthorized
+      security:
+      - apiKey: []
+    servers:
+    - url: https://dev.to/api
+      description: Production server
   /articles/me/unpublished:
     get:
       operationId: getUserUnpublishedArticles
@@ -331,6 +353,11 @@ paths:
                   $ref: '#/components/schemas/ArticleIndex'
         '401':
           description: Unauthorized
+      security:
+      - apiKey: []
+    servers:
+    - url: https://dev.to/api
+      description: Production server
   /articles/me/all:
     get:
       operationId: getUserAllArticles
@@ -352,6 +379,11 @@ paths:
                   $ref: '#/components/schemas/ArticleIndex'
         '401':
           description: Unauthorized
+      security:
+      - apiKey: []
+    servers:
+    - url: https://dev.to/api
+      description: Production server
   /articles/{id}/unpublish:
     put:
       operationId: unpublishArticle
@@ -368,6 +400,11 @@ paths:
           description: Unauthorized
         '404':
           description: Article not found
+      security:
+      - apiKey: []
+    servers:
+    - url: https://dev.to/api
+      description: Production server
   /organizations/{username}/articles:
     get:
       operationId: getOrgArticles
@@ -396,17 +433,823 @@ paths:
                   $ref: '#/components/schemas/ArticleIndex'
         '404':
           description: Organization not found
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/articles:
+    post:
+      summary: Publish article
+      tags:
+      - Articles
+      description: 'This endpoint allows the client to create a new article.
+
+
+        "Articles" are all the posts that users create on DEV/Forem that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but are referred to as articles within the code.
+
+
+        ### Body Parameter Tips:
+
+        - **title**: A compelling and descriptive title for the article.
+
+        - **body_markdown**: The main text of the article in Markdown format. You can use standard Markdown as well as Forem-specific Liquid tags (e.g., `{% embed ... %}`). You can also include YAML front matter at the very beginning of the markdown to specify metadata such as tags, series, and cover image.
+
+        - **published**: Set to `true` to immediately publish the article and make it visible in feeds. Set to `false` (default) to save it as a draft.
+
+        - **tags**: An array of up to 4 tag strings, e.g. `[''ruby'', ''rails'']`. Tags help categorize your post and improve discoverability.
+
+        - **series**: Group articles together by specifying a series name. If the series does not exist, it will be created.
+
+        - **main_image**: Absolute URL of the cover image for the article.
+
+        - **canonical_url**: If this post was originally published elsewhere, specify the canonical URL to maintain SEO integrity.
+
+        - **description**: A short summary of the article used for previews and SEO meta description.
+
+        - **ai_disclosure_level**: AI tooling usage disclosure (`not_disclosed`, `no_ai`, `some_ai`, `fully_autonomous`).'
+      operationId: postApiArticles
+      parameters: []
+      responses:
+        '201':
+          description: An Article
+        '401':
+          description: Unauthorized
+        '422':
+          description: Unprocessable Entity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Article_2'
+        description: Representation of Article to be created
+      security:
+      - api-key: []
+      - bearer_auth: []
+      x-operation-id-source: normalized
+      x-operation-id-original: createArticle
+    get:
+      summary: Published articles
+      security: []
+      tags:
+      - Articles
+      description: 'This endpoint allows the client to retrieve a list of articles.
+
+
+        "Articles" are all the posts that users create on DEV/Forem that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but are referred to as articles within the code.
+
+
+        By default it will return featured, published articles ordered by descending popularity.
+
+
+        It supports pagination, each page will contain `30` articles by default.
+
+
+        ### Query Parameter Usage Tips:
+
+        - **Filtering by Tags**:
+
+        - Use `tag` to filter articles containing a single exact tag (e.g. `tag=discuss`).
+
+        - Use `tags` to retrieve articles containing *any* of the comma-separated list of tags (e.g. `tags=javascript,css`).
+
+        - Use `tags_exclude` to filter out articles containing any of the comma-separated list of tags (e.g. `tags_exclude=node,java`).
+
+        - **Filtering by User / Organization**:
+
+        - Use `username` to retrieve articles belonging to a specific User or Organization. Articles are returned in reverse chronological publication order.
+
+        - **State Options**:
+
+        - Use `state=fresh` to fetch fresh articles.
+
+        - Use `state=rising` to fetch rising/trending articles.
+
+        - Combine `state=all` with `username` to fetch up to `1000` articles (both published and unpublished) from that user/organization in a single page.
+
+        - **Top / Popularity**:
+
+        - Use `top=N` to return the most popular articles published in the last `N` days (e.g. `top=7` for top articles of the week, `top=30` for top of the month). This parameter can be combined with `tag` to find top articles in a specific niche.
+
+        - **Collections**:
+
+        - Use `collection_id` to retrieve articles belonging to a specific collection/series, sorted chronologically.'
+      operationId: getApiArticles
+      parameters:
+      - $ref: '#/components/parameters/pageParam_2'
+      - $ref: '#/components/parameters/perPageParam30to1000_2'
+      - name: tag
+        in: query
+        required: false
+        description: 'Using this parameter will retrieve articles that contain the requested tag. Articles
+
+          will be ordered by descending popularity.This parameter can be used in conjuction with `top`.'
+        schema:
+          type: string
+        example: discuss
+      - name: tags
+        in: query
+        required: false
+        description: 'Using this parameter will retrieve articles with any of the comma-separated tags.
+
+          Articles will be ordered by descending popularity.'
+        schema:
+          type: string
+        example: javascript, css
+      - name: tags_exclude
+        in: query
+        required: false
+        description: 'Using this parameter will retrieve articles that do _not_ contain _any_
+
+          of comma-separated tags. Articles will be ordered by descending popularity.'
+        schema:
+          type: string
+        example: node, java
+      - name: username
+        in: query
+        required: false
+        description: "Using this parameter will retrieve articles belonging\n            to a User or Organization ordered by descending publication date.\n            If `state=all` the number of items returned will be `1000` instead of the default `30`.\n            This parameter can be used in conjuction with `state`."
+        schema:
+          type: string
+        example: ben
+      - name: state
+        in: query
+        required: false
+        description: "Using this parameter will allow the client to check which articles are fresh or rising.\n            If `state=fresh` the server will return fresh articles.\n            If `state=rising` the server will return rising articles.\n            This param can be used in conjuction with `username`, only if set to `all`."
+        schema:
+          type: string
+          enum:
+          - fresh
+          - rising
+          - all
+        example: fresh
+      - name: top
+        in: query
+        required: false
+        description: 'Using this parameter will allow the client to return the most popular articles
+
+          in the last `N` days.
+
+          `top` indicates the number of days since publication of the articles returned.
+
+          This param can be used in conjuction with `tag`.'
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 2
+      - name: collection_id
+        in: query
+        required: false
+        description: 'Adding this will allow the client to return the list of articles
+
+          belonging to the requested collection, ordered by ascending publication date.'
+        schema:
+          type: integer
+          format: int32
+        example: 99
+      responses:
+        '200':
+          description: A List of Articles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex_2'
+      x-operation-id-source: normalized
+      x-operation-id-original: getArticles
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/articles/search:
+    get:
+      summary: Search for articles
+      security: []
+      tags:
+      - Articles
+      description: 'This endpoint allows the client to search for articles.
+
+
+        ### Search Guidance:
+
+        - **q**: The search query term. Matches against article titles, tags, and body content.
+
+        - **top**: Restricts search results to articles published within the last `N` days.
+
+        - **page** & **per_page**: Standard pagination support. Use this to display results sequentially on a search results page.'
+      operationId: searchArticles
+      parameters:
+      - name: q
+        in: query
+        required: false
+        description: The search query term. Matches against article titles, tags, and body content.
+        schema:
+          type: string
+      - name: top
+        in: query
+        required: false
+        description: Restricts search results to articles published within the last `N` days.
+        schema:
+          type: integer
+      - name: page
+        in: query
+        required: false
+        description: Pagination page index.
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        required: false
+        description: The number of items to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: A List of Articles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex_2'
+    servers:
+    - url: https://dev.to
+      description: Production server
+  /api/articles/latest:
+    get:
+      summary: Published articles sorted by published date
+      security: []
+      tags:
+      - Articles
+      description: 'This endpoint allows the client to retrieve a list of articles ordered strictly by descending publication date.
+
+
+        ### Usage Tips:
+
+        - Bypasses all Forem/DEV feed personalization and popularity algorithms.
+
+        - Ideal for building RSS feeds, chronological timelines, or "latest posts" widgets.
+
+        - Supports standard `page` and `per_page` query parameters.'
+      operationId: getApiArticlesLatest
+      parameters:
+      - $ref: '#/components/parameters/pageParam_2'
+      - $ref: '#/components/parameters/perPageParam30to1000_2'
+      responses:
+        '200':
+          description: A List of Articles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex_2'
+      x-operation-id-source: normalized
+      x-operation-id-original: getLatestArticles
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/articles/{id}:
+    get:
+      summary: Published article by id
+      security: []
+      tags:
+      - Articles
+      description: 'This endpoint allows the client to retrieve a single published article given its unique numerical `id`.
+
+
+        ### Integration Tip:
+
+        - Returns the complete serialized article object including its HTML/markdown representation, tags, and author profile details.
+
+        - To retrieve an article using its URL path structure instead of its numeric ID, use the `/api/articles/{username}/{slug}` endpoint.'
+      operationId: getApiArticlesById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The unique numerical ID of the published article.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: An Article
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/ArticleIndex_2'
+        '404':
+          description: Article Not Found
+      x-operation-id-source: normalized
+      x-operation-id-original: getArticleById
+    put:
+      summary: Update an article by id
+      tags:
+      - Articles
+      description: 'This endpoint allows the client to update an existing article by its unique numerical `id`.
+
+
+        ### Authorization Constraints:
+
+        - The API key provided must belong to the author of the article.
+
+        - Supports updating individual fields such as `title`, `body_markdown`, `published`, `tags`, `ai_disclosure_level`, etc.
+
+        - Setting `published: false` on an already published article will revert it to draft status.'
+      operationId: putApiArticlesById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The unique numerical ID of the article to update.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 123
+      responses:
+        '200':
+          description: An Article
+        '404':
+          description: Article Not Found
+        '401':
+          description: Unauthorized
+        '422':
+          description: Unprocessable Entity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Article_2'
+        description: Representation of Article to be updated
+      security:
+      - api-key: []
+      - bearer_auth: []
+      x-operation-id-source: normalized
+      x-operation-id-original: updateArticle
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/articles/{username}/{slug}:
+    get:
+      summary: Published article by path
+      security: []
+      tags:
+      - Articles
+      description: 'This endpoint allows the client to retrieve a single published article given its `username` and `slug` (the URL-friendly path identifier).
+
+
+        ### Usage Tip:
+
+        - Handy for resolving absolute Forem/DEV article URLs (e.g., `https://dev.to/username/slug`) into their corresponding API data models.'
+      operationId: getApiArticlesByUsernameBySlug
+      parameters:
+      - name: username
+        in: path
+        required: true
+        description: The username of the article's author or organization.
+        schema:
+          type: string
+      - name: slug
+        in: path
+        required: true
+        description: The URL-friendly slug of the article (e.g. `my-first-post-1234`).
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An Article
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/ArticleIndex_2'
+        '404':
+          description: Article Not Found
+      x-operation-id-source: normalized
+      x-operation-id-original: getArticleByPath
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/articles/me:
+    get:
+      summary: User's articles
+      tags:
+      - Articles
+      description: 'This endpoint allows the client to retrieve a list of published articles on behalf of an authenticated user.
+
+
+        "Articles" are all the posts that users create on DEV that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but is referred to as article within the code.
+
+
+        Published articles will be in reverse chronological publication order.
+
+
+        It will return published articles with pagination. By default a page will contain 30 articles.'
+      operationId: getApiArticlesMe
+      parameters:
+      - $ref: '#/components/parameters/pageParam_2'
+      - $ref: '#/components/parameters/perPageParam30to1000_2'
+      responses:
+        '401':
+          description: Unauthorized
+        '200':
+          description: A List of the authenticated user's Articles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex_2'
+      security:
+      - api-key: []
+      - bearer_auth: []
+      x-operation-id-source: normalized
+      x-operation-id-original: getUserArticles
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/articles/me/published:
+    get:
+      summary: User's published articles
+      tags:
+      - Articles
+      description: 'This endpoint allows the client to retrieve a list of published articles on behalf of an authenticated user.
+
+
+        "Articles" are all the posts that users create on DEV that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but is referred to as article within the code.
+
+
+        Published articles will be in reverse chronological publication order.
+
+
+        It will return published articles with pagination. By default a page will contain 30 articles.'
+      operationId: getApiArticlesMePublished
+      parameters:
+      - $ref: '#/components/parameters/pageParam_2'
+      - $ref: '#/components/parameters/perPageParam30to1000_2'
+      responses:
+        '401':
+          description: Unauthorized
+        '200':
+          description: A List of the authenticated user's Articles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex_2'
+      security:
+      - api-key: []
+      - bearer_auth: []
+      x-operation-id-source: normalized
+      x-operation-id-original: getUserPublishedArticles
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/articles/me/unpublished:
+    get:
+      summary: User's unpublished articles
+      tags:
+      - Articles
+      description: 'This endpoint allows the client to retrieve a list of unpublished articles on behalf of an authenticated user.
+
+
+        "Articles" are all the posts that users create on DEV that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but is referred to as article within the code.
+
+
+        Unpublished articles will be in reverse chronological creation order.
+
+
+        It will return unpublished articles with pagination. By default a page will contain 30 articles.'
+      operationId: getApiArticlesMeUnpublished
+      parameters:
+      - $ref: '#/components/parameters/pageParam_2'
+      - $ref: '#/components/parameters/perPageParam30to1000_2'
+      responses:
+        '401':
+          description: Unauthorized
+        '200':
+          description: A List of the authenticated user's Articles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex_2'
+      security:
+      - api-key: []
+      - bearer_auth: []
+      x-operation-id-source: normalized
+      x-operation-id-original: getUserUnpublishedArticles
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/articles/me/all:
+    get:
+      summary: User's all articles
+      tags:
+      - Articles
+      description: 'This endpoint allows the client to retrieve a list of all articles on behalf of an authenticated user.
+
+
+        "Articles" are all the posts that users create on DEV that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but is referred to as article within the code.
+
+
+        It will return both published and unpublished articles with pagination.
+
+
+        Unpublished articles will be at the top of the list in reverse chronological creation order. Published articles will follow in reverse chronological publication order.
+
+
+        By default a page will contain 30 articles.'
+      operationId: getApiArticlesMeAll
+      parameters:
+      - $ref: '#/components/parameters/pageParam_2'
+      - $ref: '#/components/parameters/perPageParam30to1000_2'
+      responses:
+        '401':
+          description: Unauthorized
+        '200':
+          description: A List of the authenticated user's Articles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex_2'
+      security:
+      - api-key: []
+      - bearer_auth: []
+      x-operation-id-source: normalized
+      x-operation-id-original: getUserAllArticles
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/articles/{id}/unpublish:
+    put:
+      summary: Unpublish an article
+      tags:
+      - Articles
+      description: 'This endpoint allows the client to unpublish an article.
+
+
+        The user associated with the API key must have any ''admin'' or ''moderator'' role.
+
+
+        The article will be unpublished and will no longer be visible to the public. It will remain
+
+        in the database and will set back to draft status on the author''s posts dashboard. Any
+
+        notifications associated with the article will be deleted. Any comments on the article
+
+        will remain.'
+      operationId: putApiArticlesByIdUnpublish
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the article to unpublish.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      - name: note
+        in: query
+        required: false
+        description: Content for the note that's created along with unpublishing
+        schema:
+          type: string
+        example: Admin requested unpublishing all articles via API
+      responses:
+        '204':
+          description: Article successfully unpublished
+        '401':
+          description: Unauthorized
+        '404':
+          description: Article Not Found
+      security:
+      - api-key: []
+      - bearer_auth: []
+      x-operation-id-source: normalized
+      x-operation-id-original: unpublishArticle
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/articles/semantic_search:
+    get:
+      summary: Perform a semantic fuzzy search on articles
+      tags:
+      - Articles
+      description: Allows authenticated clients to search articles using Forem's semantic embeddings database.
+      parameters:
+      - name: q
+        in: query
+        required: true
+        description: The search query term to match semantically.
+        schema:
+          type: string
+      - name: per_page
+        in: query
+        required: false
+        description: Limit of articles returned (default 30, max 100).
+        schema:
+          type: integer
+      - name: page
+        in: query
+        required: false
+        description: Pagination page index.
+        schema:
+          type: integer
+      - name: threshold
+        in: query
+        required: false
+        description: Optional cosine distance threshold (between 0.0 and 2.0) to filter results.
+        schema:
+          type: number
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    title:
+                      type: string
+                    description:
+                      type:
+                      - string
+                      - 'null'
+                    cover_image:
+                      type:
+                      - string
+                      - 'null'
+                    slug:
+                      type: string
+                    path:
+                      type: string
+                    url:
+                      type: string
+                    comments_count:
+                      type: integer
+                    public_reactions_count:
+                      type: integer
+                    published_at:
+                      type: string
+                    distance:
+                      type: number
+                    similarity:
+                      type: number
+        '400':
+          description: bad request
+        '401':
+          description: unauthorized
+      security:
+      - api-key: []
+      - bearer_auth: []
+      operationId: getApiArticlesSemanticSearch
+      x-operation-id-source: derived
+    servers:
+    - url: https://dev.to
+      description: Production server
+  /api/organizations/{organization_id_or_username}/articles:
+    get:
+      summary: Organization's Articles
+      tags:
+      - Articles
+      security: []
+      description: 'Retrieve a list of articles published by the organization.
+
+
+        ### Path Parameter Options:
+
+        - **organization_id_or_username**: Supports either the organization''s unique numerical ID OR its string username (slug).
+
+        - Returns articles in reverse chronological publication order.
+
+        - Ideal for populating an organization''s custom blog feed or publication listing.'
+      operationId: getApiOrganizationsByOrganizationIdOrUsernameArticles
+      parameters:
+      - name: organization_id_or_username
+        in: path
+        required: true
+        description: The organization's numerical ID or string username.
+        schema:
+          type: string
+      - $ref: '#/components/parameters/pageParam_2'
+      - $ref: '#/components/parameters/perPageParam30to1000_2'
+      responses:
+        '200':
+          description: An Organization's Articles (with ID)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex_2'
+        '404':
+          description: Not Found
+      x-operation-id-source: normalized
+      x-operation-id-original: getOrgArticles
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/videos:
+    get:
+      summary: Articles with a video
+      tags:
+      - Articles
+      security: []
+      description: 'Retrieve a list of articles that contain uploaded videos.
+
+
+        ### Videos Overview:
+
+        - Bypasses authentication (can be accessed publicly).
+
+        - Returns articles that are published and include a video asset.
+
+        - Articles are ordered by descending popularity (views, watch time, and reactions).
+
+        - By default, returns 24 video articles per page.'
+      operationId: videos
+      parameters:
+      - $ref: '#/components/parameters/pageParam_2'
+      - $ref: '#/components/parameters/perPageParam24to1000'
+      responses:
+        '200':
+          description: A List of all articles with videos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VideoArticle'
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /videos:
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+    get:
+      summary: Articles with a video
+      tags:
+      - Articles
+      security: []
+      description: 'This endpoint allows the client to retrieve a list of articles that are uploaded with a video.
+
+
+        It will only return published video articles ordered by descending popularity.
+
+
+        It supports pagination, each page will contain 24 articles by default.'
+      operationId: getVideos
+      parameters:
+      - $ref: '#/components/parameters/pageParam_3'
+      - $ref: '#/components/parameters/perPageParam24to1000'
+      responses:
+        '200':
+          description: A List of all articles with videos
+          content:
+            application/json:
+              example:
+              - type_of: video_article
+                id: 287
+                path: /username499/the-millstone201-1kgb
+                cloudinary_video_url: https://dw71fyauz7yz9.cloudfront.net/video-upload__1e42eb0bab4abb3c63baeb5e8bdfe69f/thumbs-video-upload__1e42eb0bab4abb3c63baeb5e8bdfe69f-00001.png
+                title: The Millstone201
+                user_id: 1452
+                video_duration_in_minutes: 00:00
+                video_source_url: https://dw71fyauz7yz9.cloudfront.net/video-upload__1e42eb0bab4abb3c63baeb5e8bdfe69f/video-upload__1e42eb0bab4abb3c63baeb5e8bdfe69f.m3u8
+                user:
+                  name: Edgardo "Monroe" \:/ Gusikowski
+              - type_of: video_article
+                id: 288
+                path: /username500/a-many-splendoured-thing202-4gnk
+                cloudinary_video_url: https://dw71fyauz7yz9.cloudfront.net/video-upload__1e42eb0bab4abb3c63baeb5e8bdfe69f/thumbs-video-upload__1e42eb0bab4abb3c63baeb5e8bdfe69f-00001.png
+                title: A Many-Splendoured Thing202
+                user_id: 1453
+                video_duration_in_minutes: 00:00
+                video_source_url: https://dw71fyauz7yz9.cloudfront.net/video-upload__1e42eb0bab4abb3c63baeb5e8bdfe69f/video-upload__1e42eb0bab4abb3c63baeb5e8bdfe69f.m3u8
+                user:
+                  name: Arlena "Catarina" \:/ Zulauf
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VideoArticle'
+      x-operation-id-source: normalized
+      x-operation-id-original: videos
 components:
   parameters:
-    perPageParam30to1000:
-      name: per_page
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 1000
-        default: 30
-      description: Number of items per page (max 1000, default 30).
     articleIdParam:
       name: id
       in: path
@@ -422,106 +1265,69 @@ components:
         minimum: 1
         default: 1
       description: Pagination page number.
+    perPageParam30to1000:
+      name: per_page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 1000
+        default: 30
+      description: Number of items per page (max 1000, default 30).
+    pageParam_2:
+      in: query
+      name: page
+      required: false
+      description: Pagination page
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
+    perPageParam30to1000_2:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 30
+    perPageParam24to1000:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 24
+    pageParam_3:
+      in: query
+      name: page
+      required: false
+      description: Pagination page
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
+    perPageParam30to1000_3:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 30
   schemas:
-    ArticleIndex:
-      type: object
-      description: A summary article object returned in list endpoints, with fewer fields than the full article representation.
-      properties:
-        type_of:
-          type: string
-          description: The type of resource, always "article".
-        id:
-          type: integer
-          description: The unique identifier of the article.
-        title:
-          type: string
-          description: The title of the article.
-        description:
-          type: string
-          description: A short description or subtitle for the article.
-        readable_publish_date:
-          type: string
-          description: The publish date in a human-readable format.
-        slug:
-          type: string
-          description: The URL slug of the article.
-        path:
-          type: string
-          description: The relative path to the article on DEV.
-        url:
-          type: string
-          format: uri
-          description: The full URL of the article.
-        comments_count:
-          type: integer
-          description: The number of comments on the article.
-        public_reactions_count:
-          type: integer
-          description: The total number of public reactions.
-        collection_id:
-          type: integer
-          nullable: true
-          description: The ID of the collection (series) the article belongs to.
-        published_timestamp:
-          type: string
-          format: date-time
-          description: The ISO 8601 timestamp when the article was published.
-        positive_reactions_count:
-          type: integer
-          description: The count of positive reactions.
-        cover_image:
-          type: string
-          format: uri
-          nullable: true
-          description: The URL of the article's cover image.
-        social_image:
-          type: string
-          format: uri
-          description: The URL of the social sharing image.
-        canonical_url:
-          type: string
-          format: uri
-          description: The canonical URL of the article.
-        created_at:
-          type: string
-          format: date-time
-          description: The ISO 8601 timestamp when the article was created.
-        reading_time_minutes:
-          type: integer
-          description: The estimated reading time in minutes.
-        tag_list:
-          type: array
-          items:
-            type: string
-          description: A list of tags associated with the article.
-        tags:
-          type: string
-          description: A comma-separated string of tags.
-        user:
-          $ref: '#/components/schemas/User'
-        organization:
-          $ref: '#/components/schemas/Organization'
-    Organization:
-      type: object
-      description: An organization on the DEV platform that can publish articles and have members.
-      properties:
-        name:
-          type: string
-          description: The display name of the organization.
-        username:
-          type: string
-          description: The unique username (slug) of the organization.
-        slug:
-          type: string
-          description: The URL slug of the organization.
-        profile_image:
-          type: string
-          format: uri
-          description: The URL of the organization's profile image.
-        profile_image_90:
-          type: string
-          format: uri
-          description: The URL of the 90px profile image.
     Article:
       type: object
       description: A full article object with all detail fields, returned when retrieving a single article.
@@ -671,12 +1477,512 @@ components:
           type: string
           format: date-time
           description: The ISO 8601 timestamp when the user joined.
+    Organization:
+      type: object
+      description: An organization on the DEV platform that can publish articles and have members.
+      properties:
+        name:
+          type: string
+          description: The display name of the organization.
+        username:
+          type: string
+          description: The unique username (slug) of the organization.
+        slug:
+          type: string
+          description: The URL slug of the organization.
+        profile_image:
+          type: string
+          format: uri
+          description: The URL of the organization's profile image.
+        profile_image_90:
+          type: string
+          format: uri
+          description: The URL of the 90px profile image.
+    ArticleIndex:
+      type: object
+      description: A summary article object returned in list endpoints, with fewer fields than the full article representation.
+      properties:
+        type_of:
+          type: string
+          description: The type of resource, always "article".
+        id:
+          type: integer
+          description: The unique identifier of the article.
+        title:
+          type: string
+          description: The title of the article.
+        description:
+          type: string
+          description: A short description or subtitle for the article.
+        readable_publish_date:
+          type: string
+          description: The publish date in a human-readable format.
+        slug:
+          type: string
+          description: The URL slug of the article.
+        path:
+          type: string
+          description: The relative path to the article on DEV.
+        url:
+          type: string
+          format: uri
+          description: The full URL of the article.
+        comments_count:
+          type: integer
+          description: The number of comments on the article.
+        public_reactions_count:
+          type: integer
+          description: The total number of public reactions.
+        collection_id:
+          type: integer
+          nullable: true
+          description: The ID of the collection (series) the article belongs to.
+        published_timestamp:
+          type: string
+          format: date-time
+          description: The ISO 8601 timestamp when the article was published.
+        positive_reactions_count:
+          type: integer
+          description: The count of positive reactions.
+        cover_image:
+          type: string
+          format: uri
+          nullable: true
+          description: The URL of the article's cover image.
+        social_image:
+          type: string
+          format: uri
+          description: The URL of the social sharing image.
+        canonical_url:
+          type: string
+          format: uri
+          description: The canonical URL of the article.
+        created_at:
+          type: string
+          format: date-time
+          description: The ISO 8601 timestamp when the article was created.
+        reading_time_minutes:
+          type: integer
+          description: The estimated reading time in minutes.
+        tag_list:
+          type: array
+          items:
+            type: string
+          description: A list of tags associated with the article.
+        tags:
+          type: string
+          description: A comma-separated string of tags.
+        user:
+          $ref: '#/components/schemas/User'
+        organization:
+          $ref: '#/components/schemas/Organization'
+    VideoArticle:
+      description: Representation of an Article with video
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int64
+        path:
+          type: string
+        cloudinary_video_url:
+          type: string
+        title:
+          type: string
+        user_id:
+          type: integer
+          format: int64
+        video_duration_in_minutes:
+          type: string
+        video_source_url:
+          type: string
+        user:
+          description: Author of the article
+          type: object
+          properties:
+            name:
+              type: string
+    SharedUser:
+      description: The resource creator
+      type: object
+      properties:
+        name:
+          type: string
+        username:
+          type: string
+        twitter_username:
+          type:
+          - string
+          - 'null'
+        github_username:
+          type:
+          - string
+          - 'null'
+        website_url:
+          type:
+          - string
+          - 'null'
+          format: url
+        profile_image:
+          description: Profile image (640x640)
+          type: string
+        profile_image_90:
+          description: Profile image (90x90)
+          type: string
+    Article_2:
+      description: Representation of an Article to be created/updated
+      type: object
+      properties:
+        article:
+          type: object
+          properties:
+            title:
+              type: string
+            body_markdown:
+              type: string
+            published:
+              type: boolean
+              default: false
+            series:
+              type:
+              - string
+              - 'null'
+            main_image:
+              type:
+              - string
+              - 'null'
+            canonical_url:
+              type:
+              - string
+              - 'null'
+            description:
+              type: string
+            tags:
+              type: array
+              items:
+                type: string
+              description: Up to 4 tags, as an array of strings
+            organization_id:
+              type:
+              - integer
+              - 'null'
+            ai_disclosure_level:
+              type: string
+              enum:
+              - not_disclosed
+              - no_ai
+              - some_ai
+              - fully_autonomous
+              description: Level of AI tooling usage disclosure
+    ArticleFlareTag:
+      description: Flare tag of the article
+      type: object
+      properties:
+        name:
+          type: string
+        bg_color_hex:
+          description: Background color (hexadecimal)
+          type:
+          - string
+          - 'null'
+        text_color_hex:
+          description: Text color (hexadecimal)
+          type:
+          - string
+          - 'null'
+    SharedOrganization:
+      description: The organization the resource belongs to
+      type: object
+      properties:
+        name:
+          type: string
+        username:
+          type: string
+        slug:
+          type: string
+        profile_image:
+          description: Profile image (640x640)
+          type: string
+          format: url
+        profile_image_90:
+          description: Profile image (90x90)
+          type: string
+          format: url
+    ArticleIndex_2:
+      description: Representation of an article or post returned in a list
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int32
+        title:
+          type: string
+        description:
+          type: string
+        cover_image:
+          type:
+          - string
+          - 'null'
+          format: url
+        readable_publish_date:
+          type: string
+        social_image:
+          type: string
+          format: url
+        tag_list:
+          type: array
+          items:
+            type: string
+        tags:
+          type: string
+        slug:
+          type: string
+        path:
+          type: string
+          format: path
+        url:
+          type: string
+          format: url
+        canonical_url:
+          type: string
+          format: url
+        positive_reactions_count:
+          type: integer
+          format: int32
+        public_reactions_count:
+          type: integer
+          format: int32
+        created_at:
+          type: string
+          format: date-time
+        edited_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        crossposted_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        published_at:
+          type: string
+          format: date-time
+        last_comment_at:
+          type: string
+          format: date-time
+        published_timestamp:
+          description: Crossposting or published date time
+          type: string
+          format: date-time
+        reading_time_minutes:
+          description: Reading time, in minutes
+          type: integer
+          format: int32
+        ai_disclosure_level:
+          type: string
+          enum:
+          - not_disclosed
+          - no_ai
+          - some_ai
+          - fully_autonomous
+          description: Level of AI tooling usage disclosure
+        ai_disclosure_label:
+          type: string
+          description: Human-readable label of AI disclosure
+        user:
+          $ref: '#/components/schemas/SharedUser'
+        flare_tag:
+          $ref: '#/components/schemas/ArticleFlareTag'
+        organization:
+          $ref: '#/components/schemas/SharedOrganization'
+      required:
+      - type_of
+      - id
+      - title
+      - description
+      - cover_image
+      - readable_publish_date
+      - social_image
+      - tag_list
+      - tags
+      - slug
+      - path
+      - url
+      - canonical_url
+      - comments_count
+      - positive_reactions_count
+      - public_reactions_count
+      - created_at
+      - edited_at
+      - crossposted_at
+      - published_at
+      - last_comment_at
+      - published_timestamp
+      - user
+      - reading_time_minutes
+    Article_3:
+      description: Representation of an Article to be created/updated
+      type: object
+      properties:
+        article:
+          type: object
+          properties:
+            title:
+              type: string
+            body_markdown:
+              type: string
+            published:
+              type: boolean
+              default: false
+            series:
+              type:
+              - string
+              - 'null'
+            main_image:
+              type:
+              - string
+              - 'null'
+            canonical_url:
+              type:
+              - string
+              - 'null'
+            description:
+              type: string
+            tags:
+              type: string
+            organization_id:
+              type:
+              - integer
+              - 'null'
+    ArticleIndex_3:
+      description: Representation of an article or post returned in a list
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int32
+        title:
+          type: string
+        description:
+          type: string
+        cover_image:
+          type:
+          - string
+          - 'null'
+          format: url
+        readable_publish_date:
+          type: string
+        social_image:
+          type: string
+          format: url
+        tag_list:
+          type: array
+          items:
+            type: string
+        tags:
+          type: string
+        slug:
+          type: string
+        path:
+          type: string
+          format: path
+        url:
+          type: string
+          format: url
+        canonical_url:
+          type: string
+          format: url
+        positive_reactions_count:
+          type: integer
+          format: int32
+        public_reactions_count:
+          type: integer
+          format: int32
+        created_at:
+          type: string
+          format: date-time
+        edited_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        crossposted_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        published_at:
+          type: string
+          format: date-time
+        last_comment_at:
+          type: string
+          format: date-time
+        published_timestamp:
+          description: Crossposting or published date time
+          type: string
+          format: date-time
+        reading_time_minutes:
+          description: Reading time, in minutes
+          type: integer
+          format: int32
+        user:
+          $ref: '#/components/schemas/SharedUser'
+        flare_tag:
+          $ref: '#/components/schemas/ArticleFlareTag'
+        organization:
+          $ref: '#/components/schemas/SharedOrganization'
+      required:
+      - type_of
+      - id
+      - title
+      - description
+      - cover_image
+      - readable_publish_date
+      - social_image
+      - tag_list
+      - tags
+      - slug
+      - path
+      - url
+      - canonical_url
+      - comments_count
+      - positive_reactions_count
+      - public_reactions_count
+      - created_at
+      - edited_at
+      - crossposted_at
+      - published_at
+      - last_comment_at
+      - published_timestamp
+      - user
+      - reading_time_minutes
   securitySchemes:
     apiKey:
       type: apiKey
       in: header
       name: api-key
       description: API key obtained from the DEV.to settings page. Pass in the api-key header for authenticated requests.
+    api-key:
+      type: apiKey
+      name: api-key
+      in: header
+      description: "API Key authentication.\n\nAuthentication for some endpoints, like write operations on the\nArticles API require a DEV API key.\n\nAll authenticated endpoints are CORS disabled, the API key is intended for non-browser scripts.\n\n### Getting an API key\n\nTo obtain one, please follow these steps:\n\n  - visit https://dev.to/settings/extensions\n  - in the \"DEV API Keys\" section create a new key by adding a\n    description and clicking on \"Generate API Key\"\n\n    ![obtain a DEV API Key](https://user-images.githubusercontent.com/37842/172718105-bd93664e-76e0-477d-99c4-265dda0b06c5.png)\n\n  - You'll see the newly generated key in the same view\n    ![generated DEV API Key](https://user-images.githubusercontent.com/37842/172718151-e7fe26a0-9937-42e8-96c6-333acdab9e49.png)"
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Short-lived RS256 RFC 9068 access token issued by the configured delegation service and verified against its configured JWKS. The issuer authorizes the client and requested operation before minting the token; Forem validates the token and resolves its subject and owner to a local user. An invalid token returns 401; an unavailable trust dependency with no usable cached key returns 503.
 externalDocs:
   description: Forem API V1 Documentation
   url: https://developers.forem.com/api/v1
+x-refined-from:
+- dev-to-forem-api-openapi.yml
+- dev-to-forem-api-v1-openapi.json
+- devto-articles-api-openapi.yml

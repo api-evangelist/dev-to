@@ -1,17 +1,13 @@
 openapi: 3.2.0
 info:
-  title: Dev.to Forem Organizations API
-  description: The Dev.to Forem API (v1) is a RESTful API that provides programmatic access to the Dev.to developer community platform, which is built on the open-source Forem framework.
+  title: Dev To Organizations API
   version: 1.0.0
-  contact:
-    name: Forem Support
-    url: https://forem.com
-  termsOfService: https://dev.to/terms
+  description: 'Operations tagged Organizations across 3 of this provider''s published API definitions: dev-to-forem-api-openapi.yml, dev-to-forem-api-v1-openapi.json, devto-organizations-api-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://dev.to/api
   description: Dev.to Production Server
-security:
-- apiKey: []
+- url: https://dev.to
+  description: Production server
 tags:
 - name: Organizations
   description: Endpoints for retrieving organization details, members, and articles.
@@ -40,6 +36,9 @@ paths:
                 $ref: '#/components/schemas/Organization'
         '404':
           description: Organization not found
+    servers:
+    - url: https://dev.to/api
+      description: Production server
   /organizations/{username}/users:
     get:
       operationId: getOrgUsers
@@ -68,6 +67,9 @@ paths:
                   $ref: '#/components/schemas/User'
         '404':
           description: Organization not found
+    servers:
+    - url: https://dev.to/api
+      description: Production server
   /organizations/{username}/articles:
     get:
       operationId: getOrgArticles
@@ -96,8 +98,278 @@ paths:
                   $ref: '#/components/schemas/ArticleIndex'
         '404':
           description: Organization not found
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/organizations/{username}:
+    get:
+      summary: An organization (by username)
+      tags:
+      - Organizations
+      security: []
+      description: 'Retrieve public profile information for a single organization by its username.
+
+
+        ### Integration Tip:
+
+        - Bypasses authentication.
+
+        - Returns details like Tech Stack, Tagline, Story, website URLs, and joined date.'
+      operationId: getApiOrganizationsByUsername
+      parameters:
+      - name: username
+        in: path
+        required: true
+        description: The unique slugified username of the organization (e.g. `github`).
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An Organization
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Organization_2'
+        '404':
+          description: Not Found
+      x-operation-id-source: normalized
+      x-operation-id-original: getOrganization
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/organizations/{organization_id_or_username}/users:
+    get:
+      summary: Organization's users
+      tags:
+      - Organizations
+      security: []
+      description: 'Retrieve a list of public user profiles associated with the organization.
+
+
+        ### Path Parameter Options:
+
+        - **organization_id_or_username**: Supports either the organization''s unique numerical ID OR its string username (slug).
+
+        - Ideal for displaying team member directory lists on organization/brand pages.'
+      operationId: getApiOrganizationsByOrganizationIdOrUsernameUsers
+      parameters:
+      - name: organization_id_or_username
+        in: path
+        required: true
+        description: The organization's numerical ID or string username.
+        schema:
+          type: string
+      - $ref: '#/components/parameters/pageParam_2'
+      - $ref: '#/components/parameters/perPageParam30to1000_2'
+      responses:
+        '200':
+          description: An Organization's users (with ID)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User_2'
+        '404':
+          description: Not Found
+      x-operation-id-source: normalized
+      x-operation-id-original: getOrgUsers
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/organizations/{organization_id_or_username}/articles:
+    get:
+      summary: Organization's Articles
+      tags:
+      - Organizations
+      security: []
+      description: 'Retrieve a list of articles published by the organization.
+
+
+        ### Path Parameter Options:
+
+        - **organization_id_or_username**: Supports either the organization''s unique numerical ID OR its string username (slug).
+
+        - Returns articles in reverse chronological publication order.
+
+        - Ideal for populating an organization''s custom blog feed or publication listing.'
+      operationId: getApiOrganizationsByOrganizationIdOrUsernameArticles
+      parameters:
+      - name: organization_id_or_username
+        in: path
+        required: true
+        description: The organization's numerical ID or string username.
+        schema:
+          type: string
+      - $ref: '#/components/parameters/pageParam_2'
+      - $ref: '#/components/parameters/perPageParam30to1000_2'
+      responses:
+        '200':
+          description: An Organization's Articles (with ID)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex_2'
+        '404':
+          description: Not Found
+      x-operation-id-source: normalized
+      x-operation-id-original: getOrgArticles
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/organizations:
+    get:
+      summary: Organizations
+      tags:
+      - Organizations
+      security: []
+      description: 'This endpoint allows the client to retrieve a list of Dev organizations.
+
+
+        It supports pagination, each page will contain 10 tags by default.'
+      operationId: getOrganizations
+      parameters:
+      - $ref: '#/components/parameters/pageParam_2'
+      - $ref: '#/components/parameters/perPageParam10to1000'
+      responses:
+        '200':
+          description: A list of all organizations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Organization_2'
+    post:
+      summary: Create an Organization
+      tags:
+      - Organizations
+      description: 'This endpoint allows the client to create an organization with the provided parameters.
+
+        It requires a token from a user with `admin` privileges.'
+      operationId: createOrganization
+      parameters: []
+      responses:
+        '201':
+          description: Successful
+        '401':
+          description: Unauthorized
+        '422':
+          description: Unprocessable Entity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Organization_2'
+        description: Representation of Organization to be created
+      security:
+      - api-key: []
+      - bearer_auth: []
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/organizations/{id}:
+    get:
+      summary: An organization (by id)
+      tags:
+      - Organizations
+      security: []
+      description: This endpoint allows the client to retrieve a single organization by their id
+      operationId: getOrganizationById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: An Organization
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Organization_2'
+        '404':
+          description: Not Found
+    put:
+      summary: Update an organization by id
+      tags:
+      - Organizations
+      description: This endpoint allows the client to update an existing organization.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the organization to update.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 123
+      responses:
+        '200':
+          description: An Organization
+        '404':
+          description: organization Not Found
+        '401':
+          description: Unauthorized
+        '422':
+          description: Unprocessable Entity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Organization_2'
+        description: Representation of Organization to be updated
+      security:
+      - api-key: []
+      - bearer_auth: []
+      operationId: putApiOrganizationsById
+      x-operation-id-source: derived
+    delete:
+      summary: Delete an Organization by id
+      tags:
+      - Organizations
+      description: This endpoint allows the client to delete a single organization, specified by id
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the organization.
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+        example: 1
+      responses:
+        '200':
+          description: successful
+        '401':
+          description: unauthorized
+      security:
+      - api-key: []
+      - bearer_auth: []
+      operationId: deleteApiOrganizationsById
+      x-operation-id-source: derived
+    servers:
+    - url: https://dev.to/api
+      description: Production server
 components:
   parameters:
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Pagination page number.
     perPageParam30to1000:
       name: per_page
       in: query
@@ -107,15 +379,127 @@ components:
         maximum: 1000
         default: 30
       description: Number of items per page (max 1000, default 30).
-    pageParam:
-      name: page
+    pageParam_2:
       in: query
+      name: page
+      required: false
+      description: Pagination page
       schema:
         type: integer
+        format: int32
         minimum: 1
         default: 1
-      description: Pagination page number.
+    perPageParam10to1000:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 10
+    perPageParam30to1000_2:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 30
+    pageParam_3:
+      in: query
+      name: page
+      required: false
+      description: Pagination page
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
+    perPageParam30to1000_3:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 30
   schemas:
+    User:
+      type: object
+      description: A user account on the DEV platform.
+      properties:
+        name:
+          type: string
+          description: The display name of the user.
+        username:
+          type: string
+          description: The unique username of the user.
+        twitter_username:
+          type: string
+          nullable: true
+          description: The user's Twitter username.
+        github_username:
+          type: string
+          nullable: true
+          description: The user's GitHub username.
+        user_id:
+          type: integer
+          description: The unique numeric ID of the user.
+        website_url:
+          type: string
+          format: uri
+          nullable: true
+          description: The user's website URL.
+        location:
+          type: string
+          nullable: true
+          description: The user's location.
+        summary:
+          type: string
+          nullable: true
+          description: A brief bio or summary of the user.
+        profile_image:
+          type: string
+          format: uri
+          description: The URL of the user's profile image.
+        profile_image_90:
+          type: string
+          format: uri
+          description: The URL of the 90px profile image.
+        joined_at:
+          type: string
+          format: date-time
+          description: The ISO 8601 timestamp when the user joined.
+    Organization:
+      type: object
+      description: An organization on the DEV platform that can publish articles and have members.
+      properties:
+        name:
+          type: string
+          description: The display name of the organization.
+        username:
+          type: string
+          description: The unique username (slug) of the organization.
+        slug:
+          type: string
+          description: The URL slug of the organization.
+        profile_image:
+          type: string
+          format: uri
+          description: The URL of the organization's profile image.
+        profile_image_90:
+          type: string
+          format: uri
+          description: The URL of the 90px profile image.
     ArticleIndex:
       type: object
       description: A summary article object returned in list endpoints, with fewer fields than the full article representation.
@@ -194,79 +578,469 @@ components:
           $ref: '#/components/schemas/User'
         organization:
           $ref: '#/components/schemas/Organization'
-    Organization:
+    SharedUser:
+      description: The resource creator
       type: object
-      description: An organization on the DEV platform that can publish articles and have members.
       properties:
         name:
           type: string
-          description: The display name of the organization.
         username:
           type: string
-          description: The unique username (slug) of the organization.
+        twitter_username:
+          type:
+          - string
+          - 'null'
+        github_username:
+          type:
+          - string
+          - 'null'
+        website_url:
+          type:
+          - string
+          - 'null'
+          format: url
+        profile_image:
+          description: Profile image (640x640)
+          type: string
+        profile_image_90:
+          description: Profile image (90x90)
+          type: string
+    ArticleFlareTag:
+      description: Flare tag of the article
+      type: object
+      properties:
+        name:
+          type: string
+        bg_color_hex:
+          description: Background color (hexadecimal)
+          type:
+          - string
+          - 'null'
+        text_color_hex:
+          description: Text color (hexadecimal)
+          type:
+          - string
+          - 'null'
+    SharedOrganization:
+      description: The organization the resource belongs to
+      type: object
+      properties:
+        name:
+          type: string
+        username:
+          type: string
         slug:
           type: string
-          description: The URL slug of the organization.
         profile_image:
+          description: Profile image (640x640)
           type: string
-          format: uri
-          description: The URL of the organization's profile image.
+          format: url
         profile_image_90:
+          description: Profile image (90x90)
           type: string
-          format: uri
-          description: The URL of the 90px profile image.
-    User:
+          format: url
+    User_2:
+      description: The representation of a user returned in a list
       type: object
-      description: A user account on the DEV platform.
       properties:
-        name:
+        type_of:
           type: string
-          description: The display name of the user.
+        id:
+          type: integer
+          format: int64
         username:
           type: string
-          description: The unique username of the user.
+        name:
+          type: string
+        summary:
+          type:
+          - string
+          - 'null'
         twitter_username:
           type: string
-          nullable: true
-          description: The user's Twitter username.
         github_username:
           type: string
-          nullable: true
-          description: The user's GitHub username.
-        user_id:
-          type: integer
-          description: The unique numeric ID of the user.
         website_url:
-          type: string
-          format: uri
-          nullable: true
-          description: The user's website URL.
+          type:
+          - string
+          - 'null'
         location:
-          type: string
-          nullable: true
-          description: The user's location.
-        summary:
-          type: string
-          nullable: true
-          description: A brief bio or summary of the user.
-        profile_image:
-          type: string
-          format: uri
-          description: The URL of the user's profile image.
-        profile_image_90:
-          type: string
-          format: uri
-          description: The URL of the 90px profile image.
+          type:
+          - string
+          - 'null'
         joined_at:
           type: string
+        profile_image:
+          type: string
+    Organization_2:
+      description: Representation of an Organization
+      type: object
+      properties:
+        type_of:
+          type: string
+        username:
+          type: string
+        name:
+          type: string
+        summary:
+          type: string
+        twitter_username:
+          type: string
+        github_username:
+          type: string
+        url:
+          type: string
+        location:
+          type: string
+        joined_at:
+          type: string
+        tech_stack:
+          type: string
+        tag_line:
+          type:
+          - string
+          - 'null'
+        story:
+          type:
+          - string
+          - 'null'
+    ArticleIndex_2:
+      description: Representation of an article or post returned in a list
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int32
+        title:
+          type: string
+        description:
+          type: string
+        cover_image:
+          type:
+          - string
+          - 'null'
+          format: url
+        readable_publish_date:
+          type: string
+        social_image:
+          type: string
+          format: url
+        tag_list:
+          type: array
+          items:
+            type: string
+        tags:
+          type: string
+        slug:
+          type: string
+        path:
+          type: string
+          format: path
+        url:
+          type: string
+          format: url
+        canonical_url:
+          type: string
+          format: url
+        positive_reactions_count:
+          type: integer
+          format: int32
+        public_reactions_count:
+          type: integer
+          format: int32
+        created_at:
+          type: string
           format: date-time
-          description: The ISO 8601 timestamp when the user joined.
+        edited_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        crossposted_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        published_at:
+          type: string
+          format: date-time
+        last_comment_at:
+          type: string
+          format: date-time
+        published_timestamp:
+          description: Crossposting or published date time
+          type: string
+          format: date-time
+        reading_time_minutes:
+          description: Reading time, in minutes
+          type: integer
+          format: int32
+        ai_disclosure_level:
+          type: string
+          enum:
+          - not_disclosed
+          - no_ai
+          - some_ai
+          - fully_autonomous
+          description: Level of AI tooling usage disclosure
+        ai_disclosure_label:
+          type: string
+          description: Human-readable label of AI disclosure
+        user:
+          $ref: '#/components/schemas/SharedUser'
+        flare_tag:
+          $ref: '#/components/schemas/ArticleFlareTag'
+        organization:
+          $ref: '#/components/schemas/SharedOrganization'
+      required:
+      - type_of
+      - id
+      - title
+      - description
+      - cover_image
+      - readable_publish_date
+      - social_image
+      - tag_list
+      - tags
+      - slug
+      - path
+      - url
+      - canonical_url
+      - comments_count
+      - positive_reactions_count
+      - public_reactions_count
+      - created_at
+      - edited_at
+      - crossposted_at
+      - published_at
+      - last_comment_at
+      - published_timestamp
+      - user
+      - reading_time_minutes
+    User_3:
+      description: The representation of a user returned in a list
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        name:
+          type: string
+        summary:
+          type:
+          - string
+          - 'null'
+        twitter_username:
+          type: string
+        github_username:
+          type: string
+        website_url:
+          type:
+          - string
+          - 'null'
+        location:
+          type:
+          - string
+          - 'null'
+        joined_at:
+          type: string
+        profile_image:
+          type: string
+    Organization_3:
+      description: Representation of an Organization
+      type: object
+      properties:
+        type_of:
+          type: string
+        username:
+          type: string
+        name:
+          type: string
+        summary:
+          type: string
+        twitter_username:
+          type: string
+        github_username:
+          type: string
+        url:
+          type: string
+        location:
+          type: string
+        joined_at:
+          type: string
+        tech_stack:
+          type: string
+        tag_line:
+          type:
+          - string
+          - 'null'
+        story:
+          type:
+          - string
+          - 'null'
+    ArticleIndex_3:
+      description: Representation of an article or post returned in a list
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int32
+        title:
+          type: string
+        description:
+          type: string
+        cover_image:
+          type:
+          - string
+          - 'null'
+          format: url
+        readable_publish_date:
+          type: string
+        social_image:
+          type: string
+          format: url
+        tag_list:
+          type: array
+          items:
+            type: string
+        tags:
+          type: string
+        slug:
+          type: string
+        path:
+          type: string
+          format: path
+        url:
+          type: string
+          format: url
+        canonical_url:
+          type: string
+          format: url
+        positive_reactions_count:
+          type: integer
+          format: int32
+        public_reactions_count:
+          type: integer
+          format: int32
+        created_at:
+          type: string
+          format: date-time
+        edited_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        crossposted_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        published_at:
+          type: string
+          format: date-time
+        last_comment_at:
+          type: string
+          format: date-time
+        published_timestamp:
+          description: Crossposting or published date time
+          type: string
+          format: date-time
+        reading_time_minutes:
+          description: Reading time, in minutes
+          type: integer
+          format: int32
+        user:
+          $ref: '#/components/schemas/SharedUser'
+        flare_tag:
+          $ref: '#/components/schemas/ArticleFlareTag'
+        organization:
+          $ref: '#/components/schemas/SharedOrganization'
+      required:
+      - type_of
+      - id
+      - title
+      - description
+      - cover_image
+      - readable_publish_date
+      - social_image
+      - tag_list
+      - tags
+      - slug
+      - path
+      - url
+      - canonical_url
+      - comments_count
+      - positive_reactions_count
+      - public_reactions_count
+      - created_at
+      - edited_at
+      - crossposted_at
+      - published_at
+      - last_comment_at
+      - published_timestamp
+      - user
+      - reading_time_minutes
+    User_2_2:
+      description: The representation of a user
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        name:
+          type: string
+        summary:
+          type:
+          - string
+          - 'null'
+        twitter_username:
+          type: string
+        github_username:
+          type: string
+        website_url:
+          type:
+          - string
+          - 'null'
+        location:
+          type:
+          - string
+          - 'null'
+        joined_at:
+          type: string
+        profile_image:
+          type: string
   securitySchemes:
     apiKey:
       type: apiKey
       in: header
       name: api-key
       description: API key obtained from the DEV.to settings page. Pass in the api-key header for authenticated requests.
+    api-key:
+      type: apiKey
+      name: api-key
+      in: header
+      description: "API Key authentication.\n\nAuthentication for some endpoints, like write operations on the\nArticles API require a DEV API key.\n\nAll authenticated endpoints are CORS disabled, the API key is intended for non-browser scripts.\n\n### Getting an API key\n\nTo obtain one, please follow these steps:\n\n  - visit https://dev.to/settings/extensions\n  - in the \"DEV API Keys\" section create a new key by adding a\n    description and clicking on \"Generate API Key\"\n\n    ![obtain a DEV API Key](https://user-images.githubusercontent.com/37842/172718105-bd93664e-76e0-477d-99c4-265dda0b06c5.png)\n\n  - You'll see the newly generated key in the same view\n    ![generated DEV API Key](https://user-images.githubusercontent.com/37842/172718151-e7fe26a0-9937-42e8-96c6-333acdab9e49.png)"
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Short-lived RS256 RFC 9068 access token issued by the configured delegation service and verified against its configured JWKS. The issuer authorizes the client and requested operation before minting the token; Forem validates the token and resolves its subject and owner to a local user. An invalid token returns 401; an unavailable trust dependency with no usable cached key returns 503.
 externalDocs:
   description: Forem API V1 Documentation
   url: https://developers.forem.com/api/v1
+x-refined-from:
+- dev-to-forem-api-openapi.yml
+- dev-to-forem-api-v1-openapi.json
+- devto-organizations-api-openapi.yml

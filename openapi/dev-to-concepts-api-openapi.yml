@@ -1,0 +1,709 @@
+openapi: 3.2.0
+info:
+  title: Forem API V1 Concepts API
+  version: 1.0.0
+  description: Access Forem articles, users and other resources via API.
+servers:
+- url: https://dev.to
+  description: Production server
+security:
+- api-key: []
+- bearer_auth: []
+tags:
+- name: concepts
+paths:
+  /api/concepts:
+    get:
+      summary: Retrieve all accessible concepts
+      tags:
+      - concepts
+      description: 'Retrieve all accessible concepts in the system.
+
+
+        ### Concepts Overview:
+
+        - Concepts are semantic tags generated automatically by analyzing article text using ML embeddings (`gemini-embedding-2`), rather than explicit user tags.
+
+        - Primarily used for advanced semantic categorization, automated feeds, and interest mapping.'
+      parameters:
+      - name: page
+        in: query
+        required: false
+        description: Pagination page index.
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        required: false
+        description: Number of items to return per page.
+        schema:
+          type: integer
+      - name: days
+        in: query
+        required: false
+        description: Number of days of activity to aggregate for computing the concept popularity/trend score (default is 7 days).
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Concept'
+        '401':
+          description: unauthorized
+      operationId: getApiConcepts
+      x-operation-id-source: derived
+  /api/concepts/{id}:
+    get:
+      summary: Retrieve details of a concept
+      tags:
+      - concepts
+      description: 'Retrieve details, settings, and popularity metrics of a single concept by ID.
+
+
+        ### Integration Tip:
+
+        - Includes the semantic description, similarity thresholds, parent concept mappings, and scores.'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique concept numerical ID.
+        schema:
+          type: integer
+      - name: days
+        in: query
+        required: false
+        description: Number of days of activity to aggregate for the concept popularity/trend score.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Concept'
+        '401':
+          description: unauthorized
+      operationId: getApiConceptsById
+      x-operation-id-source: derived
+    patch:
+      summary: Update a concept's metadata
+      tags:
+      - concepts
+      description: 'Update concept metadata such as description, similarity threshold, and custom score.
+
+
+        ### Parameter Guidelines:
+
+        - **similarity_threshold**: Cosine distance threshold (range 0.0 to 1.0) determining how closely an article''s embedding must align with the concept''s anchor embedding to be classified under it.'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique concept numerical ID.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Concept'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                concept:
+                  type: object
+                  properties:
+                    score:
+                      type: number
+                    description:
+                      type: string
+                    similarity_threshold:
+                      type: number
+      operationId: patchApiConceptsById
+      x-operation-id-source: derived
+  /api/concepts/{id}/articles:
+    get:
+      summary: Retrieve articles mapped to a concept
+      tags:
+      - concepts
+      description: 'Retrieve articles classified under this concept.
+
+
+        ### Parameter Guidelines:
+
+        - **sort**: Set to `score` to sort articles by article popularity score descending. If omitted or set to any other value, sorting defaults to cosine similarity (closest first) secondary sorted by article score.'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique concept numerical ID.
+        schema:
+          type: integer
+      - name: sort
+        in: query
+        required: false
+        description: 'Sorting criteria: `score` or default.'
+        schema:
+          type: string
+      - name: page
+        in: query
+        required: false
+        description: Pagination page index.
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        required: false
+        description: Number of items to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleIndex'
+      operationId: getApiConceptsByIdArticles
+      x-operation-id-source: derived
+  /api/admin/concepts:
+    get:
+      summary: Retrieve all concepts (Admin)
+      tags:
+      - concepts
+      description: Retrieve all concepts in the system including system and draft concepts. Admin credentials required.
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Concept'
+      operationId: getApiAdminConcepts
+      x-operation-id-source: derived
+    post:
+      summary: Create a concept (Admin)
+      tags:
+      - concepts
+      description: 'Create a new Concept.
+
+
+        ### Parameters:
+
+        - **name**: Human readable label for the concept.
+
+        - **description**: Detailed semantic definition used to generate the anchor embedding.
+
+        - **similarity_threshold**: Target similarity threshold for categorizing articles under this concept.
+
+        - **parent_id**: ID of parent concept, if establishing a hierarchy.'
+      parameters: []
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Concept'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                concept:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    parent_id:
+                      type:
+                      - integer
+                      - 'null'
+                    similarity_threshold:
+                      type: number
+                    score:
+                      type: number
+                  required:
+                  - name
+      operationId: postApiAdminConcepts
+      x-operation-id-source: derived
+  /api/admin/concepts/{id}:
+    get:
+      summary: Retrieve concept detail (Admin)
+      tags:
+      - concepts
+      description: Retrieve full details of a specific concept by ID. Admin credentials required.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Concept'
+      operationId: getApiAdminConceptsById
+      x-operation-id-source: derived
+    patch:
+      summary: Update a concept (Admin)
+      tags:
+      - concepts
+      description: Update concept properties. Admin credentials required.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Concept'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                concept:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    parent_id:
+                      type:
+                      - integer
+                      - 'null'
+                    similarity_threshold:
+                      type: number
+                    score:
+                      type: number
+      operationId: patchApiAdminConceptsById
+      x-operation-id-source: derived
+    delete:
+      summary: Delete a concept (Admin)
+      tags:
+      - concepts
+      description: Permanently delete a concept by ID. Admin credentials required.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: no content
+      operationId: deleteApiAdminConceptsById
+      x-operation-id-source: derived
+  /api/admin/concepts/{id}/trigger_lookback:
+    post:
+      summary: Trigger concept lookback backfill (Admin)
+      tags:
+      - concepts
+      description: Trigger a background backfill worker to scan historical articles published in the last `N` days and evaluate them against this concept.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                days:
+                  type: integer
+              required:
+              - days
+      operationId: postApiAdminConceptsByIdTriggerLookback
+      x-operation-id-source: derived
+  /api/concepts/search:
+    get:
+      summary: Perform a semantic fuzzy search on concepts
+      tags:
+      - concepts
+      description: Allows authenticated clients to search concepts using Forem's semantic embeddings database.
+      parameters:
+      - name: q
+        in: query
+        required: true
+        description: The search query term to match semantically.
+        schema:
+          type: string
+      - name: per_page
+        in: query
+        required: false
+        description: Limit of concepts returned (default 10, max 50).
+        schema:
+          type: integer
+      - name: threshold
+        in: query
+        required: false
+        description: Optional cosine distance threshold (between 0.0 and 2.0) to filter results.
+        schema:
+          type: number
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    slug:
+                      type: string
+                    description:
+                      type:
+                      - string
+                      - 'null'
+                    parent_id:
+                      type:
+                      - integer
+                      - 'null'
+                    score:
+                      type: number
+                    similarity_threshold:
+                      type:
+                      - number
+                      - 'null'
+                    created_at:
+                      type: string
+                    updated_at:
+                      type: string
+                    distance:
+                      type: number
+                    similarity:
+                      type: number
+        '400':
+          description: bad request
+        '401':
+          description: unauthorized
+      operationId: getApiConceptsSearch
+      x-operation-id-source: derived
+components:
+  schemas:
+    SharedUser:
+      description: The resource creator
+      type: object
+      properties:
+        name:
+          type: string
+        username:
+          type: string
+        twitter_username:
+          type:
+          - string
+          - 'null'
+        github_username:
+          type:
+          - string
+          - 'null'
+        website_url:
+          type:
+          - string
+          - 'null'
+          format: url
+        profile_image:
+          description: Profile image (640x640)
+          type: string
+        profile_image_90:
+          description: Profile image (90x90)
+          type: string
+    Concept:
+      description: Representation of a concept
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        parent_id:
+          type:
+          - integer
+          - 'null'
+          format: int64
+        score:
+          type: number
+          format: float
+        similarity_threshold:
+          type:
+          - number
+          - 'null'
+          format: float
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        daily_metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConceptDailyMetric'
+        top_articles:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                format: int64
+              title:
+                type: string
+              slug:
+                type: string
+              score:
+                type: number
+                format: float
+              published_at:
+                type: string
+                format: date-time
+      required:
+      - id
+      - name
+      - slug
+      - created_at
+      - updated_at
+    SharedOrganization:
+      description: The organization the resource belongs to
+      type: object
+      properties:
+        name:
+          type: string
+        username:
+          type: string
+        slug:
+          type: string
+        profile_image:
+          description: Profile image (640x640)
+          type: string
+          format: url
+        profile_image_90:
+          description: Profile image (90x90)
+          type: string
+          format: url
+    ArticleFlareTag:
+      description: Flare tag of the article
+      type: object
+      properties:
+        name:
+          type: string
+        bg_color_hex:
+          description: Background color (hexadecimal)
+          type:
+          - string
+          - 'null'
+        text_color_hex:
+          description: Text color (hexadecimal)
+          type:
+          - string
+          - 'null'
+    ConceptDailyMetric:
+      description: Representation of daily metrics for a concept
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        articles_count:
+          type: integer
+        comments_count:
+          type: integer
+        page_views:
+          type: integer
+        reactions_count:
+          type: integer
+        popularity_score:
+          type: number
+          format: float
+      required:
+      - date
+      - articles_count
+      - comments_count
+      - page_views
+      - reactions_count
+      - popularity_score
+    ArticleIndex:
+      description: Representation of an article or post returned in a list
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int32
+        title:
+          type: string
+        description:
+          type: string
+        cover_image:
+          type:
+          - string
+          - 'null'
+          format: url
+        readable_publish_date:
+          type: string
+        social_image:
+          type: string
+          format: url
+        tag_list:
+          type: array
+          items:
+            type: string
+        tags:
+          type: string
+        slug:
+          type: string
+        path:
+          type: string
+          format: path
+        url:
+          type: string
+          format: url
+        canonical_url:
+          type: string
+          format: url
+        positive_reactions_count:
+          type: integer
+          format: int32
+        public_reactions_count:
+          type: integer
+          format: int32
+        created_at:
+          type: string
+          format: date-time
+        edited_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        crossposted_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        published_at:
+          type: string
+          format: date-time
+        last_comment_at:
+          type: string
+          format: date-time
+        published_timestamp:
+          description: Crossposting or published date time
+          type: string
+          format: date-time
+        reading_time_minutes:
+          description: Reading time, in minutes
+          type: integer
+          format: int32
+        ai_disclosure_level:
+          type: string
+          enum:
+          - not_disclosed
+          - no_ai
+          - some_ai
+          - fully_autonomous
+          description: Level of AI tooling usage disclosure
+        ai_disclosure_label:
+          type: string
+          description: Human-readable label of AI disclosure
+        user:
+          $ref: '#/components/schemas/SharedUser'
+        flare_tag:
+          $ref: '#/components/schemas/ArticleFlareTag'
+        organization:
+          $ref: '#/components/schemas/SharedOrganization'
+      required:
+      - type_of
+      - id
+      - title
+      - description
+      - cover_image
+      - readable_publish_date
+      - social_image
+      - tag_list
+      - tags
+      - slug
+      - path
+      - url
+      - canonical_url
+      - comments_count
+      - positive_reactions_count
+      - public_reactions_count
+      - created_at
+      - edited_at
+      - crossposted_at
+      - published_at
+      - last_comment_at
+      - published_timestamp
+      - user
+      - reading_time_minutes
+  securitySchemes:
+    api-key:
+      type: apiKey
+      name: api-key
+      in: header
+      description: "API Key authentication.\n\nAuthentication for some endpoints, like write operations on the\nArticles API require a DEV API key.\n\nAll authenticated endpoints are CORS disabled, the API key is intended for non-browser scripts.\n\n### Getting an API key\n\nTo obtain one, please follow these steps:\n\n  - visit https://dev.to/settings/extensions\n  - in the \"DEV API Keys\" section create a new key by adding a\n    description and clicking on \"Generate API Key\"\n\n    ![obtain a DEV API Key](https://user-images.githubusercontent.com/37842/172718105-bd93664e-76e0-477d-99c4-265dda0b06c5.png)\n\n  - You'll see the newly generated key in the same view\n    ![generated DEV API Key](https://user-images.githubusercontent.com/37842/172718151-e7fe26a0-9937-42e8-96c6-333acdab9e49.png)"
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Short-lived RS256 RFC 9068 access token issued by the configured delegation service and verified against its configured JWKS. The issuer authorizes the client and requested operation before minting the token; Forem validates the token and resolves its subject and owner to a local user. An invalid token returns 401; an unavailable trust dependency with no usable cached key returns 503.

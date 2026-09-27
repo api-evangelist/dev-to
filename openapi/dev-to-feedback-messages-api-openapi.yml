@@ -1,0 +1,67 @@
+openapi: 3.2.0
+info:
+  title: Forem API V1 Feedback Messages API
+  version: 1.0.0
+  description: Access Forem articles, users and other resources via API.
+servers:
+- url: https://dev.to
+  description: Production server
+security:
+- api-key: []
+- bearer_auth: []
+tags:
+- name: feedback_messages
+paths:
+  /api/feedback_messages/{id}:
+    patch:
+      summary: Update a feedback message's status (Admin)
+      tags:
+      - feedback_messages
+      description: 'Update the status of a user feedback message or report.
+
+
+        ### Feedback Messages Overview:
+
+        - Feedback messages are submitted by users via support forms or content abuse reporting modals.
+
+        - Requires Administrator privileges.
+
+        - Used to track moderation/resolution workflows (e.g. marking a spam report as `Resolved`, `Spam`, or `Ignored`).'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique feedback message ID.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                feedback_message:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                  required:
+                  - status
+        description: Feedback parameters containing the status updates.
+      operationId: patchApiFeedbackMessagesById
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    api-key:
+      type: apiKey
+      name: api-key
+      in: header
+      description: "API Key authentication.\n\nAuthentication for some endpoints, like write operations on the\nArticles API require a DEV API key.\n\nAll authenticated endpoints are CORS disabled, the API key is intended for non-browser scripts.\n\n### Getting an API key\n\nTo obtain one, please follow these steps:\n\n  - visit https://dev.to/settings/extensions\n  - in the \"DEV API Keys\" section create a new key by adding a\n    description and clicking on \"Generate API Key\"\n\n    ![obtain a DEV API Key](https://user-images.githubusercontent.com/37842/172718105-bd93664e-76e0-477d-99c4-265dda0b06c5.png)\n\n  - You'll see the newly generated key in the same view\n    ![generated DEV API Key](https://user-images.githubusercontent.com/37842/172718151-e7fe26a0-9937-42e8-96c6-333acdab9e49.png)"
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Short-lived RS256 RFC 9068 access token issued by the configured delegation service and verified against its configured JWKS. The issuer authorizes the client and requested operation before minting the token; Forem validates the token and resolves its subject and owner to a local user. An invalid token returns 401; an unavailable trust dependency with no usable cached key returns 503.

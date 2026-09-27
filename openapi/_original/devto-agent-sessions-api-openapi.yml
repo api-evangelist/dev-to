@@ -1,3 +1,5 @@
+# x-archived-from: devto-agent-sessions-api-openapi.yml
+# x-archived-on: 2026-09-26
 openapi: 3.2.0
 info:
   title: Forem API V1 Agent Sessions API

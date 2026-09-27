@@ -1,56 +1,139 @@
 openapi: 3.2.0
 info:
-  title: Dev.to Forem Podcast Episodes API
-  description: The Dev.to Forem API (v1) is a RESTful API that provides programmatic access to the Dev.to developer community platform, which is built on the open-source Forem framework.
+  title: Dev To Podcast Episodes API
   version: 1.0.0
-  contact:
-    name: Forem Support
-    url: https://forem.com
-  termsOfService: https://dev.to/terms
+  description: 'Operations tagged podcast_episodes across 2 of this provider''s published API definitions: dev-to-forem-api-v1-openapi.json, devto-podcast-episodes-api-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
+- url: https://dev.to
+  description: Production server
 - url: https://dev.to/api
-  description: Dev.to Production Server
-security:
-- apiKey: []
+  description: Production server
 tags:
 - name: Podcast Episodes
-  description: Endpoints for retrieving published podcast episodes.
 paths:
-  /podcast_episodes:
+  /api/podcast_episodes:
     get:
-      operationId: getPodcastEpisodes
       summary: Podcast Episodes
-      description: Retrieves a list of published podcast episodes. Can be filtered by username.
+      security: []
       tags:
       - Podcast Episodes
-      security: []
+      description: 'Retrieve a list of podcast episodes published on the platform.
+
+
+        ### Integration Guidance:
+
+        - Bypasses authentication (can be accessed publicly).
+
+        - Only returns active episodes belonging to published/reachable podcasts.
+
+        - Episodes are returned in reverse chronological order based on their publication date.
+
+        - The `username` query parameter is the unique slug of the podcast channel (e.g. `codenewbie`).
+
+
+        It supports pagination, each page will contain 30 episodes by default.'
+      operationId: getPodcastEpisodes
       parameters:
       - $ref: '#/components/parameters/pageParam'
-      - $ref: '#/components/parameters/perPageParam10to1000'
+      - $ref: '#/components/parameters/perPageParam30to1000'
       - name: username
         in: query
+        required: false
+        description: Filters episodes by the unique slug (username) of the podcast (e.g. 'codenewbie').
         schema:
           type: string
-        description: Filter podcast episodes by the podcast owner's username.
+        example: codenewbie
       responses:
         '200':
-          description: A list of podcast episodes
+          description: A List of Podcast episodes filtered by username
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/PodcastEpisodeIndex'
+        '404':
+          description: Unknown Podcast username
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /podcast_episodes:
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+    get:
+      summary: Podcast Episodes
+      security: []
+      tags:
+      - Podcast Episodes
+      description: 'This endpoint allows the client to retrieve a list of podcast episodes.
+
+        "Podcast episodes" are episodes belonging to podcasts.
+
+        It will only return active (reachable) podcast episodes that belong to published podcasts available on the platform, ordered by descending publication date.
+
+        It supports pagination, each page will contain 30 articles by default.'
+      operationId: getPodcastEpisodes
+      parameters:
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/perPageParam30to1000'
+      - name: username
+        in: query
+        required: false
+        description: Using this parameter will retrieve episodes belonging to a specific podcast.
+        schema:
+          type: string
+        example: codenewbie
+      responses:
+        '200':
+          description: A List of Podcast episodes filtered by username
+          content:
+            application/json:
+              example:
+              - type_of: podcast_episodes
+                class_name: PodcastEpisode
+                id: 4
+                path: /codenewbie/slug-4
+                title: '5'
+                image_url: /uploads/podcast/image/8/624a3c09-8036-43e4-9187-4cbf6d3c1fd6.jpeg
+                podcast:
+                  title: Maudite
+                  slug: codenewbie
+                  image_url: /uploads/podcast/image/8/624a3c09-8036-43e4-9187-4cbf6d3c1fd6.jpeg
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PodcastEpisodeIndex'
+        '404':
+          description: Unknown Podcast username
+          content:
+            application/json:
+              example:
+                error: not found
+                status: 404
 components:
   parameters:
     pageParam:
-      name: page
       in: query
+      name: page
+      required: false
+      description: Pagination page
       schema:
         type: integer
+        format: int32
         minimum: 1
         default: 1
-      description: Pagination page number.
+    perPageParam30to1000:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 30
     perPageParam10to1000:
       name: per_page
       in: query
@@ -61,49 +144,64 @@ components:
         default: 10
       description: Number of items per page (max 1000, default 10).
   schemas:
-    PodcastEpisodeIndex:
+    SharedPodcast:
+      description: The podcast that the resource belongs to
       type: object
-      description: A podcast episode summary returned in list endpoints.
+      properties:
+        title:
+          type: string
+        slug:
+          type: string
+        image_url:
+          description: Podcast image url
+          type: string
+          format: url
+    PodcastEpisodeIndex:
+      description: Representation of a podcast episode returned in a list
+      type: object
       properties:
         type_of:
           type: string
-          description: The type of resource, always "podcast_episodes".
         id:
           type: integer
-          description: The unique identifier of the episode.
+          format: int32
         class_name:
           type: string
-          description: The class name of the resource.
         path:
           type: string
-          description: The relative path to the episode on DEV.
+          format: path
         title:
           type: string
-          description: The title of the podcast episode.
         image_url:
+          description: Podcast episode image url or podcast image url
           type: string
-          format: uri
-          description: The URL of the episode's image.
+          format: url
         podcast:
-          type: object
-          properties:
-            title:
-              type: string
-              description: The title of the podcast.
-            slug:
-              type: string
-              description: The URL slug of the podcast.
-            image_url:
-              type: string
-              format: uri
-              description: The URL of the podcast's image.
-          description: The parent podcast information.
+          $ref: '#/components/schemas/SharedPodcast'
+      required:
+      - type_of
+      - class_name
+      - id
+      - path
+      - title
+      - image_url
+      - podcast
   securitySchemes:
+    api-key:
+      type: apiKey
+      name: api-key
+      in: header
+      description: "API Key authentication.\n\nAuthentication for some endpoints, like write operations on the\nArticles API require a DEV API key.\n\nAll authenticated endpoints are CORS disabled, the API key is intended for non-browser scripts.\n\n### Getting an API key\n\nTo obtain one, please follow these steps:\n\n  - visit https://dev.to/settings/extensions\n  - in the \"DEV API Keys\" section create a new key by adding a\n    description and clicking on \"Generate API Key\"\n\n    ![obtain a DEV API Key](https://user-images.githubusercontent.com/37842/172718105-bd93664e-76e0-477d-99c4-265dda0b06c5.png)\n\n  - You'll see the newly generated key in the same view\n    ![generated DEV API Key](https://user-images.githubusercontent.com/37842/172718151-e7fe26a0-9937-42e8-96c6-333acdab9e49.png)"
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Short-lived RS256 RFC 9068 access token issued by the configured delegation service and verified against its configured JWKS. The issuer authorizes the client and requested operation before minting the token; Forem validates the token and resolves its subject and owner to a local user. An invalid token returns 401; an unavailable trust dependency with no usable cached key returns 503.
     apiKey:
       type: apiKey
       in: header
       name: api-key
       description: API key obtained from the DEV.to settings page. Pass in the api-key header for authenticated requests.
-externalDocs:
-  description: Forem API V1 Documentation
-  url: https://developers.forem.com/api/v1
+x-refined-from:
+- dev-to-forem-api-v1-openapi.json
+- devto-podcast-episodes-api-openapi.yml

@@ -1,17 +1,13 @@
 openapi: 3.2.0
 info:
-  title: Dev.to Forem Tags API
-  description: The Dev.to Forem API (v1) is a RESTful API that provides programmatic access to the Dev.to developer community platform, which is built on the open-source Forem framework.
+  title: Dev To Tags API
   version: 1.0.0
-  contact:
-    name: Forem Support
-    url: https://forem.com
-  termsOfService: https://dev.to/terms
+  description: 'Operations tagged Tags across 3 of this provider''s published API definitions: dev-to-forem-api-openapi.yml, dev-to-forem-api-v1-openapi.json, devto-tags-api-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://dev.to/api
   description: Dev.to Production Server
-security:
-- apiKey: []
+- url: https://dev.to
+  description: Production server
 tags:
 - name: Tags
 paths:
@@ -35,6 +31,116 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Tag'
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/follows/tags:
+    get:
+      summary: Followed Tags
+      tags:
+      - Tags
+      description: 'Retrieve the list of tags followed by the authenticated user.
+
+
+        ### Integration & Personalization Guidance:
+
+        - Requires authentication.
+
+        - Returns tags in ascending/popularity order based on user interactions.
+
+        - Useful for customizing the home feed interface, constructing personalized sidebar navigation, or displaying a user''s customized topic preferences in a dashboard.'
+      operationId: getFollowedTags
+      responses:
+        '401':
+          description: unauthorized
+        '200':
+          description: A List of followed tags
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FollowedTag'
+      security:
+      - api-key: []
+      - bearer_auth: []
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /api/tags:
+    get:
+      summary: Tags
+      tags:
+      - Tags
+      security: []
+      description: 'Retrieve a list of tags used on the platform, ordered by popularity.
+
+
+        ### Integration Tips:
+
+        - Bypasses authentication (can be accessed publicly).
+
+        - Ordered by overall popularity/usage metrics on the platform.
+
+        - Useful for autocomplete inputs in article editors, tag selection screens in settings, or rendering global navigation/explore lists.
+
+
+        It supports pagination, each page will contain 10 tags by default.'
+      operationId: getApiTags
+      parameters:
+      - $ref: '#/components/parameters/pageParam_2'
+      - $ref: '#/components/parameters/perPageParam10to1000_2'
+      responses:
+        '200':
+          description: A List of all tags
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag_2'
+      x-operation-id-source: normalized
+      x-operation-id-original: getTags
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+  /follows/tags:
+    servers:
+    - url: https://dev.to/api
+      description: Production server
+    get:
+      summary: Followed Tags
+      tags:
+      - Tags
+      description: This endpoint allows the client to retrieve a list of the tags they follow.
+      operationId: getFollowsTags
+      responses:
+        '200':
+          description: A List of followed tags
+          content:
+            application/json:
+              example:
+              - id: 701
+                name: tag3
+                points: 1
+              - id: 702
+                name: tag4
+                points: 1
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FollowedTag'
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+      security:
+      - api-key: []
+      x-operation-id-source: normalized
+      x-operation-id-original: getFollowedTags
 components:
   schemas:
     Tag:
@@ -55,7 +161,68 @@ components:
           type: string
           pattern: ^#[0-9a-fA-F]{6}$
           description: The text color hex code for the tag.
+    FollowedTag:
+      description: Representation of a followed tag
+      type: object
+      properties:
+        id:
+          description: Tag id
+          type: integer
+          format: int64
+        name:
+          type: string
+        points:
+          type: number
+          format: float
+      required:
+      - id
+      - name
+      - points
+    Tag_2:
+      description: Representation of a tag
+      type: object
+      properties:
+        id:
+          description: Tag id
+          type: integer
+          format: int64
+        name:
+          type: string
+        bg_color_hex:
+          type:
+          - string
+          - 'null'
+        text_color_hex:
+          type:
+          - string
+          - 'null'
+    Tag_3:
+      description: Representation of a tag
+      type: object
+      properties:
+        id:
+          description: Tag id
+          type: integer
+          format: int64
+        name:
+          type: string
+        bg_color_hex:
+          type:
+          - string
+          - 'null'
+        text_color_hex:
+          type:
+          - string
+          - 'null'
   parameters:
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Pagination page number.
     perPageParam10to1000:
       name: per_page
       in: query
@@ -65,20 +232,68 @@ components:
         maximum: 1000
         default: 10
       description: Number of items per page (max 1000, default 10).
-    pageParam:
-      name: page
+    pageParam_2:
       in: query
+      name: page
+      required: false
+      description: Pagination page
       schema:
         type: integer
+        format: int32
         minimum: 1
         default: 1
-      description: Pagination page number.
+    perPageParam10to1000_2:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 10
+    pageParam_3:
+      in: query
+      name: page
+      required: false
+      description: Pagination page
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
+    perPageParam10to1000_3:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 10
   securitySchemes:
     apiKey:
       type: apiKey
       in: header
       name: api-key
       description: API key obtained from the DEV.to settings page. Pass in the api-key header for authenticated requests.
+    api-key:
+      type: apiKey
+      name: api-key
+      in: header
+      description: "API Key authentication.\n\nAuthentication for some endpoints, like write operations on the\nArticles API require a DEV API key.\n\nAll authenticated endpoints are CORS disabled, the API key is intended for non-browser scripts.\n\n### Getting an API key\n\nTo obtain one, please follow these steps:\n\n  - visit https://dev.to/settings/extensions\n  - in the \"DEV API Keys\" section create a new key by adding a\n    description and clicking on \"Generate API Key\"\n\n    ![obtain a DEV API Key](https://user-images.githubusercontent.com/37842/172718105-bd93664e-76e0-477d-99c4-265dda0b06c5.png)\n\n  - You'll see the newly generated key in the same view\n    ![generated DEV API Key](https://user-images.githubusercontent.com/37842/172718151-e7fe26a0-9937-42e8-96c6-333acdab9e49.png)"
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Short-lived RS256 RFC 9068 access token issued by the configured delegation service and verified against its configured JWKS. The issuer authorizes the client and requested operation before minting the token; Forem validates the token and resolves its subject and owner to a local user. An invalid token returns 401; an unavailable trust dependency with no usable cached key returns 503.
 externalDocs:
   description: Forem API V1 Documentation
   url: https://developers.forem.com/api/v1
+x-refined-from:
+- dev-to-forem-api-openapi.yml
+- dev-to-forem-api-v1-openapi.json
+- devto-tags-api-openapi.yml
