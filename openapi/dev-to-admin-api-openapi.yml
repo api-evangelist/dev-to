@@ -855,31 +855,32 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    ConceptDailyMetric:
-      description: Representation of daily metrics for a concept
+    RequestRedirect:
+      description: Representation of a request redirect
       type: object
       properties:
-        date:
+        id:
+          type: integer
+          format: int64
+        original_url:
           type: string
-          format: date
-        articles_count:
-          type: integer
-        comments_count:
-          type: integer
-        page_views:
-          type: integer
-        reactions_count:
-          type: integer
-        popularity_score:
-          type: number
-          format: float
+        destination_url:
+          type: string
+        request_domain:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
       required:
-      - date
-      - articles_count
-      - comments_count
-      - page_views
-      - reactions_count
-      - popularity_score
+      - id
+      - original_url
+      - destination_url
+      - request_domain
+      - created_at
+      - updated_at
     Concept:
       description: Representation of a concept
       type: object
@@ -942,32 +943,31 @@ components:
       - slug
       - created_at
       - updated_at
-    RequestRedirect:
-      description: Representation of a request redirect
+    ConceptDailyMetric:
+      description: Representation of daily metrics for a concept
       type: object
       properties:
-        id:
+        date:
+          type: string
+          format: date
+        articles_count:
           type: integer
-          format: int64
-        original_url:
-          type: string
-        destination_url:
-          type: string
-        request_domain:
-          type: string
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
+        comments_count:
+          type: integer
+        page_views:
+          type: integer
+        reactions_count:
+          type: integer
+        popularity_score:
+          type: number
+          format: float
       required:
-      - id
-      - original_url
-      - destination_url
-      - request_domain
-      - created_at
-      - updated_at
+      - date
+      - articles_count
+      - comments_count
+      - page_views
+      - reactions_count
+      - popularity_score
     UserInviteParam:
       description: User invite parameters
       type: object

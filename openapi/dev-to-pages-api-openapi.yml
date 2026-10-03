@@ -423,50 +423,6 @@ components:
       - slug
       - description
       - template
-    Page_2_2:
-      description: Representation of a page object
-      type: object
-      properties:
-        title:
-          type: string
-          description: Title of the page
-        slug:
-          type: string
-          description: Used to link to this page in URLs, must be unique and URL-safe
-        description:
-          type: string
-          description: For internal use, helps similar pages from one another
-        body_markdown:
-          type:
-          - string
-          - 'null'
-          description: The text (in markdown) of the ad (required)
-        body_json:
-          type:
-          - string
-          - 'null'
-          description: For JSON pages, the JSON body
-        is_top_level_path:
-          type: boolean
-          description: If true, the page is available at '/{slug}' instead of '/page/{slug}', use with caution
-        social_image:
-          type:
-          - object
-          - 'null'
-        template:
-          type: string
-          enum:
-          - contained
-          - full_within_layout
-          - nav_bar_included
-          - json
-          default: contained
-          description: Controls what kind of layout the page is rendered in
-      required:
-      - title
-      - slug
-      - description
-      - template
     Page_3:
       description: Representation of a page object
       type: object
@@ -506,6 +462,50 @@ components:
           - json
           - css
           - txt
+          default: contained
+          description: Controls what kind of layout the page is rendered in
+      required:
+      - title
+      - slug
+      - description
+      - template
+    Page_2_2:
+      description: Representation of a page object
+      type: object
+      properties:
+        title:
+          type: string
+          description: Title of the page
+        slug:
+          type: string
+          description: Used to link to this page in URLs, must be unique and URL-safe
+        description:
+          type: string
+          description: For internal use, helps similar pages from one another
+        body_markdown:
+          type:
+          - string
+          - 'null'
+          description: The text (in markdown) of the ad (required)
+        body_json:
+          type:
+          - string
+          - 'null'
+          description: For JSON pages, the JSON body
+        is_top_level_path:
+          type: boolean
+          description: If true, the page is available at '/{slug}' instead of '/page/{slug}', use with caution
+        social_image:
+          type:
+          - object
+          - 'null'
+        template:
+          type: string
+          enum:
+          - contained
+          - full_within_layout
+          - nav_bar_included
+          - json
           default: contained
           description: Controls what kind of layout the page is rendered in
       required:

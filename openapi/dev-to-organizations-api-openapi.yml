@@ -361,77 +361,6 @@ paths:
     - url: https://dev.to/api
       description: Production server
 components:
-  parameters:
-    pageParam:
-      name: page
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      description: Pagination page number.
-    perPageParam30to1000:
-      name: per_page
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 1000
-        default: 30
-      description: Number of items per page (max 1000, default 30).
-    pageParam_2:
-      in: query
-      name: page
-      required: false
-      description: Pagination page
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        default: 1
-    perPageParam10to1000:
-      in: query
-      name: per_page
-      required: false
-      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        maximum: 1000
-        default: 10
-    perPageParam30to1000_2:
-      in: query
-      name: per_page
-      required: false
-      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        maximum: 1000
-        default: 30
-    pageParam_3:
-      in: query
-      name: page
-      required: false
-      description: Pagination page
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        default: 1
-    perPageParam30to1000_3:
-      in: query
-      name: per_page
-      required: false
-      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        maximum: 1000
-        default: 30
   schemas:
     User:
       type: object
@@ -479,27 +408,6 @@ components:
           type: string
           format: date-time
           description: The ISO 8601 timestamp when the user joined.
-    Organization:
-      type: object
-      description: An organization on the DEV platform that can publish articles and have members.
-      properties:
-        name:
-          type: string
-          description: The display name of the organization.
-        username:
-          type: string
-          description: The unique username (slug) of the organization.
-        slug:
-          type: string
-          description: The URL slug of the organization.
-        profile_image:
-          type: string
-          format: uri
-          description: The URL of the organization's profile image.
-        profile_image_90:
-          type: string
-          format: uri
-          description: The URL of the 90px profile image.
     ArticleIndex:
       type: object
       description: A summary article object returned in list endpoints, with fewer fields than the full article representation.
@@ -578,32 +486,59 @@ components:
           $ref: '#/components/schemas/User'
         organization:
           $ref: '#/components/schemas/Organization'
-    SharedUser:
-      description: The resource creator
+    Organization:
       type: object
+      description: An organization on the DEV platform that can publish articles and have members.
       properties:
         name:
           type: string
+          description: The display name of the organization.
         username:
           type: string
+          description: The unique username (slug) of the organization.
+        slug:
+          type: string
+          description: The URL slug of the organization.
+        profile_image:
+          type: string
+          format: uri
+          description: The URL of the organization's profile image.
+        profile_image_90:
+          type: string
+          format: uri
+          description: The URL of the 90px profile image.
+    User_2:
+      description: The representation of a user returned in a list
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        name:
+          type: string
+        summary:
+          type:
+          - string
+          - 'null'
         twitter_username:
-          type:
-          - string
-          - 'null'
+          type: string
         github_username:
-          type:
-          - string
-          - 'null'
+          type: string
         website_url:
           type:
           - string
           - 'null'
-          format: url
-        profile_image:
-          description: Profile image (640x640)
+        location:
+          type:
+          - string
+          - 'null'
+        joined_at:
           type: string
-        profile_image_90:
-          description: Profile image (90x90)
+        profile_image:
           type: string
     ArticleFlareTag:
       description: Flare tag of the article
@@ -639,71 +574,33 @@ components:
           description: Profile image (90x90)
           type: string
           format: url
-    User_2:
-      description: The representation of a user returned in a list
+    SharedUser:
+      description: The resource creator
       type: object
       properties:
-        type_of:
-          type: string
-        id:
-          type: integer
-          format: int64
-        username:
-          type: string
         name:
           type: string
-        summary:
+        username:
+          type: string
+        twitter_username:
           type:
           - string
           - 'null'
-        twitter_username:
-          type: string
         github_username:
-          type: string
+          type:
+          - string
+          - 'null'
         website_url:
           type:
           - string
           - 'null'
-        location:
-          type:
-          - string
-          - 'null'
-        joined_at:
-          type: string
+          format: url
         profile_image:
+          description: Profile image (640x640)
           type: string
-    Organization_2:
-      description: Representation of an Organization
-      type: object
-      properties:
-        type_of:
+        profile_image_90:
+          description: Profile image (90x90)
           type: string
-        username:
-          type: string
-        name:
-          type: string
-        summary:
-          type: string
-        twitter_username:
-          type: string
-        github_username:
-          type: string
-        url:
-          type: string
-        location:
-          type: string
-        joined_at:
-          type: string
-        tech_stack:
-          type: string
-        tag_line:
-          type:
-          - string
-          - 'null'
-        story:
-          type:
-          - string
-          - 'null'
     ArticleIndex_2:
       description: Representation of an article or post returned in a list
       type: object
@@ -819,6 +716,38 @@ components:
       - published_timestamp
       - user
       - reading_time_minutes
+    Organization_2:
+      description: Representation of an Organization
+      type: object
+      properties:
+        type_of:
+          type: string
+        username:
+          type: string
+        name:
+          type: string
+        summary:
+          type: string
+        twitter_username:
+          type: string
+        github_username:
+          type: string
+        url:
+          type: string
+        location:
+          type: string
+        joined_at:
+          type: string
+        tech_stack:
+          type: string
+        tag_line:
+          type:
+          - string
+          - 'null'
+        story:
+          type:
+          - string
+          - 'null'
     User_3:
       description: The representation of a user returned in a list
       type: object
@@ -852,38 +781,39 @@ components:
           type: string
         profile_image:
           type: string
-    Organization_3:
-      description: Representation of an Organization
+    User_2_2:
+      description: The representation of a user
       type: object
       properties:
         type_of:
           type: string
+        id:
+          type: integer
+          format: int64
         username:
           type: string
         name:
           type: string
         summary:
-          type: string
+          type:
+          - string
+          - 'null'
         twitter_username:
           type: string
         github_username:
           type: string
-        url:
-          type: string
+        website_url:
+          type:
+          - string
+          - 'null'
         location:
-          type: string
+          type:
+          - string
+          - 'null'
         joined_at:
           type: string
-        tech_stack:
+        profile_image:
           type: string
-        tag_line:
-          type:
-          - string
-          - 'null'
-        story:
-          type:
-          - string
-          - 'null'
     ArticleIndex_3:
       description: Representation of an article or post returned in a list
       type: object
@@ -988,39 +918,109 @@ components:
       - published_timestamp
       - user
       - reading_time_minutes
-    User_2_2:
-      description: The representation of a user
+    Organization_3:
+      description: Representation of an Organization
       type: object
       properties:
         type_of:
           type: string
-        id:
-          type: integer
-          format: int64
         username:
           type: string
         name:
           type: string
         summary:
-          type:
-          - string
-          - 'null'
+          type: string
         twitter_username:
           type: string
         github_username:
           type: string
-        website_url:
-          type:
-          - string
-          - 'null'
+        url:
+          type: string
         location:
-          type:
-          - string
-          - 'null'
+          type: string
         joined_at:
           type: string
-        profile_image:
+        tech_stack:
           type: string
+        tag_line:
+          type:
+          - string
+          - 'null'
+        story:
+          type:
+          - string
+          - 'null'
+  parameters:
+    perPageParam30to1000:
+      name: per_page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 1000
+        default: 30
+      description: Number of items per page (max 1000, default 30).
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Pagination page number.
+    perPageParam10to1000:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 10
+    perPageParam30to1000_2:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 30
+    pageParam_2:
+      in: query
+      name: page
+      required: false
+      description: Pagination page
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
+    perPageParam30to1000_3:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 30
+    pageParam_3:
+      in: query
+      name: page
+      required: false
+      description: Pagination page
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
   securitySchemes:
     apiKey:
       type: apiKey

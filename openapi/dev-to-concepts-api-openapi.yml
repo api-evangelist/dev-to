@@ -433,33 +433,22 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    SharedUser:
-      description: The resource creator
+    ArticleFlareTag:
+      description: Flare tag of the article
       type: object
       properties:
         name:
           type: string
-        username:
-          type: string
-        twitter_username:
+        bg_color_hex:
+          description: Background color (hexadecimal)
           type:
           - string
           - 'null'
-        github_username:
+        text_color_hex:
+          description: Text color (hexadecimal)
           type:
           - string
           - 'null'
-        website_url:
-          type:
-          - string
-          - 'null'
-          format: url
-        profile_image:
-          description: Profile image (640x640)
-          type: string
-        profile_image_90:
-          description: Profile image (90x90)
-          type: string
     Concept:
       description: Representation of a concept
       type: object
@@ -540,22 +529,33 @@ components:
           description: Profile image (90x90)
           type: string
           format: url
-    ArticleFlareTag:
-      description: Flare tag of the article
+    SharedUser:
+      description: The resource creator
       type: object
       properties:
         name:
           type: string
-        bg_color_hex:
-          description: Background color (hexadecimal)
+        username:
+          type: string
+        twitter_username:
           type:
           - string
           - 'null'
-        text_color_hex:
-          description: Text color (hexadecimal)
+        github_username:
           type:
           - string
           - 'null'
+        website_url:
+          type:
+          - string
+          - 'null'
+          format: url
+        profile_image:
+          description: Profile image (640x640)
+          type: string
+        profile_image_90:
+          description: Profile image (90x90)
+          type: string
     ConceptDailyMetric:
       description: Representation of daily metrics for a concept
       type: object

@@ -1,13 +1,14 @@
 openapi: 3.2.0
 info:
-  title: Dev To Agent Sessions API
+  title: Forem API V1 Agent Sessions API
   version: 1.0.0
-  description: 'Operations tagged agent_sessions across 2 of this provider''s published API definitions: dev-to-forem-api-v1-openapi.json, devto-agent-sessions-api-openapi.yml. Each path carries the servers of the definition it was published in.'
+  description: Access Forem articles, users and other resources via API.
 servers:
 - url: https://dev.to
   description: Production server
-- url: https://dev.to/api
-  description: Production server
+security:
+- api-key: []
+- bearer_auth: []
 tags:
 - name: Agent Sessions
 paths:
@@ -38,9 +39,6 @@ paths:
                   $ref: '#/components/schemas/AgentSessionIndex'
         '401':
           description: unauthorized
-      security:
-      - api-key: []
-      - bearer_auth: []
     post:
       summary: upload a new agent session
       tags:
@@ -96,12 +94,6 @@ paths:
               required:
               - curated_data
         description: Agent session upload parameters.
-      security:
-      - api-key: []
-      - bearer_auth: []
-    servers:
-    - url: https://dev.to
-      description: Production server
   /api/agent_sessions/{id}:
     get:
       summary: show details for an agent session
@@ -133,12 +125,6 @@ paths:
           description: unauthorized
         '404':
           description: not found
-      security:
-      - api-key: []
-      - bearer_auth: []
-    servers:
-    - url: https://dev.to
-      description: Production server
   /api/agent_sessions/presign:
     post:
       summary: request a presigned URL to upload raw session transcript to S3
@@ -165,12 +151,6 @@ paths:
           description: unauthorized
         '503':
           description: service unavailable
-      security:
-      - api-key: []
-      - bearer_auth: []
-    servers:
-    - url: https://dev.to
-      description: Production server
   /api/agent_sessions/{id}/raw_url:
     get:
       summary: request a presigned S3 GET URL to download the raw session transcript
@@ -202,12 +182,6 @@ paths:
           description: unauthorized
         '404':
           description: not found
-      security:
-      - api-key: []
-      - bearer_auth: []
-    servers:
-    - url: https://dev.to
-      description: Production server
 components:
   schemas:
     AgentSessionShow:
@@ -318,6 +292,3 @@ components:
       scheme: bearer
       bearerFormat: JWT
       description: Short-lived RS256 RFC 9068 access token issued by the configured delegation service and verified against its configured JWKS. The issuer authorizes the client and requested operation before minting the token; Forem validates the token and resolves its subject and owner to a local user. An invalid token returns 401; an unavailable trust dependency with no usable cached key returns 503.
-x-refined-from:
-- dev-to-forem-api-v1-openapi.json
-- devto-agent-sessions-api-openapi.yml

@@ -1,13 +1,14 @@
 openapi: 3.2.0
 info:
-  title: Dev To Followed Tags API
+  title: Forem API V1 Followed Tags API
   version: 1.0.0
-  description: 'Operations tagged followed_tags across 2 of this provider''s published API definitions: dev-to-forem-api-v1-openapi.json, devto-followed-tags-api-openapi.yml. Each path carries the servers of the definition it was published in.'
+  description: Access Forem articles, users and other resources via API.
 servers:
 - url: https://dev.to
   description: Production server
-- url: https://dev.to/api
-  description: Production server
+security:
+- api-key: []
+- bearer_auth: []
 tags:
 - name: Followed Tags
 paths:
@@ -38,49 +39,24 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/FollowedTag'
-      security:
-      - api-key: []
-      - bearer_auth: []
-    servers:
-    - url: https://dev.to/api
-      description: Production server
   /follows/tags:
-    servers:
-    - url: https://dev.to/api
-      description: Production server
     get:
+      operationId: getFollowedTags
       summary: Followed Tags
+      description: Retrieves a list of tags followed by the authenticated user.
       tags:
       - Followed Tags
-      description: This endpoint allows the client to retrieve a list of the tags they follow.
-      operationId: getFollowsTags
       responses:
         '200':
-          description: A List of followed tags
+          description: A list of followed tags
           content:
             application/json:
-              example:
-              - id: 701
-                name: tag3
-                points: 1
-              - id: 702
-                name: tag4
-                points: 1
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/FollowedTag'
         '401':
-          description: unauthorized
-          content:
-            application/json:
-              example:
-                error: unauthorized
-                status: 401
-      security:
-      - api-key: []
-      x-operation-id-source: normalized
-      x-operation-id-original: getFollowedTags
+          description: Unauthorized
 components:
   schemas:
     FollowedTag:
@@ -116,6 +92,3 @@ components:
       in: header
       name: api-key
       description: API key obtained from the DEV.to settings page. Pass in the api-key header for authenticated requests.
-x-refined-from:
-- dev-to-forem-api-v1-openapi.json
-- devto-followed-tags-api-openapi.yml

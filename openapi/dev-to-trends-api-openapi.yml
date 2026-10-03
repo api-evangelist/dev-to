@@ -1,13 +1,14 @@
 openapi: 3.2.0
 info:
-  title: Dev To Trends API
+  title: Forem API V1 Trends API
   version: 1.0.0
-  description: 'Operations tagged trends across 2 of this provider''s published API definitions: dev-to-forem-api-v1-openapi.json, devto-trends-api-openapi.yml. Each path carries the servers of the definition it was published in.'
+  description: Access Forem articles, users and other resources via API.
 servers:
 - url: https://dev.to
   description: Production server
-- url: https://dev.to/api
-  description: Production server
+security:
+- api-key: []
+- bearer_auth: []
 tags:
 - name: Trends
 paths:
@@ -47,9 +48,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Trend'
-    servers:
-    - url: https://dev.to
-      description: Production server
   /api/trends/{id_or_slug}:
     get:
       summary: A Trend
@@ -82,9 +80,6 @@ paths:
                   $ref: '#/components/schemas/Trend'
         '404':
           description: Trend Not Found
-    servers:
-    - url: https://dev.to
-      description: Production server
   /api/trends/{trend_id_or_slug}/articles:
     get:
       summary: Articles in a Trend
@@ -123,33 +118,98 @@ paths:
                   $ref: '#/components/schemas/ArticleIndex'
         '404':
           description: Trend Not Found
-    servers:
-    - url: https://dev.to
-      description: Production server
 components:
-  parameters:
-    pageParam:
-      in: query
-      name: page
-      required: false
-      description: Pagination page
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        default: 1
-    perPageParam10to1000:
-      in: query
-      name: per_page
-      required: false
-      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        maximum: 1000
-        default: 10
   schemas:
+    ArticleFlareTag:
+      description: Flare tag of the article
+      type: object
+      properties:
+        name:
+          type: string
+        bg_color_hex:
+          description: Background color (hexadecimal)
+          type:
+          - string
+          - 'null'
+        text_color_hex:
+          description: Text color (hexadecimal)
+          type:
+          - string
+          - 'null'
+    Trend:
+      description: Representation of a trend
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        key_questions:
+          type: array
+          items:
+            type: string
+        score:
+          type: number
+          format: float
+        articles_count:
+          type: integer
+          format: int32
+        cover_image:
+          type:
+          - string
+          - 'null'
+          format: url
+        first_observed_at:
+          type: string
+          format: date-time
+        last_observed_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - type_of
+      - id
+      - name
+      - slug
+      - key_questions
+      - score
+      - articles_count
+      - first_observed_at
+      - last_observed_at
+      - created_at
+      - updated_at
+    SharedOrganization:
+      description: The organization the resource belongs to
+      type: object
+      properties:
+        name:
+          type: string
+        username:
+          type: string
+        slug:
+          type: string
+        profile_image:
+          description: Profile image (640x640)
+          type: string
+          format: url
+        profile_image_90:
+          description: Profile image (90x90)
+          type: string
+          format: url
     SharedUser:
       description: The resource creator
       type: object
@@ -177,40 +237,6 @@ components:
         profile_image_90:
           description: Profile image (90x90)
           type: string
-    ArticleFlareTag:
-      description: Flare tag of the article
-      type: object
-      properties:
-        name:
-          type: string
-        bg_color_hex:
-          description: Background color (hexadecimal)
-          type:
-          - string
-          - 'null'
-        text_color_hex:
-          description: Text color (hexadecimal)
-          type:
-          - string
-          - 'null'
-    SharedOrganization:
-      description: The organization the resource belongs to
-      type: object
-      properties:
-        name:
-          type: string
-        username:
-          type: string
-        slug:
-          type: string
-        profile_image:
-          description: Profile image (640x640)
-          type: string
-          format: url
-        profile_image_90:
-          description: Profile image (90x90)
-          type: string
-          format: url
     ArticleIndex:
       description: Representation of an article or post returned in a list
       type: object
@@ -326,166 +352,28 @@ components:
       - published_timestamp
       - user
       - reading_time_minutes
-    Trend:
-      description: Representation of a trend
-      type: object
-      properties:
-        type_of:
-          type: string
-        id:
-          type: integer
-          format: int64
-        name:
-          type: string
-        slug:
-          type: string
-        description:
-          type:
-          - string
-          - 'null'
-        key_questions:
-          type: array
-          items:
-            type: string
-        score:
-          type: number
-          format: float
-        articles_count:
-          type: integer
-          format: int32
-        cover_image:
-          type:
-          - string
-          - 'null'
-          format: url
-        first_observed_at:
-          type: string
-          format: date-time
-        last_observed_at:
-          type: string
-          format: date-time
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-      required:
-      - type_of
-      - id
-      - name
-      - slug
-      - key_questions
-      - score
-      - articles_count
-      - first_observed_at
-      - last_observed_at
-      - created_at
-      - updated_at
-    ArticleIndex_2:
-      description: Representation of an article or post returned in a list
-      type: object
-      properties:
-        type_of:
-          type: string
-        id:
-          type: integer
-          format: int32
-        title:
-          type: string
-        description:
-          type: string
-        cover_image:
-          type:
-          - string
-          - 'null'
-          format: url
-        readable_publish_date:
-          type: string
-        social_image:
-          type: string
-          format: url
-        tag_list:
-          type: array
-          items:
-            type: string
-        tags:
-          type: string
-        slug:
-          type: string
-        path:
-          type: string
-          format: path
-        url:
-          type: string
-          format: url
-        canonical_url:
-          type: string
-          format: url
-        positive_reactions_count:
-          type: integer
-          format: int32
-        public_reactions_count:
-          type: integer
-          format: int32
-        created_at:
-          type: string
-          format: date-time
-        edited_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        crossposted_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        published_at:
-          type: string
-          format: date-time
-        last_comment_at:
-          type: string
-          format: date-time
-        published_timestamp:
-          description: Crossposting or published date time
-          type: string
-          format: date-time
-        reading_time_minutes:
-          description: Reading time, in minutes
-          type: integer
-          format: int32
-        user:
-          $ref: '#/components/schemas/SharedUser'
-        flare_tag:
-          $ref: '#/components/schemas/ArticleFlareTag'
-        organization:
-          $ref: '#/components/schemas/SharedOrganization'
-      required:
-      - type_of
-      - id
-      - title
-      - description
-      - cover_image
-      - readable_publish_date
-      - social_image
-      - tag_list
-      - tags
-      - slug
-      - path
-      - url
-      - canonical_url
-      - comments_count
-      - positive_reactions_count
-      - public_reactions_count
-      - created_at
-      - edited_at
-      - crossposted_at
-      - published_at
-      - last_comment_at
-      - published_timestamp
-      - user
-      - reading_time_minutes
+  parameters:
+    perPageParam10to1000:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 10
+    pageParam:
+      in: query
+      name: page
+      required: false
+      description: Pagination page
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
   securitySchemes:
     api-key:
       type: apiKey
@@ -497,6 +385,3 @@ components:
       scheme: bearer
       bearerFormat: JWT
       description: Short-lived RS256 RFC 9068 access token issued by the configured delegation service and verified against its configured JWKS. The issuer authorizes the client and requested operation before minting the token; Forem validates the token and resolves its subject and owner to a local user. An invalid token returns 401; an unavailable trust dependency with no usable cached key returns 503.
-x-refined-from:
-- dev-to-forem-api-v1-openapi.json
-- devto-trends-api-openapi.yml

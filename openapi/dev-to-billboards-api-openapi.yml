@@ -1,13 +1,14 @@
 openapi: 3.2.0
 info:
-  title: Dev To Billboards API
+  title: Forem API V1 Billboards API
   version: 1.0.0
-  description: 'Operations tagged billboards across 2 of this provider''s published API definitions: dev-to-forem-api-v1-openapi.json, devto-billboards-api-openapi.yml. Each path carries the servers of the definition it was published in.'
+  description: Access Forem articles, users and other resources via API.
 servers:
 - url: https://dev.to
   description: Production server
-- url: https://dev.to/api
-  description: Production server
+security:
+- api-key: []
+- bearer_auth: []
 tags:
 - name: billboards
 paths:
@@ -37,9 +38,6 @@ paths:
                   $ref: '#/components/schemas/Billboard'
         '401':
           description: unauthorized
-      security:
-      - api-key: []
-      - bearer_auth: []
       operationId: getApiBillboards
       x-operation-id-source: derived
     post:
@@ -82,14 +80,8 @@ paths:
               items:
                 $ref: '#/components/schemas/Billboard'
         description: Billboard parameters.
-      security:
-      - api-key: []
-      - bearer_auth: []
       operationId: postApiBillboards
       x-operation-id-source: derived
-    servers:
-    - url: https://dev.to
-      description: Production server
   /api/billboards/{id}:
     get:
       summary: A billboard (by id)
@@ -113,9 +105,6 @@ paths:
           description: unauthorized
         '404':
           description: Unknown Billboard ID
-      security:
-      - api-key: []
-      - bearer_auth: []
       operationId: getApiBillboardsById
       x-operation-id-source: derived
     put:
@@ -161,14 +150,8 @@ paths:
               items:
                 $ref: '#/components/schemas/Billboard'
         description: Billboard updated attributes.
-      security:
-      - api-key: []
-      - bearer_auth: []
       operationId: putApiBillboardsById
       x-operation-id-source: derived
-    servers:
-    - url: https://dev.to
-      description: Production server
   /api/billboards/{id}/unpublish:
     put:
       summary: Unpublish a billboard
@@ -197,14 +180,8 @@ paths:
           description: not found
         '401':
           description: unauthorized
-      security:
-      - api-key: []
-      - bearer_auth: []
       operationId: putApiBillboardsByIdUnpublish
       x-operation-id-source: derived
-    servers:
-    - url: https://dev.to
-      description: Production server
 components:
   schemas:
     Billboard:
@@ -335,6 +312,3 @@ components:
       scheme: bearer
       bearerFormat: JWT
       description: Short-lived RS256 RFC 9068 access token issued by the configured delegation service and verified against its configured JWKS. The issuer authorizes the client and requested operation before minting the token; Forem validates the token and resolves its subject and owner to a local user. An invalid token returns 401; an unavailable trust dependency with no usable cached key returns 503.
-x-refined-from:
-- dev-to-forem-api-v1-openapi.json
-- devto-billboards-api-openapi.yml

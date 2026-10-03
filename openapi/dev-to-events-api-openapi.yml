@@ -132,68 +132,6 @@ paths:
           description: Event deleted
 components:
   schemas:
-    EventInput:
-      description: Representation of an Event to be created/updated
-      type: object
-      properties:
-        event:
-          type: object
-          properties:
-            title:
-              type: string
-            event_name_slug:
-              type: string
-            event_variation_slug:
-              type: string
-            description:
-              type:
-              - string
-              - 'null'
-            full_details:
-              type:
-              - string
-              - 'null'
-              description: Full text dump of all event details.
-            primary_stream_url:
-              type:
-              - string
-              - 'null'
-            published:
-              type: boolean
-              default: false
-            start_time:
-              type: string
-              format: date-time
-            end_time:
-              type: string
-              format: date-time
-            type_of:
-              type: string
-              enum:
-              - live_stream
-              - takeover
-              - other
-              - challenge
-            organization_id:
-              type:
-              - integer
-              - 'null'
-            tag_list:
-              type:
-              - string
-              - 'null'
-            data:
-              type:
-              - object
-              - 'null'
-          required:
-          - title
-          - event_name_slug
-          - event_variation_slug
-          - start_time
-          - end_time
-      required:
-      - event
     Event:
       description: Representation of an event
       type: object
@@ -294,6 +232,68 @@ components:
       - published
       - created_at
       - updated_at
+    EventInput:
+      description: Representation of an Event to be created/updated
+      type: object
+      properties:
+        event:
+          type: object
+          properties:
+            title:
+              type: string
+            event_name_slug:
+              type: string
+            event_variation_slug:
+              type: string
+            description:
+              type:
+              - string
+              - 'null'
+            full_details:
+              type:
+              - string
+              - 'null'
+              description: Full text dump of all event details.
+            primary_stream_url:
+              type:
+              - string
+              - 'null'
+            published:
+              type: boolean
+              default: false
+            start_time:
+              type: string
+              format: date-time
+            end_time:
+              type: string
+              format: date-time
+            type_of:
+              type: string
+              enum:
+              - live_stream
+              - takeover
+              - other
+              - challenge
+            organization_id:
+              type:
+              - integer
+              - 'null'
+            tag_list:
+              type:
+              - string
+              - 'null'
+            data:
+              type:
+              - object
+              - 'null'
+          required:
+          - title
+          - event_name_slug
+          - event_variation_slug
+          - start_time
+          - end_time
+      required:
+      - event
   securitySchemes:
     api-key:
       type: apiKey

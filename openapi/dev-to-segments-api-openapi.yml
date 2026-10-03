@@ -1,13 +1,14 @@
 openapi: 3.2.0
 info:
-  title: Dev To Segments API
+  title: Forem API V1 Segments API
   version: 1.0.0
-  description: 'Operations tagged segments across 2 of this provider''s published API definitions: dev-to-forem-api-v1-openapi.json, devto-segments-api-openapi.yml. Each path carries the servers of the definition it was published in.'
+  description: Access Forem articles, users and other resources via API.
 servers:
 - url: https://dev.to
   description: Production server
-- url: https://dev.to/api
-  description: Production server
+security:
+- api-key: []
+- bearer_auth: []
 tags:
 - name: Segments
 paths:
@@ -43,9 +44,6 @@ paths:
                   $ref: '#/components/schemas/Segment'
         '401':
           description: Unauthorized
-      security:
-      - api-key: []
-      - bearer_auth: []
     post:
       summary: Create a manually managed audience segment
       tags:
@@ -64,12 +62,6 @@ paths:
           description: A manually managed audience segment
         '401':
           description: Unauthorized
-      security:
-      - api-key: []
-      - bearer_auth: []
-    servers:
-    - url: https://dev.to
-      description: Production server
   /api/segments/{id}:
     get:
       summary: A manually managed audience segment
@@ -106,9 +98,6 @@ paths:
           description: Unauthorized
         '404':
           description: Audience Segment Not Found
-      security:
-      - api-key: []
-      - bearer_auth: []
     delete:
       summary: Delete a manually managed audience segment
       tags:
@@ -138,12 +127,6 @@ paths:
           description: Audience Segment Not Found
         '409':
           description: Audience segment could not be deleted
-      security:
-      - api-key: []
-      - bearer_auth: []
-    servers:
-    - url: https://dev.to
-      description: Production server
   /api/segments/{id}/users:
     get:
       summary: Users in a manually managed audience segment
@@ -179,12 +162,6 @@ paths:
           description: Unauthorized
         '404':
           description: Audience Segment Not Found
-      security:
-      - api-key: []
-      - bearer_auth: []
-    servers:
-    - url: https://dev.to
-      description: Production server
   /api/segments/{id}/add_users:
     put:
       summary: Add users to a manually managed audience segment
@@ -223,12 +200,6 @@ paths:
             schema:
               $ref: '#/components/schemas/SegmentUserIds'
         description: Map containing user IDs to enroll in the segment.
-      security:
-      - api-key: []
-      - bearer_auth: []
-    servers:
-    - url: https://dev.to
-      description: Production server
   /api/segments/{id}/remove_users:
     put:
       summary: Remove users from a manually managed audience segment
@@ -267,14 +238,24 @@ paths:
             schema:
               $ref: '#/components/schemas/SegmentUserIds'
         description: Map containing user IDs to remove from the segment.
-      security:
-      - api-key: []
-      - bearer_auth: []
-    servers:
-    - url: https://dev.to
-      description: Production server
 components:
   schemas:
+    Segment:
+      description: A manually managed audience segment
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the segment
+        type_of:
+          type: string
+          enum:
+          - manual
+          default: manual
+          description: Marks the segment as manually managed (other types are internal)
+        user_count:
+          type: integer
+          description: The current number of users in the segment
     User:
       description: The representation of a user returned in a list
       type: object
@@ -308,22 +289,6 @@ components:
           type: string
         profile_image:
           type: string
-    Segment:
-      description: A manually managed audience segment
-      type: object
-      properties:
-        id:
-          type: integer
-          description: The ID of the segment
-        type_of:
-          type: string
-          enum:
-          - manual
-          default: manual
-          description: Marks the segment as manually managed (other types are internal)
-        user_count:
-          type: integer
-          description: The current number of users in the segment
     SegmentUserIds:
       type: object
       properties:
@@ -355,6 +320,3 @@ components:
       scheme: bearer
       bearerFormat: JWT
       description: Short-lived RS256 RFC 9068 access token issued by the configured delegation service and verified against its configured JWKS. The issuer authorizes the client and requested operation before minting the token; Forem validates the token and resolves its subject and owner to a local user. An invalid token returns 401; an unavailable trust dependency with no usable cached key returns 503.
-x-refined-from:
-- dev-to-forem-api-v1-openapi.json
-- devto-segments-api-openapi.yml
