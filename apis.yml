@@ -85,6 +85,8 @@ apis:
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
   tags:
+  - Admin
+  tags_raw:
   - admin
   properties:
   - type: OpenAPI
@@ -97,6 +99,8 @@ apis:
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
   tags:
+  - Agent Sessions
+  tags_raw:
   - agent_sessions
   properties:
   - type: OpenAPI
@@ -109,6 +113,8 @@ apis:
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
   tags:
+  - Analytics
+  tags_raw:
   - analytics
   properties:
   - type: OpenAPI
@@ -134,7 +140,8 @@ apis:
   description: The badge_achievements API from DEV Community — 2 operation(s) for badge_achievements.
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
-  tags:
+  tags: []
+  tags_raw:
   - badge_achievements
   properties:
   - type: OpenAPI
@@ -147,6 +154,8 @@ apis:
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
   tags:
+  - Badges
+  tags_raw:
   - badges
   properties:
   - type: OpenAPI
@@ -159,6 +168,8 @@ apis:
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
   tags:
+  - Billboards
+  tags_raw:
   - billboards
   properties:
   - type: OpenAPI
@@ -185,6 +196,8 @@ apis:
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
   tags:
+  - Concepts
+  tags_raw:
   - concepts
   properties:
   - type: OpenAPI
@@ -197,6 +210,8 @@ apis:
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
   tags:
+  - Event
+  tags_raw:
   - events
   properties:
   - type: OpenAPI
@@ -208,7 +223,8 @@ apis:
   description: The feedback_messages API from DEV Community — 1 operation(s) for feedback_messages.
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
-  tags:
+  tags: []
+  tags_raw:
   - feedback_messages
   properties:
   - type: OpenAPI
@@ -220,7 +236,8 @@ apis:
   description: The followed_tags API from DEV Community — 2 operation(s) for followed_tags.
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
-  tags:
+  tags: []
+  tags_raw:
   - followed_tags
   properties:
   - type: OpenAPI
@@ -245,6 +262,8 @@ apis:
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
   tags:
+  - Follows
+  tags_raw:
   - follows
   properties:
   - type: OpenAPI
@@ -257,6 +276,8 @@ apis:
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
   tags:
+  - Health Checks
+  tags_raw:
   - health_checks
   properties:
   - type: OpenAPI
@@ -269,6 +290,8 @@ apis:
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
   tags:
+  - Instance
+  tags_raw:
   - instance
   properties:
   - type: OpenAPI
@@ -281,6 +304,8 @@ apis:
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
   tags:
+  - Organization
+  tags_raw:
   - Organizations
   properties:
   - type: OpenAPI
@@ -304,7 +329,8 @@ apis:
   description: The podcast_episodes API from DEV Community — 2 operation(s) for podcast_episodes.
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
-  tags:
+  tags: []
+  tags_raw:
   - podcast_episodes
   properties:
   - type: OpenAPI
@@ -317,6 +343,8 @@ apis:
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
   tags:
+  - ProfileImages
+  tags_raw:
   - profile images
   properties:
   - type: OpenAPI
@@ -341,6 +369,8 @@ apis:
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
   tags:
+  - ReadingList
+  tags_raw:
   - Reading List
   properties:
   - type: OpenAPI
@@ -353,7 +383,8 @@ apis:
     The recommended_articles_lists API from DEV Community — 2 operation(s) for recommended_articles_lists.
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
-  tags:
+  tags: []
+  tags_raw:
   - recommended_articles_lists
   properties:
   - type: OpenAPI
@@ -365,7 +396,8 @@ apis:
   description: The request_redirects API from DEV Community — 2 operation(s) for request_redirects.
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
-  tags:
+  tags: []
+  tags_raw:
   - request_redirects
   properties:
   - type: OpenAPI
@@ -378,6 +410,8 @@ apis:
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
   tags:
+  - Segments
+  tags_raw:
   - segments
   properties:
   - type: OpenAPI
@@ -402,6 +436,8 @@ apis:
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
   tags:
+  - Surveys
+  tags_raw:
   - surveys
   properties:
   - type: OpenAPI
@@ -426,6 +462,8 @@ apis:
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
   tags:
+  - Trends
+  tags_raw:
   - trends
   properties:
   - type: OpenAPI
@@ -438,6 +476,8 @@ apis:
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
   tags:
+  - User
+  tags_raw:
   - Users
   properties:
   - type: OpenAPI
@@ -450,6 +490,8 @@ apis:
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
   tags:
+  - Video
+  tags_raw:
   - videos
   properties:
   - type: OpenAPI
@@ -475,6 +517,8 @@ apis:
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
   tags:
+  - OpenAPI
+  tags_raw:
   - Open API
   properties:
   - type: OpenAPI
@@ -482,6 +526,9 @@ apis:
   - type: Documentation
     url: https://developers.forem.com/api/v1
 common:
+  - type: CapabilityMap
+    url: capabilities/dev-to-capability-edges.yml
+    name: DEV Community Business Capability Map
   - type: Overlay
     url: overlays/dev-to-display-ads-api-overlay.yaml
   - type: AgenticAccess
