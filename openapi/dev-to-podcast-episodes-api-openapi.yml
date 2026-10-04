@@ -112,49 +112,6 @@ paths:
                 error: not found
                 status: 404
 components:
-  schemas:
-    SharedPodcast:
-      description: The podcast that the resource belongs to
-      type: object
-      properties:
-        title:
-          type: string
-        slug:
-          type: string
-        image_url:
-          description: Podcast image url
-          type: string
-          format: url
-    PodcastEpisodeIndex:
-      description: Representation of a podcast episode returned in a list
-      type: object
-      properties:
-        type_of:
-          type: string
-        id:
-          type: integer
-          format: int32
-        class_name:
-          type: string
-        path:
-          type: string
-          format: path
-        title:
-          type: string
-        image_url:
-          description: Podcast episode image url or podcast image url
-          type: string
-          format: url
-        podcast:
-          $ref: '#/components/schemas/SharedPodcast'
-      required:
-      - type_of
-      - class_name
-      - id
-      - path
-      - title
-      - image_url
-      - podcast
   parameters:
     perPageParam30to1000:
       in: query
@@ -186,6 +143,49 @@ components:
         maximum: 1000
         default: 10
       description: Number of items per page (max 1000, default 10).
+  schemas:
+    PodcastEpisodeIndex:
+      description: Representation of a podcast episode returned in a list
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int32
+        class_name:
+          type: string
+        path:
+          type: string
+          format: path
+        title:
+          type: string
+        image_url:
+          description: Podcast episode image url or podcast image url
+          type: string
+          format: url
+        podcast:
+          $ref: '#/components/schemas/SharedPodcast'
+      required:
+      - type_of
+      - class_name
+      - id
+      - path
+      - title
+      - image_url
+      - podcast
+    SharedPodcast:
+      description: The podcast that the resource belongs to
+      type: object
+      properties:
+        title:
+          type: string
+        slug:
+          type: string
+        image_url:
+          description: Podcast image url
+          type: string
+          format: url
   securitySchemes:
     api-key:
       type: apiKey

@@ -517,8 +517,6 @@ apis:
   humanURL: https://developers.forem.com/api/v1
   baseURL: https://dev.to/api
   tags:
-  - OpenAPI
-  tags_raw:
   - Open API
   properties:
   - type: OpenAPI

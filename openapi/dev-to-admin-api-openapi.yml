@@ -855,6 +855,31 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    ConceptDailyMetric:
+      description: Representation of daily metrics for a concept
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        articles_count:
+          type: integer
+        comments_count:
+          type: integer
+        page_views:
+          type: integer
+        reactions_count:
+          type: integer
+        popularity_score:
+          type: number
+          format: float
+      required:
+      - date
+      - articles_count
+      - comments_count
+      - page_views
+      - reactions_count
+      - popularity_score
     RequestRedirect:
       description: Representation of a request redirect
       type: object
@@ -943,31 +968,6 @@ components:
       - slug
       - created_at
       - updated_at
-    ConceptDailyMetric:
-      description: Representation of daily metrics for a concept
-      type: object
-      properties:
-        date:
-          type: string
-          format: date
-        articles_count:
-          type: integer
-        comments_count:
-          type: integer
-        page_views:
-          type: integer
-        reactions_count:
-          type: integer
-        popularity_score:
-          type: number
-          format: float
-      required:
-      - date
-      - articles_count
-      - comments_count
-      - page_views
-      - reactions_count
-      - popularity_score
     UserInviteParam:
       description: User invite parameters
       type: object

@@ -1249,53 +1249,163 @@ paths:
       x-operation-id-source: normalized
       x-operation-id-original: videos
 components:
+  parameters:
+    perPageParam30to1000:
+      name: per_page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 1000
+        default: 30
+      description: Number of items per page (max 1000, default 30).
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Pagination page number.
+    articleIdParam:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: The numeric ID of the article.
+    perPageParam30to1000_2:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 30
+    pageParam_2:
+      in: query
+      name: page
+      required: false
+      description: Pagination page
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
+    perPageParam24to1000:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 24
+    perPageParam30to1000_3:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 30
+    pageParam_3:
+      in: query
+      name: page
+      required: false
+      description: Pagination page
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
   schemas:
-    User:
+    ArticleIndex:
       type: object
-      description: A user account on the DEV platform.
+      description: A summary article object returned in list endpoints, with fewer fields than the full article representation.
       properties:
-        name:
+        type_of:
           type: string
-          description: The display name of the user.
-        username:
-          type: string
-          description: The unique username of the user.
-        twitter_username:
-          type: string
-          nullable: true
-          description: The user's Twitter username.
-        github_username:
-          type: string
-          nullable: true
-          description: The user's GitHub username.
-        user_id:
+          description: The type of resource, always "article".
+        id:
           type: integer
-          description: The unique numeric ID of the user.
-        website_url:
+          description: The unique identifier of the article.
+        title:
+          type: string
+          description: The title of the article.
+        description:
+          type: string
+          description: A short description or subtitle for the article.
+        readable_publish_date:
+          type: string
+          description: The publish date in a human-readable format.
+        slug:
+          type: string
+          description: The URL slug of the article.
+        path:
+          type: string
+          description: The relative path to the article on DEV.
+        url:
           type: string
           format: uri
+          description: The full URL of the article.
+        comments_count:
+          type: integer
+          description: The number of comments on the article.
+        public_reactions_count:
+          type: integer
+          description: The total number of public reactions.
+        collection_id:
+          type: integer
           nullable: true
-          description: The user's website URL.
-        location:
-          type: string
-          nullable: true
-          description: The user's location.
-        summary:
-          type: string
-          nullable: true
-          description: A brief bio or summary of the user.
-        profile_image:
-          type: string
-          format: uri
-          description: The URL of the user's profile image.
-        profile_image_90:
-          type: string
-          format: uri
-          description: The URL of the 90px profile image.
-        joined_at:
+          description: The ID of the collection (series) the article belongs to.
+        published_timestamp:
           type: string
           format: date-time
-          description: The ISO 8601 timestamp when the user joined.
+          description: The ISO 8601 timestamp when the article was published.
+        positive_reactions_count:
+          type: integer
+          description: The count of positive reactions.
+        cover_image:
+          type: string
+          format: uri
+          nullable: true
+          description: The URL of the article's cover image.
+        social_image:
+          type: string
+          format: uri
+          description: The URL of the social sharing image.
+        canonical_url:
+          type: string
+          format: uri
+          description: The canonical URL of the article.
+        created_at:
+          type: string
+          format: date-time
+          description: The ISO 8601 timestamp when the article was created.
+        reading_time_minutes:
+          type: integer
+          description: The estimated reading time in minutes.
+        tag_list:
+          type: array
+          items:
+            type: string
+          description: A list of tags associated with the article.
+        tags:
+          type: string
+          description: A comma-separated string of tags.
+        user:
+          $ref: '#/components/schemas/User'
+        organization:
+          $ref: '#/components/schemas/Organization'
     Article:
       type: object
       description: A full article object with all detail fields, returned when retrieving a single article.
@@ -1420,145 +1530,52 @@ components:
           type: string
           format: uri
           description: The URL of the 90px profile image.
-    ArticleIndex:
+    User:
       type: object
-      description: A summary article object returned in list endpoints, with fewer fields than the full article representation.
-      properties:
-        type_of:
-          type: string
-          description: The type of resource, always "article".
-        id:
-          type: integer
-          description: The unique identifier of the article.
-        title:
-          type: string
-          description: The title of the article.
-        description:
-          type: string
-          description: A short description or subtitle for the article.
-        readable_publish_date:
-          type: string
-          description: The publish date in a human-readable format.
-        slug:
-          type: string
-          description: The URL slug of the article.
-        path:
-          type: string
-          description: The relative path to the article on DEV.
-        url:
-          type: string
-          format: uri
-          description: The full URL of the article.
-        comments_count:
-          type: integer
-          description: The number of comments on the article.
-        public_reactions_count:
-          type: integer
-          description: The total number of public reactions.
-        collection_id:
-          type: integer
-          nullable: true
-          description: The ID of the collection (series) the article belongs to.
-        published_timestamp:
-          type: string
-          format: date-time
-          description: The ISO 8601 timestamp when the article was published.
-        positive_reactions_count:
-          type: integer
-          description: The count of positive reactions.
-        cover_image:
-          type: string
-          format: uri
-          nullable: true
-          description: The URL of the article's cover image.
-        social_image:
-          type: string
-          format: uri
-          description: The URL of the social sharing image.
-        canonical_url:
-          type: string
-          format: uri
-          description: The canonical URL of the article.
-        created_at:
-          type: string
-          format: date-time
-          description: The ISO 8601 timestamp when the article was created.
-        reading_time_minutes:
-          type: integer
-          description: The estimated reading time in minutes.
-        tag_list:
-          type: array
-          items:
-            type: string
-          description: A list of tags associated with the article.
-        tags:
-          type: string
-          description: A comma-separated string of tags.
-        user:
-          $ref: '#/components/schemas/User'
-        organization:
-          $ref: '#/components/schemas/Organization'
-    ArticleFlareTag:
-      description: Flare tag of the article
-      type: object
+      description: A user account on the DEV platform.
       properties:
         name:
           type: string
-        bg_color_hex:
-          description: Background color (hexadecimal)
-          type:
-          - string
-          - 'null'
-        text_color_hex:
-          description: Text color (hexadecimal)
-          type:
-          - string
-          - 'null'
-    Article_2:
-      description: Representation of an Article to be created/updated
-      type: object
-      properties:
-        article:
-          type: object
-          properties:
-            title:
-              type: string
-            body_markdown:
-              type: string
-            published:
-              type: boolean
-              default: false
-            series:
-              type:
-              - string
-              - 'null'
-            main_image:
-              type:
-              - string
-              - 'null'
-            canonical_url:
-              type:
-              - string
-              - 'null'
-            description:
-              type: string
-            tags:
-              type: array
-              items:
-                type: string
-              description: Up to 4 tags, as an array of strings
-            organization_id:
-              type:
-              - integer
-              - 'null'
-            ai_disclosure_level:
-              type: string
-              enum:
-              - not_disclosed
-              - no_ai
-              - some_ai
-              - fully_autonomous
-              description: Level of AI tooling usage disclosure
+          description: The display name of the user.
+        username:
+          type: string
+          description: The unique username of the user.
+        twitter_username:
+          type: string
+          nullable: true
+          description: The user's Twitter username.
+        github_username:
+          type: string
+          nullable: true
+          description: The user's GitHub username.
+        user_id:
+          type: integer
+          description: The unique numeric ID of the user.
+        website_url:
+          type: string
+          format: uri
+          nullable: true
+          description: The user's website URL.
+        location:
+          type: string
+          nullable: true
+          description: The user's location.
+        summary:
+          type: string
+          nullable: true
+          description: A brief bio or summary of the user.
+        profile_image:
+          type: string
+          format: uri
+          description: The URL of the user's profile image.
+        profile_image_90:
+          type: string
+          format: uri
+          description: The URL of the 90px profile image.
+        joined_at:
+          type: string
+          format: date-time
+          description: The ISO 8601 timestamp when the user joined.
     SharedOrganization:
       description: The organization the resource belongs to
       type: object
@@ -1577,61 +1594,6 @@ components:
           description: Profile image (90x90)
           type: string
           format: url
-    VideoArticle:
-      description: Representation of an Article with video
-      type: object
-      properties:
-        type_of:
-          type: string
-        id:
-          type: integer
-          format: int64
-        path:
-          type: string
-        cloudinary_video_url:
-          type: string
-        title:
-          type: string
-        user_id:
-          type: integer
-          format: int64
-        video_duration_in_minutes:
-          type: string
-        video_source_url:
-          type: string
-        user:
-          description: Author of the article
-          type: object
-          properties:
-            name:
-              type: string
-    SharedUser:
-      description: The resource creator
-      type: object
-      properties:
-        name:
-          type: string
-        username:
-          type: string
-        twitter_username:
-          type:
-          - string
-          - 'null'
-        github_username:
-          type:
-          - string
-          - 'null'
-        website_url:
-          type:
-          - string
-          - 'null'
-          format: url
-        profile_image:
-          description: Profile image (640x640)
-          type: string
-        profile_image_90:
-          description: Profile image (90x90)
-          type: string
     ArticleIndex_2:
       description: Representation of an article or post returned in a list
       type: object
@@ -1747,7 +1709,7 @@ components:
       - published_timestamp
       - user
       - reading_time_minutes
-    Article_3:
+    Article_2:
       description: Representation of an Article to be created/updated
       type: object
       properties:
@@ -1776,11 +1738,93 @@ components:
             description:
               type: string
             tags:
-              type: string
+              type: array
+              items:
+                type: string
+              description: Up to 4 tags, as an array of strings
             organization_id:
               type:
               - integer
               - 'null'
+            ai_disclosure_level:
+              type: string
+              enum:
+              - not_disclosed
+              - no_ai
+              - some_ai
+              - fully_autonomous
+              description: Level of AI tooling usage disclosure
+    SharedUser:
+      description: The resource creator
+      type: object
+      properties:
+        name:
+          type: string
+        username:
+          type: string
+        twitter_username:
+          type:
+          - string
+          - 'null'
+        github_username:
+          type:
+          - string
+          - 'null'
+        website_url:
+          type:
+          - string
+          - 'null'
+          format: url
+        profile_image:
+          description: Profile image (640x640)
+          type: string
+        profile_image_90:
+          description: Profile image (90x90)
+          type: string
+    VideoArticle:
+      description: Representation of an Article with video
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int64
+        path:
+          type: string
+        cloudinary_video_url:
+          type: string
+        title:
+          type: string
+        user_id:
+          type: integer
+          format: int64
+        video_duration_in_minutes:
+          type: string
+        video_source_url:
+          type: string
+        user:
+          description: Author of the article
+          type: object
+          properties:
+            name:
+              type: string
+    ArticleFlareTag:
+      description: Flare tag of the article
+      type: object
+      properties:
+        name:
+          type: string
+        bg_color_hex:
+          description: Background color (hexadecimal)
+          type:
+          - string
+          - 'null'
+        text_color_hex:
+          description: Text color (hexadecimal)
+          type:
+          - string
+          - 'null'
     ArticleIndex_3:
       description: Representation of an article or post returned in a list
       type: object
@@ -1885,84 +1929,40 @@ components:
       - published_timestamp
       - user
       - reading_time_minutes
-  parameters:
-    perPageParam30to1000:
-      name: per_page
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 1000
-        default: 30
-      description: Number of items per page (max 1000, default 30).
-    pageParam:
-      name: page
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      description: Pagination page number.
-    articleIdParam:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: integer
-      description: The numeric ID of the article.
-    perPageParam30to1000_2:
-      in: query
-      name: per_page
-      required: false
-      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        maximum: 1000
-        default: 30
-    pageParam_2:
-      in: query
-      name: page
-      required: false
-      description: Pagination page
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        default: 1
-    perPageParam24to1000:
-      in: query
-      name: per_page
-      required: false
-      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        maximum: 1000
-        default: 24
-    perPageParam30to1000_3:
-      in: query
-      name: per_page
-      required: false
-      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        maximum: 1000
-        default: 30
-    pageParam_3:
-      in: query
-      name: page
-      required: false
-      description: Pagination page
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        default: 1
+    Article_3:
+      description: Representation of an Article to be created/updated
+      type: object
+      properties:
+        article:
+          type: object
+          properties:
+            title:
+              type: string
+            body_markdown:
+              type: string
+            published:
+              type: boolean
+              default: false
+            series:
+              type:
+              - string
+              - 'null'
+            main_image:
+              type:
+              - string
+              - 'null'
+            canonical_url:
+              type:
+              - string
+              - 'null'
+            description:
+              type: string
+            tags:
+              type: string
+            organization_id:
+              type:
+              - integer
+              - 'null'
   securitySchemes:
     apiKey:
       type: apiKey

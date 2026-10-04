@@ -433,84 +433,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    ArticleFlareTag:
-      description: Flare tag of the article
-      type: object
-      properties:
-        name:
-          type: string
-        bg_color_hex:
-          description: Background color (hexadecimal)
-          type:
-          - string
-          - 'null'
-        text_color_hex:
-          description: Text color (hexadecimal)
-          type:
-          - string
-          - 'null'
-    Concept:
-      description: Representation of a concept
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        name:
-          type: string
-        slug:
-          type: string
-        description:
-          type:
-          - string
-          - 'null'
-        parent_id:
-          type:
-          - integer
-          - 'null'
-          format: int64
-        score:
-          type: number
-          format: float
-        similarity_threshold:
-          type:
-          - number
-          - 'null'
-          format: float
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        daily_metrics:
-          type: array
-          items:
-            $ref: '#/components/schemas/ConceptDailyMetric'
-        top_articles:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: integer
-                format: int64
-              title:
-                type: string
-              slug:
-                type: string
-              score:
-                type: number
-                format: float
-              published_at:
-                type: string
-                format: date-time
-      required:
-      - id
-      - name
-      - slug
-      - created_at
-      - updated_at
     SharedOrganization:
       description: The organization the resource belongs to
       type: object
@@ -529,58 +451,6 @@ components:
           description: Profile image (90x90)
           type: string
           format: url
-    SharedUser:
-      description: The resource creator
-      type: object
-      properties:
-        name:
-          type: string
-        username:
-          type: string
-        twitter_username:
-          type:
-          - string
-          - 'null'
-        github_username:
-          type:
-          - string
-          - 'null'
-        website_url:
-          type:
-          - string
-          - 'null'
-          format: url
-        profile_image:
-          description: Profile image (640x640)
-          type: string
-        profile_image_90:
-          description: Profile image (90x90)
-          type: string
-    ConceptDailyMetric:
-      description: Representation of daily metrics for a concept
-      type: object
-      properties:
-        date:
-          type: string
-          format: date
-        articles_count:
-          type: integer
-        comments_count:
-          type: integer
-        page_views:
-          type: integer
-        reactions_count:
-          type: integer
-        popularity_score:
-          type: number
-          format: float
-      required:
-      - date
-      - articles_count
-      - comments_count
-      - page_views
-      - reactions_count
-      - popularity_score
     ArticleIndex:
       description: Representation of an article or post returned in a list
       type: object
@@ -696,6 +566,136 @@ components:
       - published_timestamp
       - user
       - reading_time_minutes
+    SharedUser:
+      description: The resource creator
+      type: object
+      properties:
+        name:
+          type: string
+        username:
+          type: string
+        twitter_username:
+          type:
+          - string
+          - 'null'
+        github_username:
+          type:
+          - string
+          - 'null'
+        website_url:
+          type:
+          - string
+          - 'null'
+          format: url
+        profile_image:
+          description: Profile image (640x640)
+          type: string
+        profile_image_90:
+          description: Profile image (90x90)
+          type: string
+    Concept:
+      description: Representation of a concept
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        parent_id:
+          type:
+          - integer
+          - 'null'
+          format: int64
+        score:
+          type: number
+          format: float
+        similarity_threshold:
+          type:
+          - number
+          - 'null'
+          format: float
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        daily_metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConceptDailyMetric'
+        top_articles:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                format: int64
+              title:
+                type: string
+              slug:
+                type: string
+              score:
+                type: number
+                format: float
+              published_at:
+                type: string
+                format: date-time
+      required:
+      - id
+      - name
+      - slug
+      - created_at
+      - updated_at
+    ArticleFlareTag:
+      description: Flare tag of the article
+      type: object
+      properties:
+        name:
+          type: string
+        bg_color_hex:
+          description: Background color (hexadecimal)
+          type:
+          - string
+          - 'null'
+        text_color_hex:
+          description: Text color (hexadecimal)
+          type:
+          - string
+          - 'null'
+    ConceptDailyMetric:
+      description: Representation of daily metrics for a concept
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        articles_count:
+          type: integer
+        comments_count:
+          type: integer
+        page_views:
+          type: integer
+        reactions_count:
+          type: integer
+        popularity_score:
+          type: number
+          format: float
+      required:
+      - date
+      - articles_count
+      - comments_count
+      - page_views
+      - reactions_count
+      - popularity_score
   securitySchemes:
     api-key:
       type: apiKey

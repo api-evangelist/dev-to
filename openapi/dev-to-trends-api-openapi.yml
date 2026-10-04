@@ -120,78 +120,6 @@ paths:
           description: Trend Not Found
 components:
   schemas:
-    ArticleFlareTag:
-      description: Flare tag of the article
-      type: object
-      properties:
-        name:
-          type: string
-        bg_color_hex:
-          description: Background color (hexadecimal)
-          type:
-          - string
-          - 'null'
-        text_color_hex:
-          description: Text color (hexadecimal)
-          type:
-          - string
-          - 'null'
-    Trend:
-      description: Representation of a trend
-      type: object
-      properties:
-        type_of:
-          type: string
-        id:
-          type: integer
-          format: int64
-        name:
-          type: string
-        slug:
-          type: string
-        description:
-          type:
-          - string
-          - 'null'
-        key_questions:
-          type: array
-          items:
-            type: string
-        score:
-          type: number
-          format: float
-        articles_count:
-          type: integer
-          format: int32
-        cover_image:
-          type:
-          - string
-          - 'null'
-          format: url
-        first_observed_at:
-          type: string
-          format: date-time
-        last_observed_at:
-          type: string
-          format: date-time
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-      required:
-      - type_of
-      - id
-      - name
-      - slug
-      - key_questions
-      - score
-      - articles_count
-      - first_observed_at
-      - last_observed_at
-      - created_at
-      - updated_at
     SharedOrganization:
       description: The organization the resource belongs to
       type: object
@@ -210,33 +138,6 @@ components:
           description: Profile image (90x90)
           type: string
           format: url
-    SharedUser:
-      description: The resource creator
-      type: object
-      properties:
-        name:
-          type: string
-        username:
-          type: string
-        twitter_username:
-          type:
-          - string
-          - 'null'
-        github_username:
-          type:
-          - string
-          - 'null'
-        website_url:
-          type:
-          - string
-          - 'null'
-          format: url
-        profile_image:
-          description: Profile image (640x640)
-          type: string
-        profile_image_90:
-          description: Profile image (90x90)
-          type: string
     ArticleIndex:
       description: Representation of an article or post returned in a list
       type: object
@@ -352,7 +253,116 @@ components:
       - published_timestamp
       - user
       - reading_time_minutes
+    SharedUser:
+      description: The resource creator
+      type: object
+      properties:
+        name:
+          type: string
+        username:
+          type: string
+        twitter_username:
+          type:
+          - string
+          - 'null'
+        github_username:
+          type:
+          - string
+          - 'null'
+        website_url:
+          type:
+          - string
+          - 'null'
+          format: url
+        profile_image:
+          description: Profile image (640x640)
+          type: string
+        profile_image_90:
+          description: Profile image (90x90)
+          type: string
+    ArticleFlareTag:
+      description: Flare tag of the article
+      type: object
+      properties:
+        name:
+          type: string
+        bg_color_hex:
+          description: Background color (hexadecimal)
+          type:
+          - string
+          - 'null'
+        text_color_hex:
+          description: Text color (hexadecimal)
+          type:
+          - string
+          - 'null'
+    Trend:
+      description: Representation of a trend
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        key_questions:
+          type: array
+          items:
+            type: string
+        score:
+          type: number
+          format: float
+        articles_count:
+          type: integer
+          format: int32
+        cover_image:
+          type:
+          - string
+          - 'null'
+          format: url
+        first_observed_at:
+          type: string
+          format: date-time
+        last_observed_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - type_of
+      - id
+      - name
+      - slug
+      - key_questions
+      - score
+      - articles_count
+      - first_observed_at
+      - last_observed_at
+      - created_at
+      - updated_at
   parameters:
+    pageParam:
+      in: query
+      name: page
+      required: false
+      description: Pagination page
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
     perPageParam10to1000:
       in: query
       name: per_page
@@ -364,16 +374,6 @@ components:
         minimum: 1
         maximum: 1000
         default: 10
-    pageParam:
-      in: query
-      name: page
-      required: false
-      description: Pagination page
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        default: 1
   securitySchemes:
     api-key:
       type: apiKey

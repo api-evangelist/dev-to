@@ -1387,53 +1387,67 @@ paths:
       x-operation-id-source: normalized
       x-operation-id-original: postAdminUsersCreate
 components:
+  parameters:
+    perPageParam30to1000:
+      name: per_page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 1000
+        default: 30
+      description: Number of items per page (max 1000, default 30).
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Pagination page number.
+    perPageParam30to1000_2:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 30
+    pageParam_2:
+      in: query
+      name: page
+      required: false
+      description: Pagination page
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
+    perPageParam30to1000_3:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 30
+    pageParam_3:
+      in: query
+      name: page
+      required: false
+      description: Pagination page
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
   schemas:
-    User:
-      type: object
-      description: A user account on the DEV platform.
-      properties:
-        name:
-          type: string
-          description: The display name of the user.
-        username:
-          type: string
-          description: The unique username of the user.
-        twitter_username:
-          type: string
-          nullable: true
-          description: The user's Twitter username.
-        github_username:
-          type: string
-          nullable: true
-          description: The user's GitHub username.
-        user_id:
-          type: integer
-          description: The unique numeric ID of the user.
-        website_url:
-          type: string
-          format: uri
-          nullable: true
-          description: The user's website URL.
-        location:
-          type: string
-          nullable: true
-          description: The user's location.
-        summary:
-          type: string
-          nullable: true
-          description: A brief bio or summary of the user.
-        profile_image:
-          type: string
-          format: uri
-          description: The URL of the user's profile image.
-        profile_image_90:
-          type: string
-          format: uri
-          description: The URL of the 90px profile image.
-        joined_at:
-          type: string
-          format: date-time
-          description: The ISO 8601 timestamp when the user joined.
     ArticleIndex:
       type: object
       description: A summary article object returned in list endpoints, with fewer fields than the full article representation.
@@ -1533,55 +1547,52 @@ components:
           type: string
           format: uri
           description: The URL of the 90px profile image.
-    User_2:
-      description: The representation of a user returned in a list
+    User:
       type: object
+      description: A user account on the DEV platform.
       properties:
-        type_of:
+        name:
           type: string
-        id:
-          type: integer
-          format: int64
+          description: The display name of the user.
         username:
           type: string
-        name:
-          type: string
-        summary:
-          type:
-          - string
-          - 'null'
+          description: The unique username of the user.
         twitter_username:
           type: string
+          nullable: true
+          description: The user's Twitter username.
         github_username:
           type: string
+          nullable: true
+          description: The user's GitHub username.
+        user_id:
+          type: integer
+          description: The unique numeric ID of the user.
         website_url:
-          type:
-          - string
-          - 'null'
-        location:
-          type:
-          - string
-          - 'null'
-        joined_at:
           type: string
+          format: uri
+          nullable: true
+          description: The user's website URL.
+        location:
+          type: string
+          nullable: true
+          description: The user's location.
+        summary:
+          type: string
+          nullable: true
+          description: A brief bio or summary of the user.
         profile_image:
           type: string
-    ArticleFlareTag:
-      description: Flare tag of the article
-      type: object
-      properties:
-        name:
+          format: uri
+          description: The URL of the user's profile image.
+        profile_image_90:
           type: string
-        bg_color_hex:
-          description: Background color (hexadecimal)
-          type:
-          - string
-          - 'null'
-        text_color_hex:
-          description: Text color (hexadecimal)
-          type:
-          - string
-          - 'null'
+          format: uri
+          description: The URL of the 90px profile image.
+        joined_at:
+          type: string
+          format: date-time
+          description: The ISO 8601 timestamp when the user joined.
     SharedOrganization:
       description: The organization the resource belongs to
       type: object
@@ -1600,121 +1611,6 @@ components:
           description: Profile image (90x90)
           type: string
           format: url
-    ExtendedUser:
-      description: The representation of a user
-      type: object
-      properties:
-        type_of:
-          type: string
-        id:
-          type: integer
-          format: int64
-        username:
-          type: string
-        name:
-          type: string
-        summary:
-          type:
-          - string
-          - 'null'
-        twitter_username:
-          type: string
-        github_username:
-          type: string
-        email:
-          type:
-          - string
-          - 'null'
-          description: Email (requires authentication and if user allows displaying email on their profile) or nil
-        website_url:
-          type:
-          - string
-          - 'null'
-        location:
-          type:
-          - string
-          - 'null'
-        joined_at:
-          type: string
-        profile_image:
-          type: string
-        badge_ids:
-          type: array
-          items:
-            type: integer
-          description: ids of the badges awarded to the user
-    MyUser:
-      description: The representation of a user when accessed by themselves
-      type: object
-      properties:
-        type_of:
-          type: string
-        id:
-          type: integer
-          format: int64
-        username:
-          type: string
-        name:
-          type: string
-        summary:
-          type:
-          - string
-          - 'null'
-        twitter_username:
-          type: string
-        github_username:
-          type: string
-        email:
-          type:
-          - string
-          - 'null'
-          description: Authenticated user's own email address, always returned regardless of display_email_on_profile setting
-        website_url:
-          type:
-          - string
-          - 'null'
-        location:
-          type:
-          - string
-          - 'null'
-        joined_at:
-          type: string
-        profile_image:
-          type: string
-        badge_ids:
-          type: array
-          items:
-            type: integer
-          description: ids of the badges awarded to the user
-        followers_count:
-          type: integer
-    SharedUser:
-      description: The resource creator
-      type: object
-      properties:
-        name:
-          type: string
-        username:
-          type: string
-        twitter_username:
-          type:
-          - string
-          - 'null'
-        github_username:
-          type:
-          - string
-          - 'null'
-        website_url:
-          type:
-          - string
-          - 'null'
-          format: url
-        profile_image:
-          description: Profile image (640x640)
-          type: string
-        profile_image_90:
-          description: Profile image (90x90)
-          type: string
     ArticleIndex_2:
       description: Representation of an article or post returned in a list
       type: object
@@ -1830,6 +1726,137 @@ components:
       - published_timestamp
       - user
       - reading_time_minutes
+    MyUser:
+      description: The representation of a user when accessed by themselves
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        name:
+          type: string
+        summary:
+          type:
+          - string
+          - 'null'
+        twitter_username:
+          type: string
+        github_username:
+          type: string
+        email:
+          type:
+          - string
+          - 'null'
+          description: Authenticated user's own email address, always returned regardless of display_email_on_profile setting
+        website_url:
+          type:
+          - string
+          - 'null'
+        location:
+          type:
+          - string
+          - 'null'
+        joined_at:
+          type: string
+        profile_image:
+          type: string
+        badge_ids:
+          type: array
+          items:
+            type: integer
+          description: ids of the badges awarded to the user
+        followers_count:
+          type: integer
+    SharedUser:
+      description: The resource creator
+      type: object
+      properties:
+        name:
+          type: string
+        username:
+          type: string
+        twitter_username:
+          type:
+          - string
+          - 'null'
+        github_username:
+          type:
+          - string
+          - 'null'
+        website_url:
+          type:
+          - string
+          - 'null'
+          format: url
+        profile_image:
+          description: Profile image (640x640)
+          type: string
+        profile_image_90:
+          description: Profile image (90x90)
+          type: string
+    ArticleFlareTag:
+      description: Flare tag of the article
+      type: object
+      properties:
+        name:
+          type: string
+        bg_color_hex:
+          description: Background color (hexadecimal)
+          type:
+          - string
+          - 'null'
+        text_color_hex:
+          description: Text color (hexadecimal)
+          type:
+          - string
+          - 'null'
+    ExtendedUser:
+      description: The representation of a user
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        name:
+          type: string
+        summary:
+          type:
+          - string
+          - 'null'
+        twitter_username:
+          type: string
+        github_username:
+          type: string
+        email:
+          type:
+          - string
+          - 'null'
+          description: Email (requires authentication and if user allows displaying email on their profile) or nil
+        website_url:
+          type:
+          - string
+          - 'null'
+        location:
+          type:
+          - string
+          - 'null'
+        joined_at:
+          type: string
+        profile_image:
+          type: string
+        badge_ids:
+          type: array
+          items:
+            type: integer
+          description: ids of the badges awarded to the user
     UserInviteParam:
       description: User invite parameters
       type: object
@@ -1840,7 +1867,7 @@ components:
           type:
           - string
           - 'null'
-    User_3:
+    User_2:
       description: The representation of a user returned in a list
       type: object
       properties:
@@ -1873,127 +1900,6 @@ components:
           type: string
         profile_image:
           type: string
-    User_2_2:
-      description: The representation of a user
-      type: object
-      properties:
-        type_of:
-          type: string
-        id:
-          type: integer
-          format: int64
-        username:
-          type: string
-        name:
-          type: string
-        summary:
-          type:
-          - string
-          - 'null'
-        twitter_username:
-          type: string
-        github_username:
-          type: string
-        website_url:
-          type:
-          - string
-          - 'null'
-        location:
-          type:
-          - string
-          - 'null'
-        joined_at:
-          type: string
-        profile_image:
-          type: string
-    ExtendedUser_2:
-      description: The representation of a user
-      type: object
-      properties:
-        type_of:
-          type: string
-        id:
-          type: integer
-          format: int64
-        username:
-          type: string
-        name:
-          type: string
-        summary:
-          type:
-          - string
-          - 'null'
-        twitter_username:
-          type: string
-        github_username:
-          type: string
-        email:
-          type:
-          - string
-          - 'null'
-          description: Email (if user allows displaying email on their profile) or nil
-        website_url:
-          type:
-          - string
-          - 'null'
-        location:
-          type:
-          - string
-          - 'null'
-        joined_at:
-          type: string
-        profile_image:
-          type: string
-        badge_ids:
-          type: array
-          items:
-            type: integer
-          description: ids of the badges awarded to the user
-    MyUser_2:
-      description: The representation of a user when accessed by themselves
-      type: object
-      properties:
-        type_of:
-          type: string
-        id:
-          type: integer
-          format: int64
-        username:
-          type: string
-        name:
-          type: string
-        summary:
-          type:
-          - string
-          - 'null'
-        twitter_username:
-          type: string
-        github_username:
-          type: string
-        email:
-          type:
-          - string
-          - 'null'
-          description: Email (if user allows displaying email on their profile) or nil
-        website_url:
-          type:
-          - string
-          - 'null'
-        location:
-          type:
-          - string
-          - 'null'
-        joined_at:
-          type: string
-        profile_image:
-          type: string
-        badge_ids:
-          type: array
-          items:
-            type: integer
-          description: ids of the badges awarded to the user
-        followers_count:
-          type: integer
     ArticleIndex_3:
       description: Representation of an article or post returned in a list
       type: object
@@ -2098,66 +2004,160 @@ components:
       - published_timestamp
       - user
       - reading_time_minutes
-  parameters:
-    perPageParam30to1000:
-      name: per_page
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 1000
-        default: 30
-      description: Number of items per page (max 1000, default 30).
-    pageParam:
-      name: page
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      description: Pagination page number.
-    perPageParam30to1000_2:
-      in: query
-      name: per_page
-      required: false
-      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        maximum: 1000
-        default: 30
-    pageParam_2:
-      in: query
-      name: page
-      required: false
-      description: Pagination page
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        default: 1
-    perPageParam30to1000_3:
-      in: query
-      name: per_page
-      required: false
-      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        maximum: 1000
-        default: 30
-    pageParam_3:
-      in: query
-      name: page
-      required: false
-      description: Pagination page
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        default: 1
+    MyUser_2:
+      description: The representation of a user when accessed by themselves
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        name:
+          type: string
+        summary:
+          type:
+          - string
+          - 'null'
+        twitter_username:
+          type: string
+        github_username:
+          type: string
+        email:
+          type:
+          - string
+          - 'null'
+          description: Email (if user allows displaying email on their profile) or nil
+        website_url:
+          type:
+          - string
+          - 'null'
+        location:
+          type:
+          - string
+          - 'null'
+        joined_at:
+          type: string
+        profile_image:
+          type: string
+        badge_ids:
+          type: array
+          items:
+            type: integer
+          description: ids of the badges awarded to the user
+        followers_count:
+          type: integer
+    User_2_2:
+      description: The representation of a user
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        name:
+          type: string
+        summary:
+          type:
+          - string
+          - 'null'
+        twitter_username:
+          type: string
+        github_username:
+          type: string
+        website_url:
+          type:
+          - string
+          - 'null'
+        location:
+          type:
+          - string
+          - 'null'
+        joined_at:
+          type: string
+        profile_image:
+          type: string
+    ExtendedUser_2:
+      description: The representation of a user
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        name:
+          type: string
+        summary:
+          type:
+          - string
+          - 'null'
+        twitter_username:
+          type: string
+        github_username:
+          type: string
+        email:
+          type:
+          - string
+          - 'null'
+          description: Email (if user allows displaying email on their profile) or nil
+        website_url:
+          type:
+          - string
+          - 'null'
+        location:
+          type:
+          - string
+          - 'null'
+        joined_at:
+          type: string
+        profile_image:
+          type: string
+        badge_ids:
+          type: array
+          items:
+            type: integer
+          description: ids of the badges awarded to the user
+    User_3:
+      description: The representation of a user returned in a list
+      type: object
+      properties:
+        type_of:
+          type: string
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        name:
+          type: string
+        summary:
+          type:
+          - string
+          - 'null'
+        twitter_username:
+          type: string
+        github_username:
+          type: string
+        website_url:
+          type:
+          - string
+          - 'null'
+        location:
+          type:
+          - string
+          - 'null'
+        joined_at:
+          type: string
+        profile_image:
+          type: string
   securitySchemes:
     apiKey:
       type: apiKey
