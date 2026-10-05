@@ -1,0 +1,35 @@
+slug: dev-to
+provider: DEV Community
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 2
+edges:
+- tag: Webhooks
+  spec_file: dev-to-webhooks-api-openapi.yml
+  capability_id: BC-4270.80
+  capability_id_l1: BC-4270
+  capability_name: Webhook & Event Subscription Management
+  confidence: 0.85
+  evidence: POST /webhooks createWebhook Create a webhook; GET /webhooks/{id} getWebhookById A webhook
+    endpoint; DELETE /webhooks/{id} Delete a webhook endpoint
+  reason: Full lifecycle management of outbound webhook endpoints subscribed to platform events, which
+    is precisely Webhook & Event Subscription Management within the developer/API ecosystem capability.
+- tag: Display Ads
+  spec_file: dev-to-display-ads-api-openapi.yml
+  capability_id: BC-400.60
+  capability_id_l1: BC-400
+  capability_name: Digital Marketing Management
+  confidence: 0.7
+  evidence: POST /display_ads 'Create display ad'; PUT /display_ads/{id} 'Update display ad'; PUT /display_ads/{id}/unpublish
+    'Unpublish display ad'
+  reason: Create, update and unpublish of display advertisements on the platform is management of digital/paid-media
+    placements, which sits under Digital Marketing Management.
