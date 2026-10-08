@@ -524,6 +524,8 @@ apis:
   - type: Documentation
     url: https://developers.forem.com/api/v1
 common:
+  - type: FinOps
+    url: finops/dev-to-finops.yml
   - type: CapabilityMap
     url: capabilities/dev-to-capability-edges.yml
     name: DEV Community Business Capability Map
