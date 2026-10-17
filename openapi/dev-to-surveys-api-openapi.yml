@@ -251,166 +251,7 @@ paths:
         '404':
           description: Not found
 components:
-  parameters:
-    perPageParam30to1000:
-      in: query
-      name: per_page
-      required: false
-      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        maximum: 1000
-        default: 30
-    pageParam:
-      in: query
-      name: page
-      required: false
-      description: Pagination page
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        default: 1
   schemas:
-    PollOption:
-      description: A single option within a poll
-      type: object
-      properties:
-        type_of:
-          type: string
-          enum:
-          - poll_option
-          description: Resource discriminator
-        id:
-          type: integer
-          format: int64
-        markdown:
-          type:
-          - string
-          - 'null'
-          description: Option text in markdown
-        processed_html:
-          type:
-          - string
-          - 'null'
-          description: Option text rendered as HTML
-        position:
-          type: integer
-          format: int32
-          description: Display order within the poll
-        poll_votes_count:
-          type: integer
-          format: int32
-          description: Number of votes for this option
-        supplementary_text:
-          type:
-          - string
-          - 'null'
-          description: Additional descriptive text for the option
-      required:
-      - type_of
-      - id
-      - markdown
-      - processed_html
-      - position
-      - poll_votes_count
-    SurveyWithPolls:
-      description: Representation of a survey including its polls and poll options
-      allOf:
-      - $ref: '#/components/schemas/Survey'
-      - type: object
-        properties:
-          polls:
-            type: array
-            items:
-              $ref: '#/components/schemas/Poll'
-            description: All polls in the survey, ordered by position
-        required:
-        - polls
-    Poll:
-      description: A poll (question) belonging to a survey or article
-      type: object
-      properties:
-        type_of:
-          type: string
-          enum:
-          - poll
-          description: Resource discriminator
-        id:
-          type: integer
-          format: int64
-        prompt_markdown:
-          type:
-          - string
-          - 'null'
-          description: Question text in markdown
-        prompt_html:
-          type:
-          - string
-          - 'null'
-          description: Question text rendered as HTML
-        poll_type_of:
-          type: string
-          enum:
-          - single_choice
-          - multiple_choice
-          - scale
-          - text_input
-          description: 'Poll question type: single_choice, multiple_choice, scale, or text_input'
-        position:
-          type: integer
-          format: int32
-          description: Display order within the survey
-        poll_votes_count:
-          type: integer
-          format: int32
-          description: Total number of votes across all options
-        poll_skips_count:
-          type: integer
-          format: int32
-          description: Number of users who skipped this poll
-        poll_options_count:
-          type: integer
-          format: int32
-          description: Number of options in this poll
-        scale_min:
-          type:
-          - integer
-          - 'null'
-          format: int32
-          description: Minimum value for scale polls
-        scale_max:
-          type:
-          - integer
-          - 'null'
-          format: int32
-          description: Maximum value for scale polls
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        poll_options:
-          type: array
-          items:
-            $ref: '#/components/schemas/PollOption'
-          description: The available options for this poll
-      required:
-      - type_of
-      - id
-      - prompt_markdown
-      - prompt_html
-      - poll_type_of
-      - position
-      - poll_votes_count
-      - poll_skips_count
-      - poll_options_count
-      - created_at
-      - updated_at
-      - poll_options
     SurveyInput:
       description: Parameters for creating or updating a survey
       type: object
@@ -532,6 +373,220 @@ components:
                           description: Set to true to destroy this option
       required:
       - survey
+    PollVote:
+      description: Representation of a single poll vote cast by a user
+      type: object
+      properties:
+        type_of:
+          type: string
+          enum:
+          - poll_vote
+          description: Resource discriminator
+        id:
+          type: integer
+          format: int64
+        poll_id:
+          type: integer
+          format: int64
+        poll_option_id:
+          type: integer
+          format: int64
+        user_id:
+          type: integer
+          format: int64
+        user_email:
+          type: string
+          format: email
+        session_start:
+          type: integer
+          format: int32
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - type_of
+      - id
+      - poll_id
+      - poll_option_id
+      - user_id
+      - user_email
+      - session_start
+      - created_at
+    PollOption:
+      description: A single option within a poll
+      type: object
+      properties:
+        type_of:
+          type: string
+          enum:
+          - poll_option
+          description: Resource discriminator
+        id:
+          type: integer
+          format: int64
+        markdown:
+          type:
+          - string
+          - 'null'
+          description: Option text in markdown
+        processed_html:
+          type:
+          - string
+          - 'null'
+          description: Option text rendered as HTML
+        position:
+          type: integer
+          format: int32
+          description: Display order within the poll
+        poll_votes_count:
+          type: integer
+          format: int32
+          description: Number of votes for this option
+        supplementary_text:
+          type:
+          - string
+          - 'null'
+          description: Additional descriptive text for the option
+      required:
+      - type_of
+      - id
+      - markdown
+      - processed_html
+      - position
+      - poll_votes_count
+    SurveyWithPolls:
+      description: Representation of a survey including its polls and poll options
+      allOf:
+      - $ref: '#/components/schemas/Survey'
+      - type: object
+        properties:
+          polls:
+            type: array
+            items:
+              $ref: '#/components/schemas/Poll'
+            description: All polls in the survey, ordered by position
+        required:
+        - polls
+    PollTextResponse:
+      description: Representation of a free-text response to a text-input poll
+      type: object
+      properties:
+        type_of:
+          type: string
+          enum:
+          - poll_text_response
+          description: Resource discriminator
+        id:
+          type: integer
+          format: int64
+        poll_id:
+          type: integer
+          format: int64
+        user_id:
+          type: integer
+          format: int64
+        user_email:
+          type: string
+          format: email
+        text_content:
+          type: string
+        session_start:
+          type: integer
+          format: int32
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - type_of
+      - id
+      - poll_id
+      - user_id
+      - user_email
+      - text_content
+      - session_start
+      - created_at
+    Poll:
+      description: A poll (question) belonging to a survey or article
+      type: object
+      properties:
+        type_of:
+          type: string
+          enum:
+          - poll
+          description: Resource discriminator
+        id:
+          type: integer
+          format: int64
+        prompt_markdown:
+          type:
+          - string
+          - 'null'
+          description: Question text in markdown
+        prompt_html:
+          type:
+          - string
+          - 'null'
+          description: Question text rendered as HTML
+        poll_type_of:
+          type: string
+          enum:
+          - single_choice
+          - multiple_choice
+          - scale
+          - text_input
+          description: 'Poll question type: single_choice, multiple_choice, scale, or text_input'
+        position:
+          type: integer
+          format: int32
+          description: Display order within the survey
+        poll_votes_count:
+          type: integer
+          format: int32
+          description: Total number of votes across all options
+        poll_skips_count:
+          type: integer
+          format: int32
+          description: Number of users who skipped this poll
+        poll_options_count:
+          type: integer
+          format: int32
+          description: Number of options in this poll
+        scale_min:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Minimum value for scale polls
+        scale_max:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Maximum value for scale polls
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        poll_options:
+          type: array
+          items:
+            $ref: '#/components/schemas/PollOption'
+          description: The available options for this poll
+      required:
+      - type_of
+      - id
+      - prompt_markdown
+      - prompt_html
+      - poll_type_of
+      - position
+      - poll_votes_count
+      - poll_skips_count
+      - poll_options_count
+      - created_at
+      - updated_at
+      - poll_options
     Survey:
       description: Representation of a survey
       type: object
@@ -602,83 +657,28 @@ components:
       - allow_resubmission
       - created_at
       - updated_at
-    PollVote:
-      description: Representation of a single poll vote cast by a user
-      type: object
-      properties:
-        type_of:
-          type: string
-          enum:
-          - poll_vote
-          description: Resource discriminator
-        id:
-          type: integer
-          format: int64
-        poll_id:
-          type: integer
-          format: int64
-        poll_option_id:
-          type: integer
-          format: int64
-        user_id:
-          type: integer
-          format: int64
-        user_email:
-          type: string
-          format: email
-        session_start:
-          type: integer
-          format: int32
-        created_at:
-          type: string
-          format: date-time
-      required:
-      - type_of
-      - id
-      - poll_id
-      - poll_option_id
-      - user_id
-      - user_email
-      - session_start
-      - created_at
-    PollTextResponse:
-      description: Representation of a free-text response to a text-input poll
-      type: object
-      properties:
-        type_of:
-          type: string
-          enum:
-          - poll_text_response
-          description: Resource discriminator
-        id:
-          type: integer
-          format: int64
-        poll_id:
-          type: integer
-          format: int64
-        user_id:
-          type: integer
-          format: int64
-        user_email:
-          type: string
-          format: email
-        text_content:
-          type: string
-        session_start:
-          type: integer
-          format: int32
-        created_at:
-          type: string
-          format: date-time
-      required:
-      - type_of
-      - id
-      - poll_id
-      - user_id
-      - user_email
-      - text_content
-      - session_start
-      - created_at
+  parameters:
+    perPageParam30to1000:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 30
+    pageParam:
+      in: query
+      name: page
+      required: false
+      description: Pagination page
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
   securitySchemes:
     api-key:
       type: apiKey

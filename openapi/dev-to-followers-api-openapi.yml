@@ -110,6 +110,53 @@ paths:
     - url: https://dev.to/api
       description: Production server
 components:
+  schemas:
+    User:
+      type: object
+      description: A user account on the DEV platform.
+      properties:
+        name:
+          type: string
+          description: The display name of the user.
+        username:
+          type: string
+          description: The unique username of the user.
+        twitter_username:
+          type: string
+          nullable: true
+          description: The user's Twitter username.
+        github_username:
+          type: string
+          nullable: true
+          description: The user's GitHub username.
+        user_id:
+          type: integer
+          description: The unique numeric ID of the user.
+        website_url:
+          type: string
+          format: uri
+          nullable: true
+          description: The user's website URL.
+        location:
+          type: string
+          nullable: true
+          description: The user's location.
+        summary:
+          type: string
+          nullable: true
+          description: A brief bio or summary of the user.
+        profile_image:
+          type: string
+          format: uri
+          description: The URL of the user's profile image.
+        profile_image_90:
+          type: string
+          format: uri
+          description: The URL of the 90px profile image.
+        joined_at:
+          type: string
+          format: date-time
+          description: The ISO 8601 timestamp when the user joined.
   parameters:
     perPageParam30to1000:
       name: per_page
@@ -170,53 +217,6 @@ components:
         format: int32
         minimum: 1
         default: 1
-  schemas:
-    User:
-      type: object
-      description: A user account on the DEV platform.
-      properties:
-        name:
-          type: string
-          description: The display name of the user.
-        username:
-          type: string
-          description: The unique username of the user.
-        twitter_username:
-          type: string
-          nullable: true
-          description: The user's Twitter username.
-        github_username:
-          type: string
-          nullable: true
-          description: The user's GitHub username.
-        user_id:
-          type: integer
-          description: The unique numeric ID of the user.
-        website_url:
-          type: string
-          format: uri
-          nullable: true
-          description: The user's website URL.
-        location:
-          type: string
-          nullable: true
-          description: The user's location.
-        summary:
-          type: string
-          nullable: true
-          description: A brief bio or summary of the user.
-        profile_image:
-          type: string
-          format: uri
-          description: The URL of the user's profile image.
-        profile_image_90:
-          type: string
-          format: uri
-          description: The URL of the 90px profile image.
-        joined_at:
-          type: string
-          format: date-time
-          description: The ISO 8601 timestamp when the user joined.
   securitySchemes:
     apiKey:
       type: apiKey

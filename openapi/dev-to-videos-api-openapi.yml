@@ -44,28 +44,6 @@ paths:
                 items:
                   $ref: '#/components/schemas/VideoArticle'
 components:
-  parameters:
-    pageParam:
-      in: query
-      name: page
-      required: false
-      description: Pagination page
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        default: 1
-    perPageParam24to1000:
-      in: query
-      name: per_page
-      required: false
-      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        maximum: 1000
-        default: 24
   schemas:
     VideoArticle:
       description: Representation of an Article with video
@@ -95,6 +73,28 @@ components:
           properties:
             name:
               type: string
+  parameters:
+    perPageParam24to1000:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 24
+    pageParam:
+      in: query
+      name: page
+      required: false
+      description: Pagination page
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
   securitySchemes:
     api-key:
       type: apiKey

@@ -239,43 +239,7 @@ paths:
               $ref: '#/components/schemas/SegmentUserIds'
         description: Map containing user IDs to remove from the segment.
 components:
-  parameters:
-    perPageParam30to1000:
-      in: query
-      name: per_page
-      required: false
-      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        maximum: 1000
-        default: 30
   schemas:
-    SegmentUserIds:
-      type: object
-      properties:
-        user_ids:
-          type: array
-          items:
-            type: integer
-          maxItems: 10000
-    Segment:
-      description: A manually managed audience segment
-      type: object
-      properties:
-        id:
-          type: integer
-          description: The ID of the segment
-        type_of:
-          type: string
-          enum:
-          - manual
-          default: manual
-          description: Marks the segment as manually managed (other types are internal)
-        user_count:
-          type: integer
-          description: The current number of users in the segment
     User:
       description: The representation of a user returned in a list
       type: object
@@ -309,6 +273,42 @@ components:
           type: string
         profile_image:
           type: string
+    Segment:
+      description: A manually managed audience segment
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the segment
+        type_of:
+          type: string
+          enum:
+          - manual
+          default: manual
+          description: Marks the segment as manually managed (other types are internal)
+        user_count:
+          type: integer
+          description: The current number of users in the segment
+    SegmentUserIds:
+      type: object
+      properties:
+        user_ids:
+          type: array
+          items:
+            type: integer
+          maxItems: 10000
+  parameters:
+    perPageParam30to1000:
+      in: query
+      name: per_page
+      required: false
+      description: Page size (the number of items to return per page). The default maximum value can be overridden by "API_PER_PAGE_MAX" environment variable.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 30
   securitySchemes:
     api-key:
       type: apiKey

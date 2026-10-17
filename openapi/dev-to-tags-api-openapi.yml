@@ -221,23 +221,6 @@ components:
           type: string
           pattern: ^#[0-9a-fA-F]{6}$
           description: The text color hex code for the tag.
-    FollowedTag:
-      description: Representation of a followed tag
-      type: object
-      properties:
-        id:
-          description: Tag id
-          type: integer
-          format: int64
-        name:
-          type: string
-        points:
-          type: number
-          format: float
-      required:
-      - id
-      - name
-      - points
     Tag_2:
       description: Representation of a tag
       type: object
@@ -256,6 +239,23 @@ components:
           type:
           - string
           - 'null'
+    FollowedTag:
+      description: Representation of a followed tag
+      type: object
+      properties:
+        id:
+          description: Tag id
+          type: integer
+          format: int64
+        name:
+          type: string
+        points:
+          type: number
+          format: float
+      required:
+      - id
+      - name
+      - points
     Tag_3:
       description: Representation of a tag
       type: object
