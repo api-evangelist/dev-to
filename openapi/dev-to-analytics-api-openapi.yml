@@ -266,3 +266,9 @@ components:
       scheme: bearer
       bearerFormat: JWT
       description: Short-lived RS256 RFC 9068 access token issued by the configured delegation service and verified against its configured JWKS. The issuer authorizes the client and requested operation before minting the token; Forem validates the token and resolves its subject and owner to a local user. An invalid token returns 401; an unavailable trust dependency with no usable cached key returns 503.
+x-provenance:
+  method: harvested
+  publisher: DEV Community
+  source: https://raw.githubusercontent.com/forem/forem/main/swagger/v1/api_v1.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
